@@ -1,0 +1,5 @@
+<pid>
+    <goal x_g="-1" y_g="1" d_stop="0.02" />
+    <velocity v="0.1" />
+    <gains kp="5" ki="0" kd="0" />
+</pid>

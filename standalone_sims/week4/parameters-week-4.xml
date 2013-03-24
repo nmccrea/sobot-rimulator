@@ -1,0 +1,5 @@
+<pid>
+    <sensorgains s1="1" s2="1" s3="1" s4="1" s5="1" s6="1" s7="1" s8="1" s9="1"/>
+    <velocity v="0.1" />
+    <gains kp="5" ki="0" kd="0" />
+</pid>

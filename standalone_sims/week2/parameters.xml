@@ -1,0 +1,5 @@
+<pid>
+    <angle theta="0.7854" />
+    <velocity v="0.1" />
+    <gains kp="5" ki="0.1" kd="0.01" />
+</pid>

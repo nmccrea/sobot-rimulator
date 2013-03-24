@@ -1,0 +1,5 @@
+<parameters>
+    <goal x="1" y="1" />
+    <threshold d_fw="0.1" d_stop="0.05" d_at_obs="0.13" d_unsafe="0.03" />
+    <gains kp="5" ki="0" kd="0" />
+</parameters>
