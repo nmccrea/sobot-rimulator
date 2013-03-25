@@ -56,11 +56,6 @@ class DifferentialDriveDynamics:
     return v, w
   
   def apply_dynamics( self, old_pose, v_l, v_r, d_t ):
-    
-    # TODO:
-    # THIS APPEARS TO BE MAKING THE ROBOT TURN IN THE OPPOSITE DIRECTION THAN WHAT IS EXPECTED
-    
-    
     wheel_meters_per_rad = self.wheel_radius
     
     # calculate the distance traveled
@@ -75,20 +70,15 @@ class DifferentialDriveDynamics:
     
     new_x = old_x + ( d_center * cos( old_phi ) )
     new_y = old_y + ( d_center * sin( old_phi ) )
-    new_phi = old_phi + ( ( d_left_wheel - d_right_wheel ) / self.wheel_base_length )
+    new_phi = old_phi + ( ( d_right_wheel - d_left_wheel ) / self.wheel_base_length )
     # normalize phi:
     if new_phi > pi:
       new_phi -= 2*pi
     elif new_phi < -pi:
       new_phi += 2*pi
     
+    # package and return the new pose
     new_pose = Pose( new_x, new_y, new_phi )
-    
-#    print "\n\nNEW POSE:"
-#    print "x:   " + str(new_x)
-#    print "y:   " + str(new_y)
-#    print "phi: " + str(new_phi)
-    
     return new_pose
 
 
