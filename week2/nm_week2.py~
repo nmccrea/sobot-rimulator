@@ -15,6 +15,16 @@ K3_ANG_VEL_LIMIT = 2.2763       # rad/s
 
 
 
+class Pose:
+
+  def __init__( self, x, y, phi ):
+    self.x = x
+    self.y = y
+    self.phi = phi
+
+
+
+
 class DifferentialDriveDynamics:
   
   def __init__( self, wheel_radius, wheel_base_length):
@@ -44,7 +54,38 @@ class DifferentialDriveDynamics:
     w = ( R / L ) * ( v_r - v_l )
     
     return v, w
+  
+  def apply_dynamics( self, old_pose, v_l, v_r, d_t ):
+    wheel_meters_per_rad = self.wheel_radius
     
+    # calculate the distance traveled
+    d_left_wheel = d_t * v_l * wheel_meters_per_rad
+    d_right_wheel = d_t * v_r * wheel_meters_per_rad
+    d_center = ( d_left_wheel + d_right_wheel ) / 2.0
+    
+    # calculate the new pose
+    old_x = old_pose.x
+    old_y = old_pose.y
+    old_phi = old_pose.phi
+    
+    new_x = old_x + ( d_center * cos( old_phi ) )
+    new_y = old_y + ( d_center * sin( old_phi ) )
+    new_phi = old_phi + ( ( d_left_wheel - d_right_wheel ) / self.wheel_base_length )
+    # normalize phi:
+    if new_phi > pi:
+      new_phi -= 2*pi
+    elif new_phi < -pi:
+      new_phi += 2*pi
+    
+    new_pose = Pose( new_x, new_y, new_phi )
+    
+    print "\n\nNEW POSE:"
+    print "x:   " + str(new_x)
+    print "y:   " + str(new_y)
+    print "phi: " + str(new_phi)
+    
+    return new_pose
+
 
 
 
@@ -58,14 +99,18 @@ class Robot: # Khepera3 robot
     # wheel speed factor
     self.speed_factor = K3_SPEED_FACTOR
     
-    # wheel speeds (rad/sec)
-    self.left_wheel_rotation = 0.0
-    self.right_wheel_rotation = 0.0
-    
     # dynamics
     self.dynamics = DifferentialDriveDynamics( self.wheel_radius, self.wheel_base_length )
     
-  def update_state( self ):
+    ## initialize state
+    # set wheel rotations (rad/sec)
+    self.left_wheel_rotation = 0.0
+    self.right_wheel_rotation = 0.0
+    
+    # set pose
+    self.pose = Pose( 0.0, 0.0, 0.0 )
+    
+  def update_state( self, dt ):
     False
   
   def set_wheel_rotations( self, v_l, v_r ):
@@ -78,7 +123,6 @@ class Robot: # Khepera3 robot
     # set rotations
     self.left_wheel_rotation = v_l
     self.right_wheel_rotation = v_r
-    
   
   def tick( self ):
     False
