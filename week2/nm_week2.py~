@@ -77,8 +77,8 @@ class DifferentialDriveDynamics:
     elif new_phi < -pi:
       new_phi += 2*pi
     
+    # package and return the new pose
     new_pose = Pose( new_x, new_y, new_phi )
-    
     return new_pose
 
 
@@ -106,7 +106,12 @@ class Robot: # Khepera3 robot
     self.pose = Pose( 0.0, 0.0, 0.0 )
     
   def update_state( self, dt ):
-    False
+    pose = self.pose
+    v_l = self.left_wheel_rotation
+    v_r = self.right_wheel_rotation
+    
+    self.pose = self.dynamics.apply_dynamics( pose, v_l, v_r, dt )
+    
   
   def set_wheel_rotations( self, v_l, v_r ):
     # limit the speeds:
@@ -118,6 +123,9 @@ class Robot: # Khepera3 robot
     # set rotations
     self.left_wheel_rotation = v_l
     self.right_wheel_rotation = v_r
+    
+  def wheel_rotations( self ):
+    return self.left_wheel_rotation, self.right_wheel_rotation
   
   def tick( self ):
     False

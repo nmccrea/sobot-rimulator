@@ -106,7 +106,12 @@ class Robot: # Khepera3 robot
     self.pose = Pose( 0.0, 0.0, 0.0 )
     
   def update_state( self, dt ):
-    False
+    pose = self.pose
+    v_l = self.left_wheel_rotation
+    v_r = self.right_wheel_rotation
+    
+    self.pose = self.dynamics.apply_dynamics( pose, v_l, v_r, dt )
+    
   
   def set_wheel_rotations( self, v_l, v_r ):
     # limit the speeds:
@@ -119,6 +124,6 @@ class Robot: # Khepera3 robot
     self.left_wheel_rotation = v_l
     self.right_wheel_rotation = v_r
   
-  def tick( self ):
-    False
+  def wheel_rotations( self ):
+    return self.left_wheel_rotation, self.right_wheel_rotation
   
