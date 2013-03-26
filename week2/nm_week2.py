@@ -127,3 +127,75 @@ class Robot: # Khepera3 robot
   def wheel_rotations( self ):
     return self.left_wheel_rotation, self.right_wheel_rotation
   
+  
+  
+
+import Euv.EuvGtk as Euv
+import Euv.Frame as Frame
+import Euv.Shapes as Shapes
+import Euv.Color as Color
+class RobotView:
+  
+  def __init__( self, viewer, robot ):
+    self.viewer = viewer
+    self.robot = robot
+  
+  def draw_robot( self ):
+    # create the frame
+    frame = Frame.Frame()
+    
+    # grab robot pose values
+    robot_pose = self.robot.pose
+    robot_x = robot_pose.x
+    robot_y = robot_pose.y
+    robot_phi = robot_pose.phi
+    
+    # build the robot
+    robot_body = Shapes.arrow_head_polygon( (robot_x, robot_y),
+                                            robot_phi,
+                                            scale = 0.02 )
+    robot_wheels = Shapes.rectangle_pair( (robot_x, robot_y),
+                                          5.0, 2.0, 7.0,
+                                          angle = robot_phi,
+                                          scale = 0.02 )
+    
+    # add the robot to the frame
+    frame.add_polygons( [ robot_body ],
+                        color = "red",
+                        alpha = 0.5 )
+    frame.add_polygons( robot_wheels,
+                        color = "black",
+                        alpha = 0.5 )
+    
+    # add the frame to the viewer
+    self.viewer.add_frame( frame )
+
+
+
+
+
+class Week2Simulator:
+
+  def __init__( self ):
+    # create robot
+    self.robot = Robot()
+    
+    # create viewer
+    self.viewer = Euv.Viewer( size = (300, 300),
+                          view_port_center = (0, 0),
+                          view_port_width = 3,
+                          flip_y = True )
+    
+    # create robot view
+    self.robot_view = RobotView( self.viewer, self.robot )
+    
+    self.run_sim()
+     
+    self.viewer.wait()
+
+  def run_sim( self ):
+    self.robot_view.draw_robot()
+
+
+
+    
