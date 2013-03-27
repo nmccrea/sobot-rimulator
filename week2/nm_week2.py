@@ -143,6 +143,9 @@ class SimulatorView:
                           view_port_width = 3,
                           flip_y = True )
 
+    # initialize the current frame object
+    self.current_frame = Frame.Frame()
+
     # create list of robots
     self.robot_views = []
 
@@ -150,16 +153,14 @@ class SimulatorView:
     robot_view = RobotView( self.viewer, robot )
     self.robot_views.append( robot_view )
 
-  def draw_all( self ):
-    # create the next frame
-    frame = Frame.Frame()
-
+  def render_frame( self ):
     # draw all the robots
     for robot_view in self.robot_views:
-      robot_view.draw_robot_to_frame( frame )
+      robot_view.draw_robot_to_frame( self.current_frame )
 
-    # display the new frame
-    self.viewer.add_frame( frame )
+    # push the current frame
+    self.viewer.add_frame( self.current_frame )
+    self.current_frame = Frame.Frame()
 
   def wait( self ):
     self.viewer.wait()
@@ -174,18 +175,6 @@ class RobotView:
     self.robot = robot
 
   def draw_robot_to_frame( self, frame ):
-    # get the robot polygons
-    robot_body, robot_wheels = self._build_robot()
-
-    # add the robot to the frame
-    frame.add_polygons( [ robot_body ],
-                        color = "red",
-                        alpha = 0.5 )
-    frame.add_polygons( robot_wheels,
-                        color = "black",
-                        alpha = 0.5 )
-
-  def _build_robot( self ):
     # grab robot pose values
     robot_pose = self.robot.pose
     robot_x = robot_pose.x
@@ -201,7 +190,13 @@ class RobotView:
                                           angle = robot_phi,
                                           scale = 0.02 )
 
-    return robot_body, robot_wheels
+    # add the robot to the frame
+    frame.add_polygons( [ robot_body ],
+                        color = "red",
+                        alpha = 0.5 )
+    frame.add_polygons( robot_wheels,
+                        color = "black",
+                        alpha = 0.5 )
 
 
 
@@ -222,6 +217,6 @@ class Week2Simulator:
     self.run_sim()
 
   def run_sim( self ):
-    self.simulator_view.draw_all()
+    self.simulator_view.render_frame()
     
     self.simulator_view.wait()
