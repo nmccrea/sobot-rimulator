@@ -134,16 +134,58 @@ import Euv.EuvGtk as Euv
 import Euv.Frame as Frame
 import Euv.Shapes as Shapes
 import Euv.Color as Color
+class SimulatorView:
+
+  def __init__( self ):
+    # create viewer
+    self.viewer = Euv.Viewer( size = (300, 300),
+                          view_port_center = (0, 0),
+                          view_port_width = 3,
+                          flip_y = True )
+
+    # create list of robots
+    self.robot_views = []
+
+  def add_robot( self, robot ):
+    robot_view = RobotView( self.viewer, robot )
+    self.robot_views.append( robot_view )
+
+  def draw_all( self ):
+    # create the next frame
+    frame = Frame.Frame()
+
+    # draw all the robots
+    for robot_view in self.robot_views:
+      robot_view.draw_robot_to_frame( frame )
+
+    # display the new frame
+    self.viewer.add_frame( frame )
+
+  def wait( self ):
+    self.viewer.wait()
+
+
+
+
 class RobotView:
   
   def __init__( self, viewer, robot ):
     self.viewer = viewer
     self.robot = robot
-  
-  def draw_robot( self ):
-    # create the frame
-    frame = Frame.Frame()
-    
+
+  def draw_robot_to_frame( self, frame ):
+    # get the robot polygons
+    robot_body, robot_wheels = self._build_robot()
+
+    # add the robot to the frame
+    frame.add_polygons( [ robot_body ],
+                        color = "red",
+                        alpha = 0.5 )
+    frame.add_polygons( robot_wheels,
+                        color = "black",
+                        alpha = 0.5 )
+
+  def _build_robot( self ):
     # grab robot pose values
     robot_pose = self.robot.pose
     robot_x = robot_pose.x
@@ -158,18 +200,8 @@ class RobotView:
                                           5.0, 2.0, 7.0,
                                           angle = robot_phi,
                                           scale = 0.02 )
-    
-    # add the robot to the frame
-    frame.add_polygons( [ robot_body ],
-                        color = "red",
-                        alpha = 0.5 )
-    frame.add_polygons( robot_wheels,
-                        color = "black",
-                        alpha = 0.5 )
-    
-    # add the frame to the viewer
-    self.viewer.add_frame( frame )
 
+    return robot_body, robot_wheels
 
 
 
@@ -177,25 +209,19 @@ class RobotView:
 class Week2Simulator:
 
   def __init__( self ):
-    # create robot
+    # create the view of this simulation
+    self.simulator_view = SimulatorView()
+
+    # create the robot
     self.robot = Robot()
-    
-    # create viewer
-    self.viewer = Euv.Viewer( size = (300, 300),
-                          view_port_center = (0, 0),
-                          view_port_width = 3,
-                          flip_y = True )
+
+    # add the robot to the view
+    self.simulator_view.add_robot( self.robot )
     
     # create robot view
-    self.robot_view = RobotView( self.viewer, self.robot )
-    
     self.run_sim()
-     
-    self.viewer.wait()
 
   def run_sim( self ):
-    self.robot_view.draw_robot()
-
-
-
+    self.simulator_view.draw_all()
     
+    self.simulator_view.wait()
