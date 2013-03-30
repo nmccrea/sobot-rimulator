@@ -201,22 +201,50 @@ class RobotView:
 
 
 
+import time
 class Week2Simulator:
 
   def __init__( self ):
     # create the view of this simulation
     self.simulator_view = SimulatorView()
-
+    
+    # ROBOT
     # create the robot
     self.robot = Robot()
-
     # add the robot to the view
     self.simulator_view.add_robot( self.robot )
     
+    # TIME
+    # create the timer
+    self.world_time = 0.0   # seconds
+    self.dt = 0.1           # seconds
+
+    # VIEW
     # create robot view
     self.run_sim()
 
   def run_sim( self ):
-    self.simulator_view.render_frame()
+    # loop the simulation
+    # TODO make the loop condition smart
+    while self.world_time < 5:
+      # render the current state
+      self.simulator_view.render_frame()
+      
+      # update the current state
+      self.tick()
     
     self.simulator_view.wait()
+
+  def tick( self ):
+    print "TICK! " + str( self.world_time )
+    dt = self.dt
+    
+    # TODO: move the stuff related to the world to a World object
+    # update the robot state
+    self.robot.update_state( dt )
+    # increment world time
+    self.world_time += dt
+    # pause the simulation for a moment
+    time.sleep( dt )
+
+    print "\n\n"
