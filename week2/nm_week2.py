@@ -134,7 +134,7 @@ import Euv.EuvGtk as Euv
 import Euv.Frame as Frame
 import Euv.Shapes as Shapes
 import Euv.Color as Color
-class SimulatorView:
+class WorldView:
 
   def __init__( self ):
     # create viewer
@@ -146,7 +146,7 @@ class SimulatorView:
     # initialize the current frame object
     self.current_frame = Frame.Frame()
 
-    # create list of robots
+    # initialize list of robots views
     self.robot_views = []
 
   def add_robot( self, robot ):
@@ -158,9 +158,9 @@ class SimulatorView:
     for robot_view in self.robot_views:
       robot_view.draw_robot_to_frame( self.current_frame )
 
-    # push the current frame
-    self.viewer.add_frame( self.current_frame )
-    self.current_frame = Frame.Frame()
+    # cycle the frame
+    self.viewer.add_frame( self.current_frame )   # push the current frame
+    self.current_frame = Frame.Frame()            # prepare the next frame
 
   def wait( self ):
     self.viewer.wait()
@@ -202,49 +202,59 @@ class RobotView:
 
 
 import time
-class Week2Simulator:
+class World:
 
   def __init__( self ):
-    # create the view of this simulation
-    self.simulator_view = SimulatorView()
+    # initialize world time
+    self.world_time = 0.0 # seconds
+    self.dt = 0.1         # seconds
     
-    # ROBOT
-    # create the robot
-    self.robot = Robot()
-    # add the robot to the view
-    self.simulator_view.add_robot( self.robot )
-    
-    # TIME
-    # create the timer
-    self.world_time = 0.0   # seconds
-    self.dt = 0.1           # seconds
+    # initialize robots
+    self.robots = []
 
-    # VIEW
-    # create robot view
-    self.run_sim()
-
-  def run_sim( self ):
-    # loop the simulation
-    # TODO make the loop condition smart
-    while self.world_time < 5:
-      # render the current state
-      self.simulator_view.render_frame()
-      
-      # update the current state
-      self.tick()
-    
-    self.simulator_view.wait()
+  def add_robot( self, robot ):
+    self.robots.append( robot )
 
   def tick( self ):
-    print "TICK! " + str( self.world_time )
     dt = self.dt
     
-    # TODO: move the stuff related to the world to a World object
-    # update the robot state
-    self.robot.update_state( dt )
+    # update all the robots
+    for robot in self.robots:
+      robot.update_state( dt )
+    
     # increment world time
     self.world_time += dt
     # pause the simulation for a moment
     time.sleep( dt )
 
-    print "\n\n"
+
+
+
+class Week2Simulator:
+
+  def __init__( self ):
+    # create the simulation world
+    self.world = World()
+    self.world_view = WorldView()
+    
+    # create the robot
+    self._add_robot( Robot() )
+    
+    # run the simulation
+    self.run_sim()
+
+  def run_sim( self ):
+    # loop the simulation
+    # TODO make the loop condition smart
+    while self.world.world_time < 5:
+      # render the current state
+      self.world_view.render_frame()
+      
+      # increment the simulation
+      self.world.tick()
+    
+    self.world_view.wait()
+
+  def _add_robot( self, robot ):
+    self.world.add_robot( robot )
+    self.world_view.add_robot( robot )
