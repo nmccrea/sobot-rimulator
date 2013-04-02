@@ -4,10 +4,12 @@
 from math import *
 from differential_drive_dynamics import *
 from pose import *
+from wheel_encoder import *
 
 # Khepera3 Properties (copied from Sim.I.Am)
 K3_WHEEL_RADIUS = 0.021         # meters
 K3_WHEEL_BASE_LENGTH = 0.0885   # meters
+K3_WHEEL_TICKS_PER_REV = 2765
 K3_SPEED_FACTOR = 6.2953e-6     
 K3_TRANS_VEL_LIMIT = 0.3148     # m/s
 K3_ANG_VEL_LIMIT = 2.2763       # rad/s
@@ -21,6 +23,10 @@ class Robot: # Khepera3 robot
     
     # wheel speed factor
     self.speed_factor = K3_SPEED_FACTOR
+
+    # wheel_encoders
+    self.left_wheel_encoder = WheelEncoder( K3_WHEEL_RADIUS, K3_WHEEL_TICKS_PER_REV )
+    self.right_wheel_encoder = WheelEncoder( K3_WHEEL_RADIUS, K3_WHEEL_TICKS_PER_REV )
     
     # dynamics
     self.dynamics = DifferentialDriveDynamics( self.wheel_radius, self.wheel_base_length )
