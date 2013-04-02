@@ -51,11 +51,6 @@ class DifferentialDriveDynamics:
     new_x = old_x + ( d_center * cos( old_phi ) )
     new_y = old_y + ( d_center * sin( old_phi ) )
     new_phi = old_phi + ( ( d_right_wheel - d_left_wheel ) / self.wheel_base_length )
-    # normalize phi:
-    if new_phi > pi:
-      new_phi -= 2*pi
-    elif new_phi < -pi:
-      new_phi += 2*pi
     
     # package and return the new pose
     new_pose = Pose( new_x, new_y, new_phi )
