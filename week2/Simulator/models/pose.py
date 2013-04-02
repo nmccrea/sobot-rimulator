@@ -7,3 +7,6 @@ class Pose:
     self.x = x
     self.y = y
     self.phi = phi
+
+  def unpack( self ):
+    return self.x, self.y, self.phi 
