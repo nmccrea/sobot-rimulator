@@ -1,0 +1,4 @@
+
+
+Development Constraints:
+  - This is strictly a 2D simulator. It is not built to be extensible into the third dimension.
