@@ -98,7 +98,7 @@ class Robot: # Khepera3 robot
     self.dynamics = DifferentialDriveDynamics( self.wheel_radius, self.wheel_base_length )
     
     ## initialize state
-    # set wheel rotations (rad/sec)
+    # set wheel rotations (rad/s)
     self.left_wheel_rotation = 0.0
     self.right_wheel_rotation = 0.0
     
