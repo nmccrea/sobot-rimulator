@@ -11,18 +11,15 @@ class RobotView:
 
   def draw_robot_to_frame( self, frame ):
     # grab robot pose values
-    robot_pose = self.robot.pose
-    robot_x = robot_pose.x
-    robot_y = robot_pose.y
-    robot_phi = robot_pose.phi
+    robot_x, robot_y, robot_theta = self.robot.pose.unpack()
     
     # build the robot
     robot_body = Shapes.arrow_head_polygon( (robot_x, robot_y),
-                                            robot_phi,
+                                            robot_theta,
                                             scale = 0.02 )
     robot_wheels = Shapes.rectangle_pair( (robot_x, robot_y),
                                           5.0, 2.0, 7.0,
-                                          angle = robot_phi,
+                                          angle = robot_theta,
                                           scale = 0.02 )
 
     # add the robot to the frame

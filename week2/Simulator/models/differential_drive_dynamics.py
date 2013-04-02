@@ -44,14 +44,12 @@ class DifferentialDriveDynamics:
     d_center = ( d_left_wheel + d_right_wheel ) / 2.0
     
     # calculate the new pose
-    old_x = old_pose.x
-    old_y = old_pose.y
-    old_phi = old_pose.phi
+    old_x, old_y, old_theta = old_pose.unpack()
     
-    new_x = old_x + ( d_center * cos( old_phi ) )
-    new_y = old_y + ( d_center * sin( old_phi ) )
-    new_phi = old_phi + ( ( d_right_wheel - d_left_wheel ) / self.wheel_base_length )
+    new_x = old_x + ( d_center * cos( old_theta ) )
+    new_y = old_y + ( d_center * sin( old_theta ) )
+    new_theta = old_theta + ( ( d_right_wheel - d_left_wheel ) / self.wheel_base_length )
     
     # package and return the new pose
-    new_pose = Pose( new_x, new_y, new_phi )
+    new_pose = Pose( new_x, new_y, new_theta )
     return new_pose

@@ -24,15 +24,15 @@ class ProximitySensor:
 
   def update_pose( self ):
     # get the elements of the robot's pose
-    robot_x, robot_y, robot_phi = self.robot.pose.unpack()
+    robot_x, robot_y, robot_theta = self.robot.pose.unpack()
 
     # get the elements of this sensor's relative pose
-    rel_x, rel_y, rel_phi = self.relative_pose.unpack()
+    rel_x, rel_y, rel_theta = self.relative_pose.unpack()
     
     # construct this sensor's global pose
-    global_x_d, global_y_d = math_utils.rotate_vector( rel_x, rel_y, robot_phi )
+    global_x_d, global_y_d = math_utils.rotate_vector( rel_x, rel_y, robot_theta )
     global_x = robot_x + global_x_d
     global_y = robot_y + global_y_d
-    global_phi = robot_phi + rel_phi
+    global_theta = robot_theta + rel_theta
 
-    self.pose = Pose( global_x, global_y, global_phi )
+    self.pose = Pose( global_x, global_y, global_theta )

@@ -5,10 +5,10 @@ from utils import math_utils
 
 class Pose:
 
-  def __init__( self, x, y, phi ):
+  def __init__( self, x, y, theta ):
     self.x = x
     self.y = y
-    self.phi = math_utils.normalize_angle( phi )
+    self.theta = math_utils.normalize_angle( theta )
 
   def unpack( self ):
-    return self.x, self.y, self.phi
+    return self.x, self.y, self.theta
