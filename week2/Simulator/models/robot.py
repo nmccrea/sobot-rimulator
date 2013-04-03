@@ -50,7 +50,7 @@ class Robot: # Khepera3 robot
     for _pose in K3_SENSOR_POSES:
       ir_pose = Pose( _pose[0], _pose[1], radians( _pose[2] ) )
       self.ir_sensors.append(
-          ProximitySensor( self, ir_pose, K3_SENSOR_MIN_RANGE, K3_SENSOR_MAX_RANGE, 0.1 ) )
+          ProximitySensor( self, ir_pose, K3_SENSOR_MIN_RANGE, K3_SENSOR_MAX_RANGE, radians( 20 ) ) )
 
     # dynamics
     self.dynamics = DifferentialDriveDynamics( self.wheel_radius, self.wheel_base_length )
