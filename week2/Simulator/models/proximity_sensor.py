@@ -7,7 +7,7 @@ from pose import *
 class ProximitySensor:
 
   def __init__( self, robot,          # robot this sensor is attached to
-                      relative_pose,  # pose of this sensor relative to robot
+                      relative_pose,  # pose of this sensor relative to robot (NOTE: normalized on robot located at origin and with theta 0, i.e. facing east )
                       min_range,      # min sensor range (meters)
                       max_range,      # max sensor range (meters)
                       phi_view ):     # view angle of this sensor (rad from front of robot)

@@ -13,7 +13,7 @@ VIEW_PORT_PIX_H = 800
 VIEW_PORT_PIX_W = 800
 CONTROLS_PIX_H = 50
 
-WORLD_WIDTH = 10 # meters
+WORLD_WIDTH = 4 # meters
 
 class WorldView:
 

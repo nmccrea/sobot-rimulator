@@ -23,20 +23,38 @@ class RobotView:
 
     # grab robot pose values
     robot_x, robot_y, robot_theta = self.robot.pose.unpack()
-    
-    # build the robot
-    robot_body = Shapes.arrow_head_polygon( (robot_x, robot_y),
-                                            robot_theta,
-                                            scale = 0.02 )
-    robot_wheels = Shapes.rectangle_pair( (robot_x, robot_y),
-                                          5.0, 2.0, 7.0,
-                                          angle = robot_theta,
-                                          scale = 0.02 )
 
-    # add the robot to the frame
-    frame.add_polygons( [ robot_body ],
-                        color = "red",
-                        alpha = 0.5 )
-    frame.add_polygons( robot_wheels,
+    # build the robot
+    robot_bottom = [  [ -0.024, 0.064 ],
+                      [ 0.033, 0.064 ],
+                      [ 0.057, 0.043 ],
+                      [ 0.074, 0.010 ],
+                      [ 0.074, -0.010 ],
+                      [ 0.057, -0.043 ],
+                      [ 0.033, -0.064 ],
+                      [ -0.025, -0.064 ],
+                      [ -0.042, -0.043 ],
+                      [ -0.048, -0.010 ],
+                      [ -0.048, 0.010 ],
+                      [ -0.042, 0.043 ] ]
+    robot_top = [ [ -0.031, 0.043 ],
+                  [ -0.031, -0.043 ],
+                  [ 0.033, -0.043 ],
+                  [ 0.052, -0.021 ],
+                  [ 0.057, 0.0 ],
+                  [ 0.052, 0.021 ],
+                  [ 0.033, 0.043 ] ]
+    robot_bottom = Shapes.rotate_and_move_poly( robot_bottom,
+                                                robot_theta,
+                                                [ robot_x, robot_y ] )
+    robot_top = Shapes.rotate_and_move_poly(  robot_top,
+                                              robot_theta,
+                                              [ robot_x, robot_y ] )
+
+    
+    frame.add_polygons( [ robot_bottom ],
+                        color = "blue",
+                        alpha = 0.5 ) 
+    frame.add_polygons( [ robot_top ],
                         color = "black",
-                        alpha = 0.5 )
+                        alpha = 1.0 ) 

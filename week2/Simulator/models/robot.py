@@ -15,6 +15,18 @@ K3_SPEED_FACTOR = 6.2953e-6
 K3_TRANS_VEL_LIMIT = 0.3148     # m/s
 K3_ANG_VEL_LIMIT = 2.2763       # rad/s
 
+K3_SENSOR_MIN_RANGE = 0.02
+K3_SENSOR_MAX_RANGE = 0.2
+K3_SENSOR_POSES = [ [-0.038, 0.048, 128], # x, y, theta_degrees
+                    [0.019, 0.064, 75],
+                    [0.050, 0.050, 42],
+                    [0.070, 0.017, 13],
+                    [0.070, -0.017, -13],
+                    [0.050, -0.050, -42],
+                    [0.019, -0.064, -75],
+                    [-0.038, -0.048, -128],
+                    [-0.048, 0.00, 180] ]
+
 class Robot: # Khepera3 robot 
   
   def __init__( self ):
@@ -35,9 +47,10 @@ class Robot: # Khepera3 robot
     
     # IR sensors
     self.ir_sensors = []
-    ir_pose = Pose( 0.05, 0.1, 0.0 )
-    ir_sensor = ProximitySensor( self, ir_pose, 0.2, 1.0, 0.1 )
-    self.ir_sensors.append( ir_sensor )
+    for _pose in K3_SENSOR_POSES:
+      ir_pose = Pose( _pose[0], _pose[1], radians( _pose[2] ) )
+      self.ir_sensors.append(
+          ProximitySensor( self, ir_pose, K3_SENSOR_MIN_RANGE, K3_SENSOR_MAX_RANGE, 0.1 ) )
 
     # dynamics
     self.dynamics = DifferentialDriveDynamics( self.wheel_radius, self.wheel_base_length )
