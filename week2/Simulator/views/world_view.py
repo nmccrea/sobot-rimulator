@@ -59,15 +59,15 @@ class WorldView:
     half_w = w / 2.0
     half_h = h / 2.0
 
-    w_start = int( half_w )
-    w_end = int( w )
-    h_start = int( half_h )
-    h_end = int( h )
+    w_start = -int( half_w )
+    w_end = int( half_w )
+    h_start = -int( half_h )
+    h_end = int( half_h )
     
     # draw a gridline at every meter
     lines = []
-    for x in range( -w_start, w_end ):
-      for y in range( -h_start, h_end ):
+    for x in range( w_start, w_end+1 ):
+      for y in range( h_start, h_end+1 ):
         h_gridline = [ [ -half_w, y ], [ half_w, y ] ]
         v_gridline = [ [ x, -half_h ], [ x, half_h ] ]
         lines.append( h_gridline )
