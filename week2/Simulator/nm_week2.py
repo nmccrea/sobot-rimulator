@@ -36,3 +36,9 @@ class Week2Simulator:
   def _add_robot( self, robot ):
     self.world.add_robot( robot )
     self.world_view.add_robot( robot )
+
+
+
+
+# RUN THE SIM:
+Week2Simulator()
