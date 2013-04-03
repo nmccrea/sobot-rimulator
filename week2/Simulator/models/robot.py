@@ -4,6 +4,7 @@
 from math import *
 from differential_drive_dynamics import *
 from pose import *
+from proximity_sensor import *
 from wheel_encoder import *
 
 # Khepera3 Properties (copied from Sim.I.Am)
@@ -24,10 +25,20 @@ class Robot: # Khepera3 robot
     # wheel speed factor
     self.speed_factor = K3_SPEED_FACTOR
 
-    # wheel_encoders
+    # pose
+    self.pose = Pose( 0.0, 0.0, 0.0 )
+
+    # wheel encoders
     self.left_wheel_encoder = WheelEncoder( K3_WHEEL_RADIUS, K3_WHEEL_TICKS_PER_REV )
     self.right_wheel_encoder = WheelEncoder( K3_WHEEL_RADIUS, K3_WHEEL_TICKS_PER_REV )
+    self.wheel_encoders = [ self.left_wheel_encoder, self.right_wheel_encoder ]
     
+    # IR sensors
+    self.ir_sensors = []
+    ir_pose = Pose( 0.05, 0.1, 0.0 )
+    ir_sensor = ProximitySensor( self, ir_pose, 0.2, 1.0, 0.1 )
+    self.ir_sensors.append( ir_sensor )
+
     # dynamics
     self.dynamics = DifferentialDriveDynamics( self.wheel_radius, self.wheel_base_length )
     
@@ -36,15 +47,16 @@ class Robot: # Khepera3 robot
     self.left_wheel_rotation = 0.0
     self.right_wheel_rotation = 0.0
     
-    # set pose
-    self.pose = Pose( 0.0, 0.0, 0.0 )
-    
   def update_state( self, dt ):
+    # update robot pose
     pose = self.pose
     v_l = self.left_wheel_rotation
     v_r = self.right_wheel_rotation
-    
     self.pose = self.dynamics.apply_dynamics( pose, v_l, v_r, dt )
+    
+    # update all of the sensors
+    for ir_sensor in self.ir_sensors:
+      ir_sensor.update_pose()
     
   
   def set_wheel_rotations( self, v_l, v_r ):

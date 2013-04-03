@@ -2,14 +2,25 @@
 # -*- Encoding: utf-8 -*
 
 import Euv.Shapes as Shapes
+from proximity_sensor_view import *
 
 class RobotView:
   
   def __init__( self, viewer, robot ):
     self.viewer = viewer
     self.robot = robot
+    
+    # add the IR sensor views for this robot
+    self.ir_sensor_views = []
+    for ir_sensor in robot.ir_sensors:
+      self.ir_sensor_views.append( ProximitySensorView( viewer, ir_sensor ) )
 
   def draw_robot_to_frame( self, frame ):
+    # draw the IR sensors to the frame
+    for ir_sensor_view in self.ir_sensor_views:
+      ir_sensor_view.draw_proximity_sensor_to_frame( frame )
+
+
     # grab robot pose values
     robot_x, robot_y, robot_theta = self.robot.pose.unpack()
     
