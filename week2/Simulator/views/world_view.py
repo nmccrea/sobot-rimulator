@@ -28,6 +28,9 @@ class WorldView:
     self.robot_views.append( robot_view )
 
   def render_frame( self ):
+    # draw the grid
+    self._draw_grid_to_frame()
+
     # draw all the robots
     for robot_view in self.robot_views:
       robot_view.draw_robot_to_frame( self.current_frame )
@@ -35,6 +38,21 @@ class WorldView:
     # cycle the frame
     self.viewer.add_frame( self.current_frame )   # push the current frame
     self.current_frame = Frame.Frame()            # prepare the next frame
+  
+  def _draw_grid_to_frame( self ):
+    # draw a gridline at every meter
+    lines = []
+    for x in range( -5, 6 ):
+      for y in range( -5, 6 ):
+        h_gridline = [ [ -5, y ], [ 5, y ] ]
+        v_gridline = [ [ x, -5 ], [ x, 5 ] ]
+        lines.append( h_gridline )
+        lines.append( v_gridline )
+
+    self.current_frame.add_lines( lines,
+                     linewidth = 0.001,
+                     color = "black",
+                     alpha = 1.0 )
 
   def wait( self ):
     self.viewer.wait()
