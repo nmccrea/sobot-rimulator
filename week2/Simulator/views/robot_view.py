@@ -4,6 +4,27 @@
 import Euv.Shapes as Shapes
 from proximity_sensor_view import *
 
+# Khepera3 Dimensions (copied from Sim.I.Am by J.P. de la Croix)
+K3_BOTTOM_PLATE = [ [ -0.024, 0.064 ],
+                          [ 0.033, 0.064 ],
+                          [ 0.057, 0.043 ],
+                          [ 0.074, 0.010 ],
+                          [ 0.074, -0.010 ],
+                          [ 0.057, -0.043 ],
+                          [ 0.033, -0.064 ],
+                          [ -0.025, -0.064 ],
+                          [ -0.042, -0.043 ],
+                          [ -0.048, -0.010 ],
+                          [ -0.048, 0.010 ],
+                          [ -0.042, 0.043 ] ]
+K3_TOP_PLATE = [  [ -0.031, 0.043 ],
+                        [ -0.031, -0.043 ],
+                        [ 0.033, -0.043 ],
+                        [ 0.052, -0.021 ],
+                        [ 0.057, 0.0 ],
+                        [ 0.052, 0.021 ],
+                        [ 0.033, 0.043 ] ]
+
 class RobotView:
   
   def __init__( self, viewer, robot ):
@@ -25,29 +46,10 @@ class RobotView:
     robot_x, robot_y, robot_theta = self.robot.pose.unpack()
 
     # build the robot
-    robot_bottom = [  [ -0.024, 0.064 ],
-                      [ 0.033, 0.064 ],
-                      [ 0.057, 0.043 ],
-                      [ 0.074, 0.010 ],
-                      [ 0.074, -0.010 ],
-                      [ 0.057, -0.043 ],
-                      [ 0.033, -0.064 ],
-                      [ -0.025, -0.064 ],
-                      [ -0.042, -0.043 ],
-                      [ -0.048, -0.010 ],
-                      [ -0.048, 0.010 ],
-                      [ -0.042, 0.043 ] ]
-    robot_top = [ [ -0.031, 0.043 ],
-                  [ -0.031, -0.043 ],
-                  [ 0.033, -0.043 ],
-                  [ 0.052, -0.021 ],
-                  [ 0.057, 0.0 ],
-                  [ 0.052, 0.021 ],
-                  [ 0.033, 0.043 ] ]
-    robot_bottom = Shapes.rotate_and_move_poly( robot_bottom,
+    robot_bottom = Shapes.rotate_and_move_poly( K3_BOTTOM_PLATE,
                                                 robot_theta,
                                                 [ robot_x, robot_y ] )
-    robot_top = Shapes.rotate_and_move_poly(  robot_top,
+    robot_top = Shapes.rotate_and_move_poly(  K3_TOP_PLATE,
                                               robot_theta,
                                               [ robot_x, robot_y ] )
 

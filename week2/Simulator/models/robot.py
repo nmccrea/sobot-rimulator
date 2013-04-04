@@ -7,7 +7,7 @@ from pose import *
 from proximity_sensor import *
 from wheel_encoder import *
 
-# Khepera3 Properties (copied from Sim.I.Am)
+# Khepera3 Properties (copied from Sim.I.Am by J.P. de la Croix)
 K3_WHEEL_RADIUS = 0.021         # meters
 K3_WHEEL_BASE_LENGTH = 0.0885   # meters
 K3_WHEEL_TICKS_PER_REV = 2765
