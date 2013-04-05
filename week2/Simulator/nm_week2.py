@@ -31,6 +31,7 @@ class Week2Simulator:
       # increment the simulation
       self.world.tick()
     
+    # pause the GUI thread ( app crashes otherwise ) 
     self.world_view.wait()
 
   def _add_robot( self, robot ):
