@@ -3,7 +3,6 @@
 
 # Python implementation of the Week 2 exercise.
 
-from utils import math_utils
 import Euv.EuvGtk as Euv
 import Euv.Frame as Frame
 import Euv.Shapes as Shapes
@@ -17,7 +16,7 @@ CONTROLS_PIX_H = 50
 WORLD_WIDTH = 4 # meters
 
 MAJOR_GRIDLINE_INTERVAL = 1.0 # meters
-MINOR_GRIDLINE_INTERVAL = 0.2 # meters
+MAJOR_GRIDLINE_SUBDIVISIONS = 5  # minor gridlines for every major gridline
 
 class WorldView:
 
@@ -57,46 +56,50 @@ class WorldView:
     # NOTE: THIS FORMULA ASSUMES THE FOLLOWING:
     # - Window size never changes
     # - Window is always centered at (0, 0)
+
+    # calculate minor gridline interval
+    minor_gridline_interval = MAJOR_GRIDLINE_INTERVAL / MAJOR_GRIDLINE_SUBDIVISIONS
     
     # determine world space to draw grid upon
-    w = self._meters_per_pixel() * VIEW_PORT_PIX_W
-    h = self._meters_per_pixel() * VIEW_PORT_PIX_H
-    half_w = w / 2.0
-    half_h = h / 2.0
-
-    w_start = -half_w
-    w_end = half_w
-    h_start = -half_h
-    h_end = half_h
+    width = self._meters_per_pixel() * VIEW_PORT_PIX_W
+    height = self._meters_per_pixel() * VIEW_PORT_PIX_H
+    halfwidth = width * 0.5
+    halfheight = height * 0.5
+    
+    x_max = int( halfwidth / minor_gridline_interval )
+    y_max = int( halfheight / minor_gridline_interval )
 
     # build the gridlines
-    major_gridlines = [] # accumulator for major gridlines
-    minor_gridlines = [] # accumulator for minor gridlines
-    for x in math_utils.frange( w_start, w_end+1, MINOR_GRIDLINE_INTERVAL ):
-      for y in math_utils.frange( h_start, h_end+1, MINOR_GRIDLINE_INTERVAL ):
-        # clear up floating point errors
-        x = round( x, 2 )
-        y = round( y, 2 )
+    major_lines_accum = []                  # accumulator for major gridlines
+    minor_lines_accum = []                  # accumulator for minor gridlines
+    for i in range( x_max + 1 ):            # build the vertical gridlines
+      x = i * minor_gridline_interval
 
-        h_gridline = [ [ -half_w, y ], [ half_w, y ] ] # horizontal gridline
-        v_gridline = [ [ x, -half_h ], [ x, half_h ] ] # vertical gridline
+      if x % MAJOR_GRIDLINE_INTERVAL == 0:                        # sort major from minor
+        accum = major_lines_accum
+      else:
+        accum = minor_lines_accum
 
-        if x % MAJOR_GRIDLINE_INTERVAL== 0:     # sort majors from minors vertical
-          major_gridlines.append( v_gridline )
-        else:
-          minor_gridlines.append( v_gridline )
+      accum.append( [ [ x, -halfheight ], [ x, halfheight ] ] )   # positive-side gridline
+      accum.append( [ [ -x, -halfheight ], [ -x, halfheight ] ] ) # negative-side gridline
 
-        if y % MAJOR_GRIDLINE_INTERVAL  == 0:   # sort majors from minors horizontal
-          major_gridlines.append( h_gridline )
-        else:
-          minor_gridlines.append( h_gridline )
-    
+    for j in range( y_max + 1 ):            # build the horizontal gridlines
+      y = j * minor_gridline_interval
+
+      if y % MAJOR_GRIDLINE_INTERVAL == 0:                        # sort major from minor
+        accum = major_lines_accum
+      else:
+        accum = minor_lines_accum
+
+      accum.append( [ [ -halfwidth, y ], [ halfwidth, y ] ] )     # positive-side gridline
+      accum.append( [ [ -halfwidth, -y ], [ halfwidth, -y ] ] )   # negative-side gridline
+
     # draw the gridlines
-    self.current_frame.add_lines( major_gridlines,          # draw major gridlines
+    self.current_frame.add_lines( major_lines_accum,          # draw major gridlines
                       linewidth = self._meters_per_pixel(),
                       color = "black",
                       alpha = 0.2 )
-    self.current_frame.add_lines( minor_gridlines,          # draw minor gridlines
+    self.current_frame.add_lines( minor_lines_accum,          # draw minor gridlines
                       linewidth = self._meters_per_pixel(),
                       colro = "black",
                       alpha = 0.1 )
