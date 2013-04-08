@@ -63,15 +63,16 @@ class WorldView:
     # determine world space to draw grid upon
     width = self._meters_per_pixel() * VIEW_PORT_PIX_W
     height = self._meters_per_pixel() * VIEW_PORT_PIX_H
-    halfwidth = width * 0.5
-    halfheight = height * 0.5
+    x_halfwidth = width * 0.5
+    y_halfwidth = height * 0.5
     
-    x_max = int( halfwidth / minor_gridline_interval )
-    y_max = int( halfheight / minor_gridline_interval )
+    x_max = int( x_halfwidth / minor_gridline_interval )
+    y_max = int( y_halfwidth / minor_gridline_interval )
 
     # build the gridlines
     major_lines_accum = []                  # accumulator for major gridlines
     minor_lines_accum = []                  # accumulator for minor gridlines
+
     for i in range( x_max + 1 ):            # build the vertical gridlines
       x = i * minor_gridline_interval
 
@@ -80,8 +81,8 @@ class WorldView:
       else:
         accum = minor_lines_accum
 
-      accum.append( [ [ x, -halfheight ], [ x, halfheight ] ] )   # positive-side gridline
-      accum.append( [ [ -x, -halfheight ], [ -x, halfheight ] ] ) # negative-side gridline
+      accum.append( [ [ x, -y_halfwidth ], [ x, y_halfwidth ] ] )   # positive-side gridline
+      accum.append( [ [ -x, -y_halfwidth ], [ -x, y_halfwidth ] ] ) # negative-side gridline
 
     for j in range( y_max + 1 ):            # build the horizontal gridlines
       y = j * minor_gridline_interval
@@ -91,8 +92,8 @@ class WorldView:
       else:
         accum = minor_lines_accum
 
-      accum.append( [ [ -halfwidth, y ], [ halfwidth, y ] ] )     # positive-side gridline
-      accum.append( [ [ -halfwidth, -y ], [ halfwidth, -y ] ] )   # negative-side gridline
+      accum.append( [ [ -x_halfwidth, y ], [ x_halfwidth, y ] ] )     # positive-side gridline
+      accum.append( [ [ -x_halfwidth, -y ], [ x_halfwidth, -y ] ] )   # negative-side gridline
 
     # draw the gridlines
     self.current_frame.add_lines( major_lines_accum,          # draw major gridlines
