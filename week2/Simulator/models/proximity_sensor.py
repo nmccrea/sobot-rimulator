@@ -30,7 +30,7 @@ class ProximitySensor:
     rel_x, rel_y, rel_theta = self.relative_pose.unpack()
     
     # construct this sensor's global pose
-    global_x_d, global_y_d = linalg.rotate_vector( rel_x, rel_y, robot_theta )
+    global_x_d, global_y_d = linalg.rotate_vector( [ rel_x, rel_y ], robot_theta )
     global_x = robot_x + global_x_d
     global_y = robot_y + global_y_d
     global_theta = robot_theta + rel_theta

@@ -4,14 +4,14 @@
 from math import *
 
 # rotate the given vector by theta radians
-def rotate_vector( x, y, theta ):
+def rotate_vector( a, theta ):
   sin_theta = sin( theta )
   cos_theta = cos( theta )
   
-  x_new = x*cos_theta - y*sin_theta
-  y_new = x*sin_theta + y*cos_theta
+  a0 = a[0]*cos_theta - a[1]*sin_theta
+  a1 = a[0]*sin_theta + a[1]*cos_theta
 
-  return x_new, y_new
+  return [ a0, a1 ]
 
 # get the dot-product of two vectors
 def dot( a, b ):
