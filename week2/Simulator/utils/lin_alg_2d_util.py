@@ -11,3 +11,6 @@ def rotate_vector( x, y, theta ):
   y_new = x*sin_theta + y*cos_theta
 
   return x_new, y_new
+
+def dot( a, b ):
+  return a[0]*b[0] + a[1]*b[1]

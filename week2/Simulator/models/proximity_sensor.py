@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- Encoding: utf-8 -*
 
-from utils import linear_algebra_util as linalg
+from utils import lin_alg_2d_util as linalg
 from pose import *
 
 class ProximitySensor:
