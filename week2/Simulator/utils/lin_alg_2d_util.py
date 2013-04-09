@@ -13,6 +13,10 @@ def rotate_vector( a, theta ):
 
   return [ a0, a1 ]
 
+# get the sum of two vectors
+def add( a, b ):
+  return [ a[0]+b[0], a[1]+b[1] ]
+
 # get the dot-product of two vectors
 def dot( a, b ):
   return a[0]*b[0] + a[1]*b[1]
