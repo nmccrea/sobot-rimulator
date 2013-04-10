@@ -62,10 +62,9 @@ class Robot: # Khepera3 robot
     
   def update_state( self, dt ):
     # update robot pose
-    pose = self.pose
     v_l = self.left_wheel_rotation
     v_r = self.right_wheel_rotation
-    self.pose = self.dynamics.apply_dynamics( pose, v_l, v_r, dt )
+    self.dynamics.apply_dynamics( self.pose, v_l, v_r, dt )
     
     # update all of the sensors
     for ir_sensor in self.ir_sensors:

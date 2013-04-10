@@ -43,15 +43,15 @@ class RobotView:
 
 
     # grab robot pose values
-    robot_x, robot_y, robot_theta = self.robot.pose.unpack()
+    robot_pos, robot_theta = self.robot.pose.split()
 
     # build the robot
     robot_bottom = Shapes.rotate_and_move_poly( K3_BOTTOM_PLATE,
                                                 robot_theta,
-                                                [ robot_x, robot_y ] )
+                                                robot_pos )
     robot_top = Shapes.rotate_and_move_poly(  K3_TOP_PLATE,
                                               robot_theta,
-                                              [ robot_x, robot_y ] )
+                                              robot_pos )
 
     
     frame.add_polygons( [ robot_bottom ],

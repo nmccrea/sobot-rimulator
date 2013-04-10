@@ -12,7 +12,7 @@ class ProximitySensorView:
 
   def draw_proximity_sensor_to_frame( self, frame ):
     # grab proximity sensor pose values
-    sensor_x, sensor_y, sensor_theta = self.proximity_sensor.pose.unpack()
+    sensor_pos, sensor_theta = self.proximity_sensor.pose.split()
 
     # build the sensor cone
     r = self.proximity_sensor.max_range
@@ -23,8 +23,7 @@ class ProximitySensorView:
                          [r*cos(phi/2), r*sin(phi/2)] ]
     sensor_cone_poly = Shapes.rotate_and_move_poly( sensor_cone_poly,
                                                     sensor_theta,
-                                                    [ sensor_x, sensor_y ],
-                                                    scale = 1.0 )
+                                                    sensor_pos )
 
     # add the sensor cone to the frame
     frame.add_polygons( [ sensor_cone_poly ],

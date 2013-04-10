@@ -35,7 +35,7 @@ class DifferentialDriveDynamics:
     
     return v, w
   
-  def apply_dynamics( self, old_pose, v_l, v_r, d_t ):
+  def apply_dynamics( self, pose, v_l, v_r, d_t ):
     wheel_meters_per_rad = self.wheel_radius
     
     # calculate the distance traveled
@@ -44,12 +44,10 @@ class DifferentialDriveDynamics:
     d_center = ( d_left_wheel + d_right_wheel ) / 2.0
     
     # calculate the new pose
-    old_x, old_y, old_theta = old_pose.unpack()
-    
+    old_x, old_y, old_theta = pose.unpack()
     new_x = old_x + ( d_center * cos( old_theta ) )
     new_y = old_y + ( d_center * sin( old_theta ) )
     new_theta = old_theta + ( ( d_right_wheel - d_left_wheel ) / self.wheel_base_length )
     
-    # package and return the new pose
-    new_pose = Pose( new_x, new_y, new_theta )
-    return new_pose
+    # update the pose with the new values
+    pose.supdate( new_x, new_y, new_theta )
