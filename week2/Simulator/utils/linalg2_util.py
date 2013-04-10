@@ -7,6 +7,10 @@ from math import *
 def add( a, b ):
   return [ a[0]+b[0], a[1]+b[1] ]
 
+# get the difference of two vectors ( a - b )
+def sub( a, b ):
+  return( [ a[0]-b[0], a[1]-b[1] ] )
+
 # get the dot-product of two vectors
 def dot( a, b ):
   return a[0]*b[0] + a[1]*b[1]
