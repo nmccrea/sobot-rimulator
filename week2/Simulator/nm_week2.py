@@ -4,9 +4,9 @@
 # Python implementation of the Week 2 exercise.
 
 from models.world import *
+from models.rectangle_obstacle import *
 from models.robot import *
 from views.world_view import *
-from views.robot_view import *
 
 class Week2Simulator:
 
@@ -17,6 +17,12 @@ class Week2Simulator:
     
     # create the robot
     self._add_robot( Robot() )
+
+    # create some obstacles
+    obstacle = RectangleObstacle( 0.1,
+                                  0.2,
+                                  Pose( 0.2, 0.4, pi/4 ) )
+    self._add_obstacle( obstacle )
     
     # run the simulation
     self.run_sim()
@@ -37,6 +43,10 @@ class Week2Simulator:
   def _add_robot( self, robot ):
     self.world.add_robot( robot )
     self.world_view.add_robot( robot )
+
+  def _add_obstacle( self, obstacle ):
+    self.world.add_obstacle( obstacle )
+    self.world_view.add_obstacle( obstacle )
 
 
 

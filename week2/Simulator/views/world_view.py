@@ -7,6 +7,7 @@ import Euv.EuvGtk as Euv
 import Euv.Frame as Frame
 import Euv.Shapes as Shapes
 import Euv.Color as Color
+from obstacle_view import *
 from robot_view import *
 
 VIEW_PORT_PIX_H = 800
@@ -30,12 +31,17 @@ class WorldView:
     # initialize the current frame object
     self.current_frame = Frame.Frame()
 
-    # initialize list of robots views
+    # initialize lists of drawable objects
     self.robot_views = []
+    self.obstacle_views = []
 
   def add_robot( self, robot ):
     robot_view = RobotView( self.viewer, robot )
     self.robot_views.append( robot_view )
+
+  def add_obstacle( self, obstacle ):
+    obstacle_view = ObstacleView( self.viewer, obstacle )
+    self.obstacle_views.append( obstacle_view )
 
   def render_frame( self ):
     # draw the grid
@@ -44,6 +50,9 @@ class WorldView:
     # draw all the robots
     for robot_view in self.robot_views:
       robot_view.draw_robot_to_frame( self.current_frame )
+    # draw all the obstacles
+    for obstacle_view in self.obstacle_views:
+      obstacle_view.draw_obstacle_to_frame( self.current_frame )
 
     # cycle the frame
     self.viewer.add_frame( self.current_frame )   # push the current frame

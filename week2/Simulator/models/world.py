@@ -10,11 +10,15 @@ class World:
     self.world_time = 0.0 # seconds
     self.dt = 0.1         # seconds
     
-    # initialize robots
+    # initialize lists of world objects
     self.robots = []
+    self.obstacles = []
 
   def add_robot( self, robot ):
     self.robots.append( robot )
+
+  def add_obstacle( self, obstacle ):
+    self.obstacles.append( obstacle )
 
   def tick( self ):
     dt = self.dt

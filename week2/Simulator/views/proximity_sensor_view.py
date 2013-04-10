@@ -12,12 +12,14 @@ class ProximitySensorView:
     self.proximity_sensor = proximity_sensor
 
   def draw_proximity_sensor_to_frame( self, frame ):
+    proximity_sensor = self.proximity_sensor
+
     # grab proximity sensor pose values
-    sensor_pos, sensor_theta = self.proximity_sensor.pose.vunpack()
+    sensor_pos, sensor_theta = proximity_sensor.pose.vunpack()
 
     # build the sensor cone
-    r = self.proximity_sensor.max_range
-    phi = self.proximity_sensor.phi_view
+    r = proximity_sensor.max_range
+    phi = proximity_sensor.phi_view
     sensor_cone_poly = [ [0.0, 0.0],
                          [r*cos(-phi/2), r*sin(-phi/2)],
                          [r, 0.0],
@@ -28,5 +30,5 @@ class ProximitySensorView:
 
     # add the sensor cone to the frame
     frame.add_polygons( [ sensor_cone_poly ],
-                        color = "red",
+                        color = "green",
                         alpha = 0.3 )
