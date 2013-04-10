@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- Encoding: utf-8 -*
 
-from utils import linalg2_util as linalg
+import utils.linalg2_util as linalg
 from pose import *
 
 class ProximitySensor:
