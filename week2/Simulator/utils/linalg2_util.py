@@ -58,11 +58,11 @@ def rotate_vectors( vects, theta ):
   return rotvects
 
 # get the result of rotating and translating a vector
-def rotate_and_translate_vector( a, tvect, theta ):
+def rotate_and_translate_vector( a, theta, tvect ):
   return add( rotate_vector( a, theta ), tvect )
 
 # get the rsult of rotating and translating a set of vectors
-def rotate_and_translate_vectors( vects, tvect, theta ):
+def rotate_and_translate_vectors( vects, theta, tvect ):
   rtvects = []
   for a in rotate_vectors( vects, theta ):
     rtvects.append( add( a, tvect ) )

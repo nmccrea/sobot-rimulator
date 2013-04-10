@@ -3,6 +3,7 @@
 
 from math import *
 import Euv.Shapes as Shapes
+import utils.linalg2_util as linalg
 
 class ProximitySensorView:
 
@@ -21,9 +22,9 @@ class ProximitySensorView:
                          [r*cos(-phi/2), r*sin(-phi/2)],
                          [r, 0.0],
                          [r*cos(phi/2), r*sin(phi/2)] ]
-    sensor_cone_poly = Shapes.rotate_and_move_poly( sensor_cone_poly,
-                                                    sensor_theta,
-                                                    sensor_pos )
+    sensor_cone_poly = linalg.rotate_and_translate_vectors( sensor_cone_poly,
+                                                            sensor_theta,
+                                                            sensor_pos )
 
     # add the sensor cone to the frame
     frame.add_polygons( [ sensor_cone_poly ],
