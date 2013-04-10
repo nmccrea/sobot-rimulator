@@ -3,6 +3,7 @@
 
 from math import *
 from differential_drive_dynamics import *
+from polygon import *
 from pose import *
 from proximity_sensor import *
 from wheel_encoder import *
@@ -14,6 +15,20 @@ K3_WHEEL_TICKS_PER_REV = 2765
 K3_SPEED_FACTOR = 6.2953e-6     
 K3_TRANS_VEL_LIMIT = 0.3148     # m/s
 K3_ANG_VEL_LIMIT = 2.2763       # rad/s
+
+# Khepera3 Dimensions (copied from Sim.I.Am by J.P. de la Croix)
+K3_BOTTOM_PLATE = [ [ -0.024, 0.064 ],
+                    [ 0.033, 0.064 ],
+                    [ 0.057, 0.043 ],
+                    [ 0.074, 0.010 ],
+                    [ 0.074, -0.010 ],
+                    [ 0.057, -0.043 ],
+                    [ 0.033, -0.064 ],
+                    [ -0.025, -0.064 ],
+                    [ -0.042, -0.043 ],
+                    [ -0.048, -0.010 ],
+                    [ -0.048, 0.010 ],
+                    [ -0.042, 0.043 ] ]
 
 K3_SENSOR_MIN_RANGE = 0.02
 K3_SENSOR_MAX_RANGE = 0.2
@@ -30,7 +45,10 @@ K3_SENSOR_POSES = [ [-0.038, 0.048, 128], # x, y, theta_degrees
 class Robot: # Khepera3 robot 
   
   def __init__( self ):
-    # wheel arrangement:
+    # geometry
+    self.geometry = Polygon( K3_BOTTOM_PLATE )
+
+    # wheel arrangement
     self.wheel_radius = K3_WHEEL_RADIUS             # meters
     self.wheel_base_length = K3_WHEEL_BASE_LENGTH   # meters
     
