@@ -36,10 +36,10 @@ class Pose:
     self.y = y
     self.theta = theta
 
-  # return the constituents of this pose as all scalars
-  def unpack( self ):
-    return self.x, self.y, self.theta
-
   # return the constituents of this pose with location as a vector
-  def split( self ):
+  def vunpack( self ):
     return [ self.x, self.y ], self.theta
+
+  # return the constituents of this pose as all scalars
+  def sunpack( self ):
+    return self.x, self.y, self.theta

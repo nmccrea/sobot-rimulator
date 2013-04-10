@@ -25,10 +25,10 @@ class ProximitySensor:
 
   def update_pose( self ):
     # get the elements of the robot's pose
-    robot_vect, robot_theta = self.robot.pose.split()
+    robot_vect, robot_theta = self.robot.pose.vunpack()
 
     # get the elements of this sensor's relative pose
-    rel_vect, rel_theta = self.relative_pose.split()
+    rel_vect, rel_theta = self.relative_pose.vunpack()
     
     # construct this sensor's global pose
     global_vect_d = linalg.rotate_vector( rel_vect, robot_theta )

@@ -13,7 +13,7 @@ class ProximitySensorView:
 
   def draw_proximity_sensor_to_frame( self, frame ):
     # grab proximity sensor pose values
-    sensor_pos, sensor_theta = self.proximity_sensor.pose.split()
+    sensor_pos, sensor_theta = self.proximity_sensor.pose.vunpack()
 
     # build the sensor cone
     r = self.proximity_sensor.max_range

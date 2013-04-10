@@ -44,7 +44,7 @@ class RobotView:
 
 
     # grab robot pose values
-    robot_pos, robot_theta = self.robot.pose.split()
+    robot_pos, robot_theta = self.robot.pose.vunpack()
 
     # build the robot
     robot_bottom = linalg.rotate_and_translate_vectors( K3_BOTTOM_PLATE,
