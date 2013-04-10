@@ -30,5 +30,5 @@ class ProximitySensorView:
 
     # add the sensor cone to the frame
     frame.add_polygons( [ sensor_cone_poly ],
-                        color = "green",
+                        color = "red",
                         alpha = 0.3 )

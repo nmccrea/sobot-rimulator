@@ -42,7 +42,7 @@ class RobotView:
                                                         robot_pos )
     frame.add_polygons( [ robot_bottom ],
                         color = "blue",
-                        alpha = 0.5 ) 
+                        alpha = 0.7 ) 
     
     # add decoration
     robot_top = linalg.rotate_and_translate_vectors(  K3_TOP_PLATE,

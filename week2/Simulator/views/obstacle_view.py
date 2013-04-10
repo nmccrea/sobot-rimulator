@@ -22,4 +22,4 @@ class ObstacleView:
                                                           obstacle_pos )
     frame.add_polygons( [ obstacle_poly ],
                         color = "red",
-                        alpha = 0.5 )
+                        alpha = 0.7 )
