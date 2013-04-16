@@ -24,9 +24,17 @@ def unit( a ):
   m = mag( a )
   return( [ a[0]/m, a[1]/m ] )
 
+# get the right-hand normal of a vector
+def rnormal( a ):
+  return [ a[1], -a[0] ]
+
 # get the right-hand unit normal of a vector
 def runormal( a ):
   return unit( [ a[1], -a[0] ] )
+
+# get the left-hand normal of a vector
+def lnormal( a ):
+  return [ -a[1], a[0] ]
 
 # get the left-hand unit normal of a vector
 def lunormal( a ):
