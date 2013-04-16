@@ -17,9 +17,7 @@ class ObstacleView:
     obstacle_pos, obstacle_theta = obstacle.pose.vunpack()
 
     # draw the obstacle to the frame
-    obstacle_poly = linalg.rotate_and_translate_vectors(  obstacle.geometry.vertexes,
-                                                          obstacle_theta,
-                                                          obstacle_pos )
+    obstacle_poly = obstacle.global_geometry.vertexes
     frame.add_polygons( [ obstacle_poly ],
                         color = "red",
                         alpha = 0.7 )

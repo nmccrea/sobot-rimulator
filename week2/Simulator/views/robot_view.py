@@ -32,19 +32,15 @@ class RobotView:
     for ir_sensor_view in self.ir_sensor_views:
       ir_sensor_view.draw_proximity_sensor_to_frame( frame )
 
-
-    # grab robot pose values
-    robot_pos, robot_theta = robot.pose.vunpack()
-
     # draw the robot
-    robot_bottom = linalg.rotate_and_translate_vectors( robot.geometry.vertexes,
-                                                        robot_theta,
-                                                        robot_pos )
+    robot_bottom = robot.global_geometry.vertexes
     frame.add_polygons( [ robot_bottom ],
                         color = "blue",
                         alpha = 0.7 ) 
     
+
     # add decoration
+    robot_pos, robot_theta = robot.pose.vunpack()
     robot_top = linalg.rotate_and_translate_vectors(  K3_TOP_PLATE,
                                                       robot_theta,
                                                       robot_pos )
