@@ -8,6 +8,8 @@ from models.rectangle_obstacle import *
 from models.robot import *
 from views.world_view import *
 
+from sim_exceptions.collision_exception import *
+
 class Week2Simulator:
 
   def __init__( self ):
@@ -35,7 +37,11 @@ class Week2Simulator:
       self.world_view.render_frame()
       
       # increment the simulation
-      self.world.tick()
+      try:
+        self.world.tick()
+      except CollisionException:
+        print "\n\nCOLLISION!!\n\n"
+        break
     
     # pause the GUI thread ( app crashes otherwise ) 
     self.world_view.wait()

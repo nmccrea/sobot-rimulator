@@ -47,6 +47,7 @@ class Robot: # Khepera3 robot
   def __init__( self ):
     # geometry
     self.geometry = Polygon( K3_BOTTOM_PLATE )
+    self.global_geometry = Polygon( K3_BOTTOM_PLATE ) # actual geometry in world space
 
     # wheel arrangement
     self.wheel_radius = K3_WHEEL_RADIUS             # meters
@@ -83,6 +84,9 @@ class Robot: # Khepera3 robot
     v_l = self.left_wheel_rotation
     v_r = self.right_wheel_rotation
     self.dynamics.apply_dynamics( self.pose, v_l, v_r, dt )
+
+    # update global geometry
+    self.global_geometry = self.geometry.get_transformation_to_pose( self.pose )
     
     # update all of the sensors
     for ir_sensor in self.ir_sensors:

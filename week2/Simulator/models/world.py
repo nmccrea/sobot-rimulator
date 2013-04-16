@@ -2,6 +2,9 @@
 # -*- Encoding: utf-8 -*
 
 import time
+import utils.collision_detection_util as collisions
+
+from sim_exceptions.collision_exception import *
 
 class World:
 
@@ -25,7 +28,13 @@ class World:
     
     # update all the robots
     for robot in self.robots:
+      # update robot state
       robot.update_state( dt )
+
+      # test for collisions
+      for obstacle in self.obstacles:
+        if collisions.convex_polygon_intersect_test( robot.global_geometry, obstacle.global_geometry ):
+          raise CollisionException()
     
     # increment world time
     self.world_time += dt
