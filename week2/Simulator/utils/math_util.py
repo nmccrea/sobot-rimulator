@@ -3,6 +3,7 @@
 
 from math import *
 
+# map the given angle to the equivalent angle in [ -pi, pi ]
 def normalize_angle( theta ):
   if theta > pi:
     # subtracts a positive number of circles
