@@ -18,7 +18,10 @@ class Week2Simulator:
     self.world_view = WorldView()
     
     # create the robot
-    self._add_robot( Robot() )
+    robot = Robot()
+    robot.set_wheel_rotations( 9.0, 12.5 )
+    self._add_robot( robot )
+    # self._add_robot( Robot() )
 
     # create some obstacles
     obstacle = RectangleObstacle( 0.1,
