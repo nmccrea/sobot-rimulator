@@ -5,9 +5,11 @@ from math import *
 
 def normalize_angle( theta ):
   if theta > pi:
-    theta -= 2*pi
+    # subtracts a positive number of circles
+    theta -= 2 * pi * int( ( theta + pi ) / ( 2 * pi ) )
   elif theta < -pi:
-    theta += 2*pi
+    # subtracts a negative number of circles
+    theta -= 2 * pi * int( ( theta - pi ) / ( 2 * pi ) )
 
   return theta
   
