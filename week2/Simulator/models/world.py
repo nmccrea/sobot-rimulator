@@ -24,7 +24,8 @@ class World:
   def add_obstacle( self, obstacle ):
     self.obstacles.append( obstacle )
 
-  def tick( self ):
+  # step the simulation through one time interval
+  def step( self ):
     dt = self.dt
     
     # update all the robots

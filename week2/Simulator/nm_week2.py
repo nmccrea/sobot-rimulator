@@ -41,7 +41,7 @@ class Week2Simulator:
       
       # increment the simulation
       try:
-        self.world.tick()
+        self.world.step()
       except CollisionException:
         print "\n\nCOLLISION!!\n\n"
         break
