@@ -2,13 +2,14 @@
 # -*- Encoding: utf-8 -*
 
 import time
-import utils.collision_detection_util as collisions
-
-from sim_exceptions.collision_exception import *
+from physics import *
 
 class World:
 
   def __init__( self ):
+    # initialize physics engine
+    self.physics = Physics( self )
+
     # initialize world time
     self.world_time = 0.0 # seconds
     self.dt = 0.1         # seconds
@@ -31,12 +32,18 @@ class World:
       # update robot state
       robot.update_state( dt )
 
-      # test for collisions
-      for obstacle in self.obstacles:
-        if collisions.convex_polygon_intersect_test( robot.global_geometry, obstacle.global_geometry ):
-          raise CollisionException()
+    # apply physics interactions
+    self.physics.apply_physics()
     
     # increment world time
     self.world_time += dt
     # pause the simulation for a moment
     time.sleep( dt )
+
+  # return all objects that might collide with other objects during simulation
+  def colliders( self ):
+    return self.robots  # as obstacles are static we should not test them against each other
+
+  # return all world solids
+  def collidables( self ):
+    return self.robots + self.obstacles
