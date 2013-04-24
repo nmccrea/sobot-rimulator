@@ -23,14 +23,21 @@ class Physics():
     for collider in colliders:
       for collidable in collidables:
         if collider is not collidable: # don't test an object against itself
-          # it is currently safe to assume that all geometries are polygons
+          # NOTE: it is currently safe to assume that all geometries are polygons
           polygon1 = collider.global_geometry
           polygon2 = collidable.global_geometry
-          if self._convex_polygon_intersect_test( polygon1, polygon2 ):
-            raise CollisionException()
+          if self._check_nearness( polygon1, polygon2 ): # don't bother testing objects that are not near each other
 
+            if self._convex_polygon_intersect_test( polygon1, polygon2 ):
+              raise CollisionException()
 
+  # a fast test to determine if two polygons might be touching
+  def _check_nearness( self, polygon1, polygon2 ):
+    c1, r1 = polygon1.bounding_circle
+    c2, r2 = polygon2.bounding_circle
+    return linalg.distance( c1, c2 ) <= r1 + r2
 
+  # determine if two convex polygons intersect
   def _convex_polygon_intersect_test( self, polygon1, polygon2 ):
     # assign polygons according to which has fewest sides - we will test against the polygon with fewer sides first
     if polygon1.numedges() <= polygon2.numedges():
