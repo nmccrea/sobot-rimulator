@@ -45,6 +45,10 @@ def proj( a, b ):
   scale = float( dot( a, b ) ) / ( b[0]**2 + b[1]**2 )
   return( [ scale*b[0], scale*b[1] ] )
 
+# get the length of the difference of two vectors a and b
+def distance( a, b ):
+  return mag( sub( a, b ) )
+
 # get the result of rotating a vector by theta radians
 def rotate_vector( a, theta ):
   sin_theta = sin( theta )
@@ -72,10 +76,27 @@ def rotate_vectors( vects, theta ):
 def rotate_and_translate_vector( a, theta, tvect ):
   return add( rotate_vector( a, theta ), tvect )
 
-# get the rsult of rotating and translating a set of vectors
+# get the result of rotating and translating a set of vectors
 def rotate_and_translate_vectors( vects, theta, tvect ):
   rtvects = []
   for a in rotate_vectors( vects, theta ):
     rtvects.append( add( a, tvect ) )
 
   return rtvects
+
+# determine which side of a line a point lies on
+def determine_side_of_line( lpoint1, lpoint2, tpoint ):
+  # returns  1 if the point is to the left of the line
+  # returns -1 if the point is to the right of the line
+  # returns  0 if the point is on the line
+  # the directionality of the line is taken to be lpoint1 -> lpoint2
+  tx = tpoint[0]
+  ty = tpoint[1]
+  l1x = lpoint1[0]
+  l1y = lpoint1[1]
+  l2x = lpoint2[0]
+  l2y = lpoint2[1]
+
+  d = ( ty - l1y )*( l2x - l1x ) - ( tx - l1x )*( l2y - l1y )
+
+  return d if d == 0 else int( d / abs( d ) )
