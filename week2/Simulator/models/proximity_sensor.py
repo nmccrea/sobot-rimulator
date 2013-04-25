@@ -36,3 +36,11 @@ class ProximitySensor:
     global_theta = robot_theta + rel_theta
 
     self.pose.vupdate( global_vect, global_theta )
+
+  def set_proximity( self, distance ):
+    # TODO: set the sensor value for the given distance
+    False
+
+  def read( self ):
+    # TODO: return this sensor's sensor value
+    False

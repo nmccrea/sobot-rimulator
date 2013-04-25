@@ -9,11 +9,19 @@ def add( a, b ):
 
 # get the difference of two vectors ( a - b )
 def sub( a, b ):
-  return( [ a[0]-b[0], a[1]-b[1] ] )
+  return [ a[0]-b[0], a[1]-b[1] ]
+
+# multiply a vector a by a scalar s
+def scale( a, s ):
+  return [ s*a[0], s*a[1] ]
 
 # get the dot-product of two vectors
 def dot( a, b ):
   return a[0]*b[0] + a[1]*b[1]
+
+# get the cross-product of two vectors ( a x b )
+def cross( a, b ):
+  return a[0]*b[1] - a[1]*b[0]
 
 # get the magnitude of a vector
 def mag( a ):
@@ -22,7 +30,7 @@ def mag( a ):
 # get the unit vector of a vector
 def unit( a ):
   m = mag( a )
-  return( [ a[0]/m, a[1]/m ] )
+  return [ a[0]/m, a[1]/m ] 
 
 # get the right-hand normal of a vector
 def rnormal( a ):
@@ -43,7 +51,7 @@ def lunormal( a ):
 # get the projection of vector a onto vector b
 def proj( a, b ):
   scale = float( dot( a, b ) ) / ( b[0]**2 + b[1]**2 )
-  return( [ scale*b[0], scale*b[1] ] )
+  return [ scale*b[0], scale*b[1] ]
 
 # get the length of the difference of two vectors a and b
 def distance( a, b ):

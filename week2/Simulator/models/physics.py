@@ -12,11 +12,11 @@ class Physics():
     self.world = world
 
   def apply_physics( self ):
-    self._test_for_collisions()
+    self._detect_collisions()
 
   # test the world for existing collisions with solids
   # raises a CollisionException if one occurs
-  def _test_for_collisions( self ):
+  def _detect_collisions( self ):
     colliders = self.world.colliders()
     collidables = self.world.collidables()
 
@@ -30,6 +30,22 @@ class Physics():
 
             if self._convex_polygon_intersect_test( polygon1, polygon2 ):
               raise CollisionException()
+
+  def _update_proximity_sensors( self ):
+    False
+
+    # TODO:
+    # for each robot r
+    #   for each proximity sensor p
+    #     set nearest_distance to infinity
+    #
+    #     for each collidable c NOT r
+    #       if p is "near" c
+    #         find the intersection of p's line segment with c's polygon
+    #         if distance from p to this point is less than nearest_distance
+    #           set nearest_distance to this distance
+    #
+    #     set p's proximity to nearest_distance
 
   # a fast test to determine if two polygons might be touching
   def _check_nearness( self, polygon1, polygon2 ):
@@ -83,3 +99,26 @@ class Physics():
       elif c > maxc:  maxc = c
 
     return minc, maxc
+
+  # return the point at which the given line segments intersect
+  def _line_segment_intersection( self, line1, line2 ):
+    nointersect_token = None    # return this if the line segments do not intersect
+
+    p1, s1 = line1[0],   linalg.sub( line1[1], line1[0] )
+    p2, s2 = line2[0],   linalg.sub( line2[1], line2[0] )
+
+    s1xs2 = float( linalg.cross( s1, s2 ) )
+    if s1xs2 == 0.0: return nointersect_token
+    p2subp1 = linalg.sub( p2, p1 )
+
+    r1 = linalg.cross( p2subp1, s2 ) / s1xs2
+    r2 = linalg.cross( p2subp1, s1 ) / s1xs2
+
+    if r1 >= 0.0 and r1 <= 1.0 and r2 >= 0.0 and r2 <= 1.0:
+      return linalg.add( p1, linalg.scale( s1, r1 ) )
+    else:
+      return nointersect_token
+
+  def _directed_line_segment_polygon_intersection( self, line, polygon ):
+    # TODO: return the point nearest to the beginning of a line segement where it intersects a polygon
+    False
