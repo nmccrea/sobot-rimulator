@@ -2,8 +2,9 @@
 # -*- Encoding: utf-8 -*
 
 from utils import linalg2_util as linalg
+from geometry import *
 
-class Polygon:
+class Polygon( Geometry ):
 
   def __init__( self, vertexes ):
     self.vertexes = vertexes  # a list of 2-dimensional vectors
