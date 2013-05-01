@@ -2,6 +2,7 @@
 # -*- Encoding: utf-8 -*
 
 import utils.linalg2_util as linalg
+from line_segment import *
 from pose import *
 
 class ProximitySensor:
@@ -12,16 +13,33 @@ class ProximitySensor:
                       max_range,      # max sensor range (meters)
                       phi_view ):     # view angle of this sensor (rad from front of robot)
     
-    # pose attributes
+    
+    # bind the robot
     self.robot = robot
+
+    # pose attributes
     self.relative_pose = relative_pose
     self.pose = Pose( 0.0, 0.0, 0.0 ) # initialize pose object
-    self.update_pose()                # determine initial global pose
+    
+    # detector line
+    self.detector_line_source = LineSegment( [ [0.0, 0.0], [max_range, 0.0] ] )
+    self.detector_line = LineSegment( [ [0.0, 0.0], [max_range, 0.0] ] )  
+
+    # pose and detector_line are incorrect until:
+    # set initial state
+    self.update_state()
     
     # sensitivity attributes
     self.min_range = min_range
     self.max_range = max_range
     self.phi_view = phi_view
+
+  def update_state( self ):
+    # update global pose
+    self.update_pose()
+
+    # update detector line
+    self.detector_line = self.detector_line_source.get_transformation_to_pose( self.pose )
 
   def update_pose( self ):
     # get the elements of the robot's pose

@@ -32,3 +32,22 @@ class ProximitySensorView:
     frame.add_polygons( [ sensor_cone_poly ],
                         color = "red",
                         alpha = 0.3 )
+
+    # draw the detector line (primarily for debugging)
+    self._draw_detector_line_to_frame( frame )
+  
+  def _draw_detector_line_to_frame( self, frame ):
+    vertexes = self.proximity_sensor.detector_line.vertexes
+
+    frame.add_lines(  [ vertexes ],
+                      linewidth = 0.005,
+                      color = "black",
+                      alpha = 0.7 )
+
+
+    # uncomment this to see the "beginning points" of the detector lines
+    # origin = vertexes[0]
+    # frame.add_circle( pos = (origin[0], origin[1]),
+    #                   radius = 0.02,
+    #                   color = "black" )
+
