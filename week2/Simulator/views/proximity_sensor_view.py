@@ -33,8 +33,10 @@ class ProximitySensorView:
                         color = "red",
                         alpha = 0.3 )
 
-    # draw the detector line (primarily for debugging)
+    # FOR DEBUGGING:
     self._draw_detector_line_to_frame( frame )
+    # self._draw_detector_line_origins_to_frame( frame )
+    self._draw_detector_line_bounding_circle_to_frame( frame )
   
   def _draw_detector_line_to_frame( self, frame ):
     vertexes = self.proximity_sensor.detector_line.vertexes
@@ -44,10 +46,16 @@ class ProximitySensorView:
                       color = "black",
                       alpha = 0.7 )
 
+  def _draw_detector_line_origins_to_frame( self, frame ):
+    origin = self.proximity_sensor.detector_line.vertexes[0]
+    frame.add_circle( pos = (origin[0], origin[1]),
+                      radius = 0.02,
+                      color = "black" )
 
-    # uncomment this to see the "beginning points" of the detector lines
-    # origin = vertexes[0]
-    # frame.add_circle( pos = (origin[0], origin[1]),
-    #                   radius = 0.02,
-    #                   color = "black" )
+  def _draw_detector_line_bounding_circle_to_frame( self, frame ):
+    c, r = self.proximity_sensor.detector_line.bounding_circle
+    frame.add_circle( pos = c,
+                      radius = r,
+                      color = "black",
+                      alpha = 0.2 )
 
