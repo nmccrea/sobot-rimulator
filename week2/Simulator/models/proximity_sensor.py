@@ -55,9 +55,10 @@ class ProximitySensor:
 
     self.pose.vupdate( global_vect, global_theta )
 
-  def set_proximity( self, distance ):
-    # TODO: set the sensor value for the given distance
-    False
+  # set this proximity sensor to detect an object at distance ( delta * max_range )
+  def detect( self, delta ):
+    print "OBJECT DETECTED AT: " + str( delta * self.max_range ) + " METERS!!"
+    # TODO: update the sensor state 
 
   def read( self ):
     # TODO: return this sensor's sensor value

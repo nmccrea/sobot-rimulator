@@ -34,21 +34,30 @@ class Physics():
 
   # update any proximity sensors that are in range of solid objects
   def _update_proximity_sensors( self ):
-    sensors = self.world.sensors()
+    robots = self.world.robots
     solids = self.world.solids()
+    
+    for robot in robots:
+      sensors = robot.ir_sensors
 
-    for sensor in sensors:
-      nearest_distance = float('inf')
-      detector_line = sensor.detector_line
+      for sensor in sensors:
+        dmin = float('inf')
+        detector_line = sensor.detector_line
 
-      for solid in solids:
-        solid_polygon = solid.global_geometry
-        
-        if self._check_nearness( detector_line, solid_polygon ): # don't bother testing objects that are not near each other
-          print "NEAR!!"
-          # TODO: call the line-segment/polygon intersect test
-          #   if distance is less than nearest distance
-          #     set nearest distance to this distance
+        for solid in solids:
+
+          if solid is not robot:
+            solid_polygon = solid.global_geometry
+            
+            if self._check_nearness( detector_line, solid_polygon ): # don't bother testing objects that are not near each other
+              intersection_exists, intersection, d = self._directed_line_segment_polygon_intersection( detector_line, solid_polygon )
+              
+              if intersection_exists and d < dmin:
+                dmin = d
+
+        # if there is an intersection, update the sensor with the new delta value
+        if dmin != float('inf'):
+          sensor.detect( dmin )
 
   # a fast test to determine if two geometries might be touching
   def _check_nearness( self, geometry1, geometry2 ):
@@ -103,25 +112,50 @@ class Physics():
 
     return minc, maxc
 
-  # return the point at which the given line segments intersect
+  # test two line segments for intersection
+  # takes raw line segments, i.e. a pair of vectors
+  # returns
+  #   intersection_exists - boolean         - value indicating whether an intersection was found
+  #   intersection        - vector          - the intersection point, or None if none was found
+  #   d                   - float in [0,1]  - distance along line1 at which the intersection occurs
   def _line_segment_intersection( self, line1, line2 ):
-    nointersect_token = None    # return this if the line segments do not intersect
+    # see http://stackoverflow.com/questions/563198
+    nointersect_symbol = ( False, None, None )
 
-    p1, s1 = line1[0],   linalg.sub( line1[1], line1[0] )
-    p2, s2 = line2[0],   linalg.sub( line2[1], line2[0] )
+    p1, r1 = line1[0],   linalg.sub( line1[1], line1[0] )
+    p2, r2 = line2[0],   linalg.sub( line2[1], line2[0] )
 
-    s1xs2 = float( linalg.cross( s1, s2 ) )
-    if s1xs2 == 0.0: return nointersect_token
+    r1xr2 = float( linalg.cross( r1, r2 ) )
+    if r1xr2 == 0.0: return nointersect_symbol
     p2subp1 = linalg.sub( p2, p1 )
 
-    r1 = linalg.cross( p2subp1, s2 ) / s1xs2
-    r2 = linalg.cross( p2subp1, s1 ) / s1xs2
+    d1 = linalg.cross( p2subp1, r2 ) / r1xr2
+    d2 = linalg.cross( p2subp1, r1 ) / r1xr2
 
-    if r1 >= 0.0 and r1 <= 1.0 and r2 >= 0.0 and r2 <= 1.0:
-      return linalg.add( p1, linalg.scale( s1, r1 ) )
+    if d1 >= 0.0 and d1 <= 1.0 and d2 >= 0.0 and d2 <= 1.0:
+      return True, linalg.add( p1, linalg.scale( r1, d1 ) ), d1
     else:
-      return nointersect_token
+      return nointersect_symbol
+  
+  # test a line segment and a polygon for intersection
+  # returns:
+  #   intersection_exists - boolean         - value indicating whether an intersection was found
+  #   intersection        - vector          - the intersection point, or None if none was found
+  #   d                   - float in [0, 1] - distance along the thest line at which the intersection occurs
+  def _directed_line_segment_polygon_intersection( self, line_segment, test_polygon ):
+    test_line = line_segment.vertexes # get the raw line segment
+    dmin = float('inf')
+    intersection = None
+    
+    # a dumb algorithm that tests every edge of the polygon
+    for edge in test_polygon.edges():
+      intersection_exists, _intersection, d = self._line_segment_intersection( test_line, edge )
 
-  def _directed_line_segment_polygon_intersection( self, line, polygon ):
-    # TODO: return the point nearest to the beginning of a line segement where it intersects a polygon
-    False
+      if intersection_exists and d < dmin:
+        dmin = d
+        intersection = _intersection
+
+    if dmin != float('inf'):
+      return True, intersection, dmin
+    else:
+      return False, None, None
