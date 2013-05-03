@@ -23,7 +23,7 @@ class ObstacleView:
                         alpha = 0.7 )
 
     # === FOR DEBUGGING: ===
-    self._draw_bounding_circle_to_frame( frame )
+    # self._draw_bounding_circle_to_frame( frame )
 
   def _draw_bounding_circle_to_frame( self, frame ):
     c, r = self.obstacle.global_geometry.bounding_circle
