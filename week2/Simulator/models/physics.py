@@ -13,6 +13,7 @@ class Physics():
 
   def apply_physics( self ):
     self._detect_collisions()
+    self._update_proximity_sensors()
 
   # test the world for existing collisions with solids
   # raises a CollisionException if one occurs
@@ -21,36 +22,38 @@ class Physics():
     solids = self.world.solids()
 
     for collider in colliders:
-      for solid in solids:
-        if collider is not solid: # don't test an object against itself
-          # NOTE: it is currently safe to assume that all geometries are polygons
-          polygon1 = collider.global_geometry
-          polygon2 = solid.global_geometry
-          if self._check_nearness( polygon1, polygon2 ): # don't bother testing objects that are not near each other
+      polygon1 = collider.global_geometry     # polygon1
 
+      for solid in solids:
+        if solid is not collider: # don't test an object against itself
+          polygon2 = solid.global_geometry    # polygon2
+          
+          if self._check_nearness( polygon1, polygon2 ): # don't bother testing objects that are not near each other
             if self._convex_polygon_intersect_test( polygon1, polygon2 ):
               raise CollisionException()
 
+  # update any proximity sensors that are in range of solid objects
   def _update_proximity_sensors( self ):
-    False
+    sensors = self.world.sensors()
+    solids = self.world.solids()
 
-    # TODO:
-    # for each robot r
-    #   for each proximity sensor p
-    #     set nearest_distance to infinity
-    #
-    #     for each solid c NOT r
-    #       if p is "near" c
-    #         find the intersection of p's line segment with c's polygon
-    #         if distance from p to this point is less than nearest_distance
-    #           set nearest_distance to this distance
-    #
-    #     set p's proximity to nearest_distance
+    for sensor in sensors:
+      nearest_distance = float('inf')
+      detector_line = sensor.detector_line
 
-  # a fast test to determine if two polygons might be touching
-  def _check_nearness( self, polygon1, polygon2 ):
-    c1, r1 = polygon1.bounding_circle
-    c2, r2 = polygon2.bounding_circle
+      for solid in solids:
+        solid_polygon = solid.global_geometry
+        
+        if self._check_nearness( detector_line, solid_polygon ): # don't bother testing objects that are not near each other
+          print "NEAR!!"
+          # TODO: call the line-segment/polygon intersect test
+          #   if distance is less than nearest distance
+          #     set nearest distance to this distance
+
+  # a fast test to determine if two geometries might be touching
+  def _check_nearness( self, geometry1, geometry2 ):
+    c1, r1 = geometry1.bounding_circle
+    c2, r2 = geometry2.bounding_circle
     return linalg.distance( c1, c2 ) <= r1 + r2
 
   # determine if two convex polygons intersect
