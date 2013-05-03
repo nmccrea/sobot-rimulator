@@ -21,3 +21,13 @@ class ObstacleView:
     frame.add_polygons( [ obstacle_poly ],
                         color = "red",
                         alpha = 0.7 )
+
+    # === FOR DEBUGGING: ===
+    self._draw_bounding_circle_to_frame( frame )
+
+  def _draw_bounding_circle_to_frame( self, frame ):
+    c, r = self.obstacle.global_geometry.bounding_circle
+    frame.add_circle( pos = c,
+                      radius = r,
+                      color = "black",
+                      alpha = 0.2 )
