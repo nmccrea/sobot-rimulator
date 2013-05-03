@@ -41,10 +41,11 @@ class World:
     # pause the simulation for a moment
     time.sleep( dt )
 
-  # return all objects that might collide with other objects during simulation
+  # return all objects in the world that might collide with other objects in the world during simulation
   def colliders( self ):
+    # moving objects only
     return self.robots  # as obstacles are static we should not test them against each other
 
-  # return all world solids
-  def collidables( self ):
+  # return all solids in the world
+  def solids( self ):
     return self.robots + self.obstacles

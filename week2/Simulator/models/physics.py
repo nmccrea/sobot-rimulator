@@ -18,14 +18,14 @@ class Physics():
   # raises a CollisionException if one occurs
   def _detect_collisions( self ):
     colliders = self.world.colliders()
-    collidables = self.world.collidables()
+    solids = self.world.solids()
 
     for collider in colliders:
-      for collidable in collidables:
-        if collider is not collidable: # don't test an object against itself
+      for solid in solids:
+        if collider is not solid: # don't test an object against itself
           # NOTE: it is currently safe to assume that all geometries are polygons
           polygon1 = collider.global_geometry
-          polygon2 = collidable.global_geometry
+          polygon2 = solid.global_geometry
           if self._check_nearness( polygon1, polygon2 ): # don't bother testing objects that are not near each other
 
             if self._convex_polygon_intersect_test( polygon1, polygon2 ):
@@ -39,7 +39,7 @@ class Physics():
     #   for each proximity sensor p
     #     set nearest_distance to infinity
     #
-    #     for each collidable c NOT r
+    #     for each solid c NOT r
     #       if p is "near" c
     #         find the intersection of p's line segment with c's polygon
     #         if distance from p to this point is less than nearest_distance
