@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- Encoding: utf-8 -*
 
+from math import *
 import utils.linalg2_util as linalg
 from line_segment import *
 from pose import *
@@ -34,6 +35,9 @@ class ProximitySensor:
     self.max_range = max_range
     self.phi_view = phi_view
 
+    # sensor output
+    self.read_value = 0
+
   def update_state( self ):
     # update global pose
     self.update_pose()
@@ -57,9 +61,19 @@ class ProximitySensor:
 
   # set this proximity sensor to detect an object at distance ( delta * max_range )
   def detect( self, delta ):
-    print "OBJECT DETECTED AT: " + str( delta * self.max_range ) + " METERS!!"
-    # TODO: update the sensor state 
+    if delta != None and ( delta < 0.0 or delta > 1.0 ):
+      raise Exception("d out of bounds - must be in range [0.0, 1.0]")
+
+    max_range = self.max_range
+    min_range = self.min_range
+
+    d = max_range * delta
+    if d == None or d < 0.0:  # d < 0
+      self.read_value = 0
+    elif d <= min_range:      # d in [0.00, 0.02]
+      self.read_value = 3960
+    else:                     # d in (0.02, 0.20]
+      self.read_value = int( ceil( 3960 * e**( -30 * (d-0.02) ) ) )
 
   def read( self ):
-    # TODO: return this sensor's sensor value
-    False
+    return self.read_value
