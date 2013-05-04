@@ -91,7 +91,6 @@ class Robot: # Khepera3 robot
     # update all of the sensors
     for ir_sensor in self.ir_sensors:
       ir_sensor.update_state()
-    
   
   def set_wheel_rotations( self, v_l, v_r ):
     # limit the speeds:
