@@ -28,8 +28,8 @@ class ProximitySensor( Sensor ):
     self.detector_line = LineSegment( [ [0.0, 0.0], [max_range, 0.0] ] )  
 
     # pose and detector_line are incorrect until:
-    # set initial state
-    self.update_state()
+    # set initial position
+    self.update_position()
     
     # sensitivity attributes
     self.min_range = min_range
@@ -39,7 +39,7 @@ class ProximitySensor( Sensor ):
     # sensor output
     self.read_value = 0
 
-  def update_state( self ):
+  def update_position( self ):
     # update global pose
     self.update_pose()
 
