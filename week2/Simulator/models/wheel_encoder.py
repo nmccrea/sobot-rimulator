@@ -19,7 +19,7 @@ class WheelEncoder( Sensor ):
     # dt = s
     d_rotation = wheel_velocity * dt
     d_ticks = ( d_rotation / (2*pi) ) * self.ticks_per_rev
-    self.tick_count += floor( d_ticks )
+    self.tick_count += int( d_ticks )
 
   def ticks_to_revolutions( self ):
     return self.tick_count / self.ticks_per_rev

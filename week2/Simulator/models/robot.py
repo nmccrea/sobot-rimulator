@@ -80,10 +80,15 @@ class Robot: # Khepera3 robot
     self.right_wheel_drive_rate = 0.0
     
   def step_motion( self, dt ):
-    # step robot pose
     v_l = self.left_wheel_drive_rate
     v_r = self.right_wheel_drive_rate
+
+    # step robot pose
     self.dynamics.apply_dynamics( self.pose, v_l, v_r, dt )
+
+    # update wheel encoders
+    self.left_wheel_encoder.step_ticks( v_l, dt )
+    self.right_wheel_encoder.step_ticks( v_r, dt )
 
     # update global geometry
     self.global_geometry = self.geometry.get_transformation_to_pose( self.pose )
@@ -91,7 +96,16 @@ class Robot: # Khepera3 robot
     # update all of the sensors
     for ir_sensor in self.ir_sensors:
       ir_sensor.update_position()
- 
+
+  # get the sensor values consumed by the controller
+  def get_control_outputs( self ):
+    sensor_vals = [ s.read() for s in self.ir_sensors + self.wheel_encoders ]
+    return sensor_vals
+
+  # set the actuator values determined by the controller
+  def set_control_inputs( self, inputs ):
+    False
+  
   # set the drive rates (angular velocities) for this robot's wheels in rad/s 
   def set_wheel_drive_rates( self, v_l, v_r ):
     # limit the speeds:
