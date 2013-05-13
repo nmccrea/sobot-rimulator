@@ -5,8 +5,9 @@ from math import *
 import utils.linalg2_util as linalg
 from line_segment import *
 from pose import *
+from sensor import *
 
-class ProximitySensor:
+class ProximitySensor( Sensor ):
 
   def __init__( self, robot,          # robot this sensor is attached to
                       relative_pose,  # pose of this sensor relative to robot (NOTE: normalized on robot located at origin and with theta 0, i.e. facing east )

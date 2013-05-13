@@ -2,8 +2,9 @@
 # -*- Encoding: utf-8 -*
 
 from math import *
+from sensor import *
 
-class WheelEncoder:
+class WheelEncoder( Sensor ):
 
   def __init__( self,
                 wheel_radius,
@@ -27,3 +28,5 @@ class WheelEncoder:
     revs = self.ticks_to_revolutions()
     return revs * 2 * pi * self.wheel_radius
 
+  def read( self ):
+    return self.tick_count
