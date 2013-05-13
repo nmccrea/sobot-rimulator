@@ -46,7 +46,7 @@ class Physics():
 
         for solid in solids:
 
-          if solid is not robot:
+          if solid is not robot:  # assume that the sensor does not detect it's own robot
             solid_polygon = solid.global_geometry
             
             if self._check_nearness( detector_line, solid_polygon ): # don't bother testing objects that are not near each other
