@@ -9,4 +9,4 @@ class Geometry:
     self.bounding_circle
 
   def get_transformation_to_pose( self, pose ):
-    pass
+    raise NotImplementedError()
