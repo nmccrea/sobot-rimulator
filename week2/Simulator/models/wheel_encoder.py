@@ -14,7 +14,7 @@ class WheelEncoder( Sensor ):
 
     self.tick_count = 0
 
-  def update_ticks( self, wheel_velocity, dt ):
+  def step_ticks( self, wheel_velocity, dt ):
     # wheel_velocity = rad/s
     # dt = s
     d_rotation = wheel_velocity * dt

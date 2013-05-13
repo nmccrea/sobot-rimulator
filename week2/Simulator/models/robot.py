@@ -79,8 +79,8 @@ class Robot: # Khepera3 robot
     self.left_wheel_drive_rate = 0.0
     self.right_wheel_drive_rate = 0.0
     
-  def update_state( self, dt ):
-    # update robot pose
+  def step_motion( self, dt ):
+    # step robot pose
     v_l = self.left_wheel_drive_rate
     v_r = self.right_wheel_drive_rate
     self.dynamics.apply_dynamics( self.pose, v_l, v_r, dt )

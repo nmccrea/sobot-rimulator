@@ -28,10 +28,10 @@ class World:
   def step( self ):
     dt = self.dt
     
-    # update all the robots
+    # step all the robots
     for robot in self.robots:
-      # update robot state
-      robot.update_state( dt )
+      # step robot motion
+      robot.step_motion( dt )
 
     # apply physics interactions
     self.physics.apply_physics()
