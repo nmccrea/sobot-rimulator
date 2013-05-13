@@ -75,14 +75,14 @@ class Robot: # Khepera3 robot
     self.dynamics = DifferentialDriveDynamics( self.wheel_radius, self.wheel_base_length )
     
     ## initialize state
-    # set wheel rotations (rad/s)
-    self.left_wheel_rotation = 0.0
-    self.right_wheel_rotation = 0.0
+    # set wheel drive rates (rad/s)
+    self.left_wheel_drive_rate = 0.0
+    self.right_wheel_drive_rate = 0.0
     
   def update_state( self, dt ):
     # update robot pose
-    v_l = self.left_wheel_rotation
-    v_r = self.right_wheel_rotation
+    v_l = self.left_wheel_drive_rate
+    v_r = self.right_wheel_drive_rate
     self.dynamics.apply_dynamics( self.pose, v_l, v_r, dt )
 
     # update global geometry
@@ -91,17 +91,15 @@ class Robot: # Khepera3 robot
     # update all of the sensors
     for ir_sensor in self.ir_sensors:
       ir_sensor.update_state()
-  
-  def set_wheel_rotations( self, v_l, v_r ):
+ 
+  # set the drive rates (angular velocities) for this robot's wheels in rad/s 
+  def set_wheel_drive_rates( self, v_l, v_r ):
     # limit the speeds:
     v, w = self.dynamics.diff_to_uni( v_l, v_r )
     v = max( min( v, K3_TRANS_VEL_LIMIT ), -K3_TRANS_VEL_LIMIT )
     w = max( min( w, K3_ANG_VEL_LIMIT ), -K3_ANG_VEL_LIMIT )
     v_l, v_r = self.dynamics.uni_to_diff( v, w )
     
-    # set rotations
-    self.left_wheel_rotation = v_l
-    self.right_wheel_rotation = v_r
-  
-  def wheel_rotations( self ):
-    return self.left_wheel_rotation, self.right_wheel_rotation
+    # set drive rates
+    self.left_wheel_drive_rate = v_l
+    self.right_wheel_drive_rate = v_r

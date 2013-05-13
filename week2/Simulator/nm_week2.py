@@ -19,7 +19,7 @@ class Week2Simulator:
     
     # create the robot
     robot = Robot()
-    robot.set_wheel_rotations( 9.0, 12.5 )
+    robot.set_wheel_drive_rates( 9.0, 12.5 )
     self._add_robot( robot )
     # self._add_robot( Robot() )
 
