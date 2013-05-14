@@ -12,7 +12,7 @@ class World:
 
     # initialize world time
     self.world_time = 0.0 # seconds
-    self.dt = 0.1         # seconds
+    self.dt = 0.05        # seconds
     
     # initialize lists of world objects
     self.robots = []
@@ -30,6 +30,9 @@ class World:
     
     # step all the robots
     for robot in self.robots:
+      # run robot control loop
+      robot.step_control()
+
       # step robot motion
       robot.step_motion( dt )
 

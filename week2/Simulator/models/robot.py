@@ -6,6 +6,7 @@ from differential_drive_dynamics import *
 from polygon import *
 from pose import *
 from proximity_sensor import *
+from supervisor import *
 from wheel_encoder import *
 
 # Khepera3 Properties (copied from Sim.I.Am by J.P. de la Croix)
@@ -73,12 +74,20 @@ class Robot: # Khepera3 robot
 
     # dynamics
     self.dynamics = DifferentialDriveDynamics( self.wheel_radius, self.wheel_base_length )
+
+    # supervisor
+    self.supervisor = Supervisor( self )
     
     ## initialize state
     # set wheel drive rates (rad/s)
     self.left_wheel_drive_rate = 0.0
     self.right_wheel_drive_rate = 0.0
+
+  # execute one step of the control loop
+  def step_control( self ):
+    self.supervisor.execute()
     
+  # simulate the robot's motion over the given time interval
   def step_motion( self, dt ):
     v_l = self.left_wheel_drive_rate
     v_r = self.right_wheel_drive_rate
@@ -96,15 +105,14 @@ class Robot: # Khepera3 robot
     # update all of the sensors
     for ir_sensor in self.ir_sensors:
       ir_sensor.update_position()
+  
+  # read the proximity sensors
+  def read_proximity_sensors( self ):
+    return [ s.read() for s in self.ir_sensors ]
 
-  # get the sensor values consumed by the controller
-  def get_control_outputs( self ):
-    sensor_vals = [ s.read() for s in self.ir_sensors + self.wheel_encoders ]
-    return sensor_vals
-
-  # set the actuator values determined by the controller
-  def set_control_inputs( self, inputs ):
-    False
+  # read the wheel encoders
+  def read_wheel_encoders( self ):
+    return [ e.read() for e in self.wheel_encoders ]
   
   # set the drive rates (angular velocities) for this robot's wheels in rad/s 
   def set_wheel_drive_rates( self, v_l, v_r ):
