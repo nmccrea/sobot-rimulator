@@ -22,10 +22,6 @@ class World:
   # step the simulation through one time interval
   def step( self ):
     dt = self.dt
-
-    # step all of the computers
-    for computer in self.computers:
-      computer.execute()
     
     # step all the robots
     for robot in self.robots:
@@ -34,6 +30,11 @@ class World:
 
     # apply physics interactions
     self.physics.apply_physics()
+
+    # NOTE: the computers must run last to ensure they are observing the "current" world
+    # step all of the computers
+    for computer in self.computers:
+      computer.execute()
 
     # increment world time
     self.world_time += dt
