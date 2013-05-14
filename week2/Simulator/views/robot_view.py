@@ -46,4 +46,17 @@ class RobotView:
                                                       robot_pos )
     frame.add_polygons( [ robot_top ],
                         color = "black",
-                        alpha = 1.0 ) 
+                        alpha = 1.0 )
+
+    # === FOR DEBUGGING: ===
+    # self._draw_robot_internal_estimate_to_frame( frame )
+
+  def _draw_robot_internal_estimate_to_frame( self, frame ):
+    # NOTE: this method not built for performance
+    robot_estimated_pose = self.robot.supervisor.estimated_pose
+    geometry = self.robot.geometry.get_transformation_to_pose( robot_estimated_pose )
+
+    frame.add_polygons( [ geometry.vertexes ],
+                        color = "blue",
+                        alpha = 0.5 )
+
