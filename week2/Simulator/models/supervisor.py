@@ -21,6 +21,7 @@ class Supervisor:
     # state estimate
     self.estimated_pose = initial_pose
 
+  # execute one control loop
   def execute( self ):
     # run odometry calculations to get updated pose estimate
     self.update_odometry()

@@ -83,10 +83,6 @@ class Robot: # Khepera3 robot
     self.left_wheel_drive_rate = 0.0
     self.right_wheel_drive_rate = 0.0
 
-  # execute one step of the control loop
-  def step_control( self ):
-    self.supervisor.execute()
-    
   # simulate the robot's motion over the given time interval
   def step_motion( self, dt ):
     v_l = self.left_wheel_drive_rate

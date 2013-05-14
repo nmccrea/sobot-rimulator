@@ -15,11 +15,13 @@ class World:
     self.dt = 0.05        # seconds
     
     # initialize lists of world objects
+    self.computers = []
     self.robots = []
     self.obstacles = []
 
   def add_robot( self, robot ):
     self.robots.append( robot )
+    self.computers.append( robot.supervisor )
 
   def add_obstacle( self, obstacle ):
     self.obstacles.append( obstacle )
@@ -27,12 +29,13 @@ class World:
   # step the simulation through one time interval
   def step( self ):
     dt = self.dt
+
+    # step all of the computers
+    for computer in self.computers:
+      computer.execute()
     
     # step all the robots
     for robot in self.robots:
-      # run robot control loop
-      robot.step_control()
-
       # step robot motion
       robot.step_motion( dt )
 
