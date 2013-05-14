@@ -19,13 +19,6 @@ class World:
     self.robots = []
     self.obstacles = []
 
-  def add_robot( self, robot ):
-    self.robots.append( robot )
-    self.computers.append( robot.supervisor )
-
-  def add_obstacle( self, obstacle ):
-    self.obstacles.append( obstacle )
-
   # step the simulation through one time interval
   def step( self ):
     dt = self.dt
@@ -41,11 +34,18 @@ class World:
 
     # apply physics interactions
     self.physics.apply_physics()
-    
+
     # increment world time
     self.world_time += dt
     # pause the simulation for a moment
     time.sleep( dt )
+
+  def add_robot( self, robot ):
+    self.robots.append( robot )
+    self.computers.append( robot.supervisor )
+
+  def add_obstacle( self, obstacle ):
+    self.obstacles.append( obstacle )
 
   # return all objects in the world that might collide with other objects in the world during simulation
   def colliders( self ):
