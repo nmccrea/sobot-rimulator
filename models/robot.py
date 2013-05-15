@@ -53,9 +53,6 @@ class Robot: # Khepera3 robot
     # wheel arrangement
     self.wheel_radius = K3_WHEEL_RADIUS             # meters
     self.wheel_base_length = K3_WHEEL_BASE_LENGTH   # meters
-    
-    # wheel speed factor
-    self.speed_factor = K3_SPEED_FACTOR
 
     # pose
     self.pose = Pose( 0.0, 0.0, 0.0 )
@@ -76,7 +73,8 @@ class Robot: # Khepera3 robot
     self.dynamics = DifferentialDriveDynamics( self.wheel_radius, self.wheel_base_length )
 
     # supervisor
-    self.supervisor = Supervisor( self )
+    self.supervisor = Supervisor( self.ir_sensors,
+                                  self.wheel_encoders, K3_WHEEL_RADIUS, K3_WHEEL_BASE_LENGTH )
     
     ## initialize state
     # set wheel drive rates (rad/s)
@@ -101,14 +99,6 @@ class Robot: # Khepera3 robot
     # update all of the sensors
     for ir_sensor in self.ir_sensors:
       ir_sensor.update_position()
-  
-  # read the proximity sensors
-  def read_proximity_sensors( self ):
-    return [ s.read() for s in self.ir_sensors ]
-
-  # read the wheel encoders
-  def read_wheel_encoders( self ):
-    return [ e.read() for e in self.wheel_encoders ]
   
   # set the drive rates (angular velocities) for this robot's wheels in rad/s 
   def set_wheel_drive_rates( self, v_l, v_r ):

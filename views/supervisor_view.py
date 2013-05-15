@@ -1,16 +1,14 @@
 #!/usr/bin/python
 # -*- Encoding: utf-8 -*
 
-from models.polygon import *
-
 class SupervisorView:
 
-  def __init__( self, viewer, supervisor ):
+  def __init__( self, viewer, supervisor, robot_geometry ):
     self.viewer = viewer
     self.supervisor = supervisor
 
     # information for rendering
-    self.robot_geometry = supervisor.robot.geometry
+    self.robot_geometry = robot_geometry
 
   # draw a representation of the supervisor's internal state to the frame
   def draw_supervisor_to_frame( self, frame ):

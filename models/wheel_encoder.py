@@ -17,8 +17,8 @@ class WheelEncoder( Sensor ):
   def step_ticks( self, wheel_velocity, dt ):
     # wheel_velocity = rad/s
     # dt = s
-    d_rotation = wheel_velocity * dt
-    d_ticks = ( d_rotation / (2*pi) ) * self.ticks_per_rev
+    d_angle = wheel_velocity * dt
+    d_ticks = ( d_angle / (2*pi) ) * self.ticks_per_rev
     self.tick_count += int( d_ticks )
 
   def read( self ):

@@ -22,7 +22,7 @@ class RobotView:
     self.robot = robot
 
     # add the supervisor views for this robot
-    self.supervisor_view = SupervisorView( viewer, robot.supervisor )
+    self.supervisor_view = SupervisorView( viewer, robot.supervisor, robot.geometry )
     
     # add the IR sensor views for this robot
     self.ir_sensor_views = []
