@@ -35,12 +35,18 @@ class DifferentialDriveDynamics:
     
     return v, w
   
-  def apply_dynamics( self, pose, v_l, v_r, d_t ):
-    wheel_meters_per_rad = self.wheel_radius
+  # apply physical dynamics to the given representations of moving parts
+  def apply_dynamics( self, v_l, v_r, d_t,                                # dynamics parameters
+                            pose, wheel_encoders ):                       # the moving parts
+
+    # calculate the change in wheel angle (in radians)
+    d_angle_left  = d_t * v_l
+    d_angle_right = d_t * v_r
     
     # calculate the distance traveled
-    d_left_wheel = d_t * v_l * wheel_meters_per_rad
-    d_right_wheel = d_t * v_r * wheel_meters_per_rad
+    wheel_meters_per_rad = self.wheel_radius
+    d_left_wheel = d_angle_left * wheel_meters_per_rad
+    d_right_wheel = d_angle_right * wheel_meters_per_rad
     d_center = ( d_left_wheel + d_right_wheel ) / 2.0
     
     # calculate the new pose
@@ -49,5 +55,11 @@ class DifferentialDriveDynamics:
     new_y = old_y + ( d_center * sin( old_theta ) )
     new_theta = old_theta + ( ( d_right_wheel - d_left_wheel ) / self.wheel_base_length )
     
-    # update the pose with the new values
+    # calculate the number of rotations each wheel has made
+    revolutions_left  = d_angle_left / ( 2*pi )
+    revolutions_right = d_angle_right / ( 2*pi )
+    
+    # update the state of the moving parts
     pose.supdate( new_x, new_y, new_theta )
+    wheel_encoders[0].step_revolutions( revolutions_left )
+    wheel_encoders[1].step_revolutions( revolutions_right )

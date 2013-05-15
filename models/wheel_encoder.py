@@ -6,20 +6,14 @@ from sensor import *
 
 class WheelEncoder( Sensor ):
 
-  def __init__( self,
-                wheel_radius,
-                ticks_per_rev ):
-    self.wheel_radius = wheel_radius
+  def __init__( self, ticks_per_rev ):
     self.ticks_per_rev = ticks_per_rev
-
     self.tick_count = 0
 
-  def step_ticks( self, wheel_velocity, dt ):
-    # wheel_velocity = rad/s
-    # dt = s
-    d_angle = wheel_velocity * dt
-    d_ticks = ( d_angle / (2*pi) ) * self.ticks_per_rev
-    self.tick_count += int( d_ticks )
+  # update the tick count for this wheel encoder
+  # takes a float representing the number of forward revolutions made
+  def step_revolutions( self, revolutions ):
+    self.tick_count += int( revolutions * self.ticks_per_rev )
 
   def read( self ):
     return self.tick_count

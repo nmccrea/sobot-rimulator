@@ -58,8 +58,8 @@ class Robot: # Khepera3 robot
     self.pose = Pose( 0.0, 0.0, 0.0 )
 
     # wheel encoders
-    self.left_wheel_encoder = WheelEncoder( K3_WHEEL_RADIUS, K3_WHEEL_TICKS_PER_REV )
-    self.right_wheel_encoder = WheelEncoder( K3_WHEEL_RADIUS, K3_WHEEL_TICKS_PER_REV )
+    self.left_wheel_encoder = WheelEncoder( K3_WHEEL_TICKS_PER_REV )
+    self.right_wheel_encoder = WheelEncoder( K3_WHEEL_TICKS_PER_REV )
     self.wheel_encoders = [ self.left_wheel_encoder, self.right_wheel_encoder ]
     
     # IR sensors
@@ -86,12 +86,9 @@ class Robot: # Khepera3 robot
     v_l = self.left_wheel_drive_rate
     v_r = self.right_wheel_drive_rate
 
-    # step robot pose
-    self.dynamics.apply_dynamics( self.pose, v_l, v_r, dt )
-
-    # update wheel encoders
-    self.left_wheel_encoder.step_ticks( v_l, dt )
-    self.right_wheel_encoder.step_ticks( v_r, dt )
+    # apply the robot dynamics to moving parts
+    self.dynamics.apply_dynamics( v_l, v_r, dt,
+                                  self.pose, self.wheel_encoders )
 
     # update global geometry
     self.global_geometry = self.geometry.get_transformation_to_pose( self.pose )

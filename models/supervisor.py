@@ -14,12 +14,12 @@ class Supervisor:
                       initial_pose = Pose( 0.0, 0.0, 0.0) ):
     # robot representation
     # NOTE: the supervisor does NOT have access to the robot, only the robot's sensor output
+    self.robot_wheel_radius = wheel_radius
+    self.robot_wheel_base_length = wheel_base_length
     self.robot_wheel_encoders = wheel_encoders
     self.robot_proximity_sensors = proximity_sensors
 
     # odometry information
-    self.robot_wheel_radius = wheel_radius
-    self.robot_wheel_base_length = wheel_base_length
     self.wheel_encoder_ticks_per_revolution = wheel_encoders[0].ticks_per_rev
     self.prev_ticks_left = 0
     self.prev_ticks_right = 0
@@ -58,7 +58,7 @@ class Supervisor:
     # read the wheel encoder values
     ticks_left, ticks_right = self.read_wheel_encoders()
 
-    # get the difference in ticks since the last iterationi
+    # get the difference in ticks since the last iteration
     d_ticks_left = ticks_left - self.prev_ticks_left
     d_ticks_right = ticks_right - self.prev_ticks_right
     
