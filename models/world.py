@@ -15,7 +15,7 @@ class World:
     self.dt = 0.05        # seconds
     
     # initialize lists of world objects
-    self.computers = []
+    self.supervisors = []
     self.robots = []
     self.obstacles = []
 
@@ -31,10 +31,10 @@ class World:
     # apply physics interactions
     self.physics.apply_physics()
 
-    # NOTE: the computers must run last to ensure they are observing the "current" world
-    # step all of the computers
-    for computer in self.computers:
-      computer.execute()
+    # NOTE: the supervisors must run last to ensure they are observing the "current" world
+    # step all of the supervisors
+    for supervisor in self.supervisors:
+      supervisor.execute()
 
     # increment world time
     self.world_time += dt
@@ -43,7 +43,7 @@ class World:
 
   def add_robot( self, robot ):
     self.robots.append( robot )
-    self.computers.append( robot.supervisor )
+    self.supervisors.append( robot.supervisor )
 
   def add_obstacle( self, obstacle ):
     self.obstacles.append( obstacle )
