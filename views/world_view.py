@@ -1,8 +1,6 @@
 #!/usr/bin/python
 # -*- Encoding: utf-8 -*
 
-# Python implementation of the Week 2 exercise.
-
 import Euv.EuvGtk as Euv
 import Euv.Frame as Frame
 import Euv.Shapes as Shapes
