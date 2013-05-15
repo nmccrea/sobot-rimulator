@@ -10,10 +10,10 @@ class Supervisor:
                       initial_pose = Pose( 0.0, 0.0, 0.0) ):
     # robot
     self.robot = robot
-    self.robot_wheel_radius = robot.wheel_radius
-    self.robot_wheel_base_length = robot.wheel_base_length
 
     # odometry information
+    self.robot_wheel_radius = robot.wheel_radius
+    self.robot_wheel_base_length = robot.wheel_base_length
     self.wheel_encoder_ticks_per_revolution = robot.left_wheel_encoder.ticks_per_rev
     self.prev_ticks_left = 0
     self.prev_ticks_right = 0
