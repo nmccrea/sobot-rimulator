@@ -18,6 +18,9 @@ class Supervisor:
     self.prev_ticks_left = 0
     self.prev_ticks_right = 0
 
+    # goal
+    self.goal = [ -1.0, 1.3 ]
+
     # state estimate
     self.estimated_pose = initial_pose
 

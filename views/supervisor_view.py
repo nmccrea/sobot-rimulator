@@ -14,7 +14,19 @@ class SupervisorView:
 
   # draw a representation of the supervisor's internal state to the frame
   def draw_supervisor_to_frame( self, frame ):
+    self._draw_goal_to_frame( frame )
     self._draw_robot_state_estimate_to_frame( frame )
+
+  def _draw_goal_to_frame( self, frame ):
+    goal = self.supervisor.goal
+    frame.add_circle( pos = goal,
+                      radius = 0.05,
+                      color = "dark green",
+                      alpha = 0.25 )
+    frame.add_circle( pos = goal,
+                      radius = 0.01,
+                      color = "black",
+                      alpha = 0.5 )
 
   def _draw_robot_state_estimate_to_frame( self, frame ):
     estimated_pose = self.supervisor.estimated_pose
