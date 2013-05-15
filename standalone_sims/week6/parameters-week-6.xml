@@ -1,5 +1,0 @@
-<parameters>
-    <direction dir="right" />
-    <threshold d_fw="0.1" />
-    <gains kp="5" ki="0" kd="0" />
-</parameters>

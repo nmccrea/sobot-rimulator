@@ -1,8 +1,0 @@
-<pid>
-    <arbitration type="switching" />
-    <alpha value="0.25" />
-    <thresholds d_stop="0.02" d_at_obs="0.13" d_unsafe="0.1" />
-    <goal x="1" y="1" />
-    <velocity v="0.1" />
-    <gains kp="5" ki="0" kd="0" />
-</pid>
