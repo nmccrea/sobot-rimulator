@@ -4,6 +4,7 @@
 import Euv.Shapes as Shapes
 import utils.linalg2_util as linalg
 from proximity_sensor_view import *
+from supervisor_view import *
 
 # Khepera3 Dimensions (copied from Sim.I.Am by J.P. de la Croix)
 K3_TOP_PLATE = [[ -0.031,  0.043 ],
@@ -19,6 +20,9 @@ class RobotView:
   def __init__( self, viewer, robot ):
     self.viewer = viewer
     self.robot = robot
+
+    # add the supervisor views for this robot
+    self.supervisor_view = SupervisorView( viewer, robot.supervisor )
     
     # add the IR sensor views for this robot
     self.ir_sensor_views = []
@@ -28,6 +32,9 @@ class RobotView:
   def draw_robot_to_frame( self, frame ):
     robot = self.robot
 
+    # draw the internal state ( supervisor ) to the frame
+    self.supervisor_view.draw_supervisor_to_frame( frame )
+
     # draw the IR sensors to the frame
     for ir_sensor_view in self.ir_sensor_views:
       ir_sensor_view.draw_proximity_sensor_to_frame( frame )
@@ -36,7 +43,7 @@ class RobotView:
     robot_bottom = robot.global_geometry.vertexes
     frame.add_polygons( [ robot_bottom ],
                         color = "blue",
-                        alpha = 0.7 ) 
+                        alpha = 0.5 ) 
     
 
     # add decoration
@@ -46,17 +53,4 @@ class RobotView:
                                                       robot_pos )
     frame.add_polygons( [ robot_top ],
                         color = "black",
-                        alpha = 1.0 )
-
-    # === FOR DEBUGGING: ===
-    # self._draw_robot_internal_estimate_to_frame( frame )
-
-  def _draw_robot_internal_estimate_to_frame( self, frame ):
-    # NOTE: this method not built for performance
-    robot_estimated_pose = self.robot.supervisor.estimated_pose
-    geometry = self.robot.geometry.get_transformation_to_pose( robot_estimated_pose )
-
-    frame.add_polygons( [ geometry.vertexes ],
-                        color = "blue",
                         alpha = 0.5 )
-
