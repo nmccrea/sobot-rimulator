@@ -7,20 +7,20 @@ from pose import *
 
 class Supervisor:
 
-  def __init__( self, proximity_sensors,
-                      wheel_encoders,
+  def __init__( self, robot_interface,
                       wheel_radius,
                       wheel_base_length,
+                      wheel_encoder_ticks_per_rev,
                       initial_pose = Pose( 0.0, 0.0, 0.0) ):
+
     # robot representation
-    # NOTE: the supervisor does NOT have access to the robot, only the robot's sensor output
-    self.robot_wheel_radius = wheel_radius
-    self.robot_wheel_base_length = wheel_base_length
-    self.robot_wheel_encoders = wheel_encoders
-    self.robot_proximity_sensors = proximity_sensors
+    # NOTE: the supervisor does NOT have access to the physical robot, only the robot's interface
+    self.robot = robot_interface
 
     # odometry information
-    self.wheel_encoder_ticks_per_revolution = wheel_encoders[0].ticks_per_rev
+    self.robot_wheel_radius = wheel_radius
+    self.robot_wheel_base_length = wheel_base_length
+    self.wheel_encoder_ticks_per_revolution = wheel_encoder_ticks_per_rev
     self.prev_ticks_left = 0
     self.prev_ticks_right = 0
 
@@ -41,14 +41,6 @@ class Supervisor:
 
     # execute the current controller's control loop
     self.current_controller.execute( self.estimated_pose )
-  
-  # read the proximity sensors
-  def read_proximity_sensors( self ):
-    return [ s.read() for s in self.robot_proximity_sensors ]
-
-  # read the wheel encoders
-  def read_wheel_encoders( self ):
-    return [ e.read() for e in self.robot_wheel_encoders ]
 
   # update the estimated position of the robot using it's wheel encoder readings
   def update_odometry( self ):
@@ -56,7 +48,7 @@ class Supervisor:
     N = float( self.wheel_encoder_ticks_per_revolution )
 
     # read the wheel encoder values
-    ticks_left, ticks_right = self.read_wheel_encoders()
+    ticks_left, ticks_right = self.robot.read_wheel_encoders()
 
     # get the difference in ticks since the last iteration
     d_ticks_left = ticks_left - self.prev_ticks_left
