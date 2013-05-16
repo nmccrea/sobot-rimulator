@@ -11,15 +11,15 @@ class DifferentialDriveDynamics:
     self.wheel_radius = wheel_radius
     self.wheel_base_length = wheel_base_length
     
-  def uni_to_diff( self, v, w ):
+  def uni_to_diff( self, v, omega ):
     # v = translational velocity (m/s)
-    # w = angular velocity (rad/s)
+    # omega = angular velocity (rad/s)
     
     R = self.wheel_radius
     L = self.wheel_base_length
     
-    v_l = ( (2.0 * v) - (w*L) ) / (2.0 * R)
-    v_r = ( (2.0 * v) + (w*L) ) / (2.0 * R)
+    v_l = ( (2.0 * v) - (omega*L) ) / (2.0 * R)
+    v_r = ( (2.0 * v) + (omega*L) ) / (2.0 * R)
     
     return v_l, v_r
     
@@ -31,9 +31,9 @@ class DifferentialDriveDynamics:
     L = self.wheel_base_length
     
     v = ( R / 2.0 ) * ( v_r + v_l )
-    w = ( R / L ) * ( v_r - v_l )
+    omega = ( R / L ) * ( v_r - v_l )
     
-    return v, w
+    return v, omega
   
   # apply physical dynamics to the given representations of moving parts
   def apply_dynamics( self, v_l, v_r, d_t,                                # dynamics parameters
