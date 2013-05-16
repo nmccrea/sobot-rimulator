@@ -33,5 +33,5 @@ class SupervisorView:
     vertexes.append( vertexes[0] )    # close the drawn polygon
     frame.add_lines(  [ vertexes ],
                       color = "black",
-                      linewidth = 0.005,
+                      linewidth = 0.0075,
                       alpha = 0.5 )
