@@ -14,3 +14,7 @@ class RobotInterface:
   # read the wheel encoders
   def read_wheel_encoders( self ):
     return [ e.read() for e in self.robot.wheel_encoders ]
+
+  def set_unicycle_motion( self, v, omega ):
+    v_l, v_r = self.robot.dynamics.uni_to_diff( v, omega )
+    self.robot.set_wheel_drive_rates( v_l, v_r )
