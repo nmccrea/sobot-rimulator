@@ -15,4 +15,3 @@ class GoToAngleController:
     omega = self.k_p * e
 
     return omega
-    

@@ -3,9 +3,10 @@
 
 from math import *
 from utils import linalg2_util as linalg
-from go_to_angle_controller import *
 from pose import *
 from sim_exceptions.goal_reached_exception import *
+
+from controller.go_to_angle_controller import *
 
 class Supervisor:
 
@@ -29,8 +30,7 @@ class Supervisor:
     self.prev_ticks_right = 0
 
     # controllers
-    self.controllers = [ GoToAngleController() ]
-    self.current_controller = self.controllers[0]
+    self.go_to_angle_controller = GoToAngleController()
 
     # goal
     self.goal = goal
@@ -52,7 +52,7 @@ class Supervisor:
     # TODO: establish controller-agnostic algorithm here
     vect_to_goal = linalg.sub( self.goal, self.estimated_pose.vunpack()[0] )
     theta_d = atan2( vect_to_goal[1], vect_to_goal[0] )
-    omega = self.current_controller.execute( self.estimated_pose, theta_d )
+    omega = self.go_to_angle_controller.execute( self.estimated_pose, theta_d )
     v = 0.5
     self.robot.set_unicycle_motion( v, omega )
 
