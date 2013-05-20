@@ -58,6 +58,8 @@ class Physics():
         # if there is an intersection, update the sensor with the new delta value
         if dmin != float('inf'):
           sensor.detect( dmin )
+        else:
+          sensor.detect( None )
 
   # a fast test to determine if two geometries might be touching
   def _check_nearness( self, geometry1, geometry2 ):
