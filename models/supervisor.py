@@ -5,6 +5,7 @@ from math import *
 from utils import linalg2_util as linalg
 from go_to_angle_controller import *
 from pose import *
+from sim_exceptions.goal_reached_exception import *
 
 class Supervisor:
 
@@ -38,6 +39,9 @@ class Supervisor:
 
   # execute one control loop
   def execute( self ):
+    if linalg.distance( self.estimated_pose.vposition(), self.goal ) < self.d_stop:
+      raise GoalReachedException()
+
     # run odometry calculations to get updated pose estimate
     self.update_odometry()
 

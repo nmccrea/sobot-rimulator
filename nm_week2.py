@@ -31,8 +31,7 @@ class Week2Simulator:
 
   def run_sim( self ):
     # loop the simulation
-    # TODO make the loop condition smart
-    while self.world.world_time < 5:
+    while self.world.world_time < 100:
       # render the current state
       self.world_view.render_frame()
       
@@ -40,7 +39,10 @@ class Week2Simulator:
       try:
         self.world.step()
       except CollisionException:
-        print "\n\nCOLLISION!!\n\n"
+        print "\n\nCOLLISION!\n\n"
+        break
+      except GoalReachedException:
+        print "\n\nGOAL REACHED!\n\n"
         break
     
     # pause the GUI thread ( app crashes otherwise ) 

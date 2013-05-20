@@ -43,3 +43,7 @@ class Pose:
   # return the constituents of this pose as all scalars
   def sunpack( self ):
     return self.x, self.y, self.theta
+
+  # return the position component of this pose as a vector
+  def vposition( self ):
+    return [ self.x, self.y ]
