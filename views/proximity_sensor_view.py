@@ -28,15 +28,36 @@ class ProximitySensorView:
                                                             sensor_theta,
                                                             sensor_pos )
 
+    # shade the sensor cone according to positive detection
+    if self.proximity_sensor.target_delta != None:
+      color = "dark red"
+      alpha = 0.45
+    else:
+      color = "light red"
+      alpha = 0.3
+
     # add the sensor cone to the frame
     frame.add_polygons( [ sensor_cone_poly ],
-                        color = "red",
-                        alpha = 0.3 )
+                        color = color,
+                        alpha = alpha )
 
     # === FOR DEBUGGING: ===
     # self._draw_detector_line_to_frame( frame )
     # self._draw_detector_line_origins_to_frame( frame )
     # self._draw_bounding_circle_to_frame( frame )
+    # self._draw_detection( frame )
+
+  def _draw_detection( self, frame ):
+    target_delta = self.proximity_sensor.target_delta
+    if target_delta != None:
+      detector_endpoints = self.proximity_sensor.detector_line.vertexes
+      detector_vector = linalg.sub( detector_endpoints[1], detector_endpoints[0] )
+      target_vector = linalg.add( detector_endpoints[0], linalg.scale( detector_vector, target_delta ) )
+      
+      frame.add_circle( pos = target_vector,
+                        radius = 0.02,
+                        color = "black",
+                        alpha = 0.7 )
   
   def _draw_detector_line_to_frame( self, frame ):
     vertexes = self.proximity_sensor.detector_line.vertexes
