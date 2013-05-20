@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- Encoding: utf-8 -*
 
-from math import *
+from utils import math_util
 
 class GoToAngleController:
 
@@ -11,7 +11,7 @@ class GoToAngleController:
 
   def execute( self, estimated_pose, theta_d ):
     theta = estimated_pose.theta
-    e = theta_d - theta
+    e = math_util.normalize_angle( theta_d - theta )
     omega = self.k_p * e
 
     return omega
