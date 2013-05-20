@@ -13,6 +13,8 @@ class Supervisor:
                       wheel_radius,
                       wheel_base_length,
                       wheel_encoder_ticks_per_rev,
+                      goal = [ 0.0, 0.0 ],
+                      d_stop = 0.05,
                       initial_pose = Pose( 0.0, 0.0, 0.0) ):
 
     # robot representation
@@ -31,8 +33,8 @@ class Supervisor:
     self.current_controller = self.controllers[0]
 
     # goal
-    self.goal = [ -1.0, -1.3 ]
-    self.d_stop = 0.05
+    self.goal = goal
+    self.d_stop = d_stop
 
     # state estimate
     self.estimated_pose = initial_pose

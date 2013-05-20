@@ -16,15 +16,20 @@ class Week2Simulator:
     # create the simulation world
     self.world = World()
     self.world_view = WorldView()
-    
-    # create the robot
-    self._add_robot( Robot() )
 
     # create some obstacles
     obstacle = RectangleObstacle( 0.1,
                                   0.2,
                                   Pose( 0.3, -0.6, pi/4 ) )
     self._add_obstacle( obstacle )
+    
+    # create the robot
+    robot = Robot()
+    self._add_robot( robot )
+
+    # program the robot supervisor
+    supervisor = robot.supervisor
+    supervisor.goal = [ -1.0, -1.3 ]
     
     # run the simulation
     self.run_sim()
