@@ -36,24 +36,31 @@ class ProximitySensor( Sensor ):
     self.max_range = max_range
     self.phi_view = phi_view
 
+    # physical distance detected to target as a proportion of max_range ( must be in range [0, 1] or None )
+    self.target_delta = None
+
     # sensor output
     self.read_value = 0
 
   # set this proximity sensor to detect an object at distance ( delta * max_range )
   def detect( self, delta ):
     if delta != None and ( delta < 0.0 or delta > 1.0 ):
-      raise Exception("d out of bounds - must be in range [0.0, 1.0]")
+      raise Exception("delta out of bounds - must be in range [0.0, 1.0]")
 
-    max_range = self.max_range
-    min_range = self.min_range
-
-    d = max_range * delta
-    if d == None or d < 0.0:  # d < 0
+    if delta == None:
+      self.target_delta = None
       self.read_value = 0
-    elif d <= min_range:      # d in [0.00, 0.02]
-      self.read_value = 3960
-    else:                     # d in (0.02, 0.20]
-      self.read_value = int( ceil( 3960 * e**( -30 * (d-0.02) ) ) )
+    else:
+      max_range = self.max_range
+      min_range = self.min_range
+
+      d = max_range * delta
+      if d <= min_range:        # d in [0.00, 0.02]
+        self.target_delta = min_range / max_range
+        self.read_value = 3960
+      else:                     # d in (0.02, 0.20]
+        self.target_delta = delta
+        self.read_value = int( ceil( 3960 * e**( -30 * (d-0.02) ) ) )
 
   # get this sensor's output
   def read( self ):
