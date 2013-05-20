@@ -29,6 +29,8 @@ class RobotView:
     for ir_sensor in robot.ir_sensors:
       self.ir_sensor_views.append( ProximitySensorView( viewer, ir_sensor ) )
 
+    self.traverse_path = []  # this robot's traverse path
+
   def draw_robot_to_frame( self, frame ):
     robot = self.robot
 
@@ -54,3 +56,13 @@ class RobotView:
     frame.add_polygons( [ robot_top ],
                         color = "black",
                         alpha = 0.5 )
+    
+    # draw the robot's traverse path
+    self._draw_traverse_path_to_frame( frame )
+
+  def _draw_traverse_path_to_frame( self, frame ):
+    position = self.robot.pose.vposition()
+    self.traverse_path.append( position )
+    frame.add_lines(  [ self.traverse_path ],
+                      color = "black",
+                      linewidth = 0.01 )
