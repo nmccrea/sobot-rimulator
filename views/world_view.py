@@ -24,6 +24,7 @@ class WorldView:
     self.viewer = Euv.Viewer( size = (VIEW_PORT_PIX_W, VIEW_PORT_PIX_H+CONTROLS_PIX_H),
                           view_port_center = (0, 0),
                           view_port_width = WORLD_WIDTH,
+                          recording = False,
                           flip_y = True )
 
     # initialize the current frame object
