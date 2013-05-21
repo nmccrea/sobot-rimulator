@@ -19,6 +19,9 @@ class Supervisor:
                       d_stop = 0.05,
                       initial_pose = Pose( 0.0, 0.0, 0.0) ):
 
+    # internal clock time in seconds
+    self.time = 0.0
+
     # robot representation
     # NOTE: the supervisor does NOT have access to the physical robot, only the robot's interface
     self.robot = robot_interface
@@ -40,6 +43,17 @@ class Supervisor:
 
     # state estimate
     self.estimated_pose = initial_pose
+  
+  # simulate this supervisor running for one time increment
+  def step( self, dt ):
+    # increment the internal clock time
+    self.time += dt
+
+    # NOTE: for simplicity, we assume that the computer executes exactly one control loop for every simulation time increment
+    # although technically this is not likely to be realistic it is a good simplificiation
+
+    # execute one full control loop
+    self.execute()
 
   # execute one control loop
   def execute( self ):
@@ -47,16 +61,15 @@ class Supervisor:
       raise GoalReachedException()
 
     # run odometry calculations to get updated pose estimate
-    self.update_odometry()
+    self._update_odometry()
 
     # execute the current controller's control loop
-
     # TODO: establish controller-agnostic algorithm here
     v, omega = self.go_to_goal_controller.execute( self.estimated_pose, self.goal )
     self.robot.set_unicycle_motion( v, omega )
 
   # update the estimated position of the robot using it's wheel encoder readings
-  def update_odometry( self ):
+  def _update_odometry( self ):
     R = self.robot_wheel_radius
     N = float( self.wheel_encoder_ticks_per_revolution )
 

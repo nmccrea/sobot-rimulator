@@ -34,7 +34,7 @@ class World:
     # NOTE: the supervisors must run last to ensure they are observing the "current" world
     # step all of the supervisors
     for supervisor in self.supervisors:
-      supervisor.execute()
+      supervisor.step( dt )
 
     # increment world time
     self.world_time += dt
