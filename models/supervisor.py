@@ -7,6 +7,7 @@ from pose import *
 from sim_exceptions.goal_reached_exception import *
 
 from controller.go_to_angle_controller import *
+from controller.go_to_goal_controller import *
 
 class Supervisor:
 
@@ -31,6 +32,7 @@ class Supervisor:
 
     # controllers
     self.go_to_angle_controller = GoToAngleController()
+    self.go_to_goal_controller = GoToGoalController()
 
     # goal
     self.goal = goal
@@ -50,10 +52,7 @@ class Supervisor:
     # execute the current controller's control loop
 
     # TODO: establish controller-agnostic algorithm here
-    vect_to_goal = linalg.sub( self.goal, self.estimated_pose.vunpack()[0] )
-    theta_d = atan2( vect_to_goal[1], vect_to_goal[0] )
-    omega = self.go_to_angle_controller.execute( self.estimated_pose, theta_d )
-    v = 0.5
+    v, omega = self.go_to_goal_controller.execute( self.estimated_pose, self.goal )
     self.robot.set_unicycle_motion( v, omega )
 
   # update the estimated position of the robot using it's wheel encoder readings
