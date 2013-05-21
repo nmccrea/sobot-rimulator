@@ -1,0 +1,14 @@
+OBSERVATIONS AND HYPOTHESES TO INVESTIGATE FURTHER
+
+Wheel Encoder Behavior:
+======================
+The loss in accuracy in wheel encoders seems to always takes the form of the robot believing it is moving slower than it acctually is. This is due to the fraction of a rotation between the most recent tick and the current wheel's position that is "lost" to the internal computer.
+
+
+GTG PID Controller:
+==============
+When GTG controller uses angle to goal as it's error, a relatively small integral term will induce oscillations, which may be damped by the other terms.
+
+Using the distance to the goal as the error does not work. Is this because the state-space is non-linear in such a model?
+
+
