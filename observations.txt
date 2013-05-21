@@ -11,4 +11,4 @@ When GTG controller uses angle to goal as it's error, a relatively small integra
 
 Using the distance to the goal as the error does not work. Is this because the state-space is non-linear in such a model?
 
-
+Idea behind good unicycle velocity as function of unicycle omega (angular velocity).
