@@ -41,7 +41,7 @@ class Supervisor:
 
     # controllers
     controller_interface = SupervisorControllerInterface( self )
-    self.go_to_angle_controller = GoToAngleController()
+    self.go_to_angle_controller = GoToAngleController( controller_interface )
     self.go_to_goal_controller = GoToGoalController( controller_interface )
 
     # goal

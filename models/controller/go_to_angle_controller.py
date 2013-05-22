@@ -5,13 +5,16 @@ from utils import math_util
 
 class GoToAngleController:
 
-  def __init__( self ):
-    # gains
-    self.k_p = 1.2
+  def __init__( self, supervisor ):
+    # bind the supervisor
+    self.supervisor = supervisor
 
-  def execute( self, estimated_pose, theta_d ):
-    theta = estimated_pose.theta
+    # gains
+    self.k_p = 5.0
+
+  def execute( self, theta_d ):
+    theta = self.supervisor.estimated_pose().theta
     e = math_util.normalize_angle( theta_d - theta )
     omega = self.k_p * e
 
-    return omega
+    self.supervisor.set_outputs( 1.0, omega )
