@@ -10,15 +10,13 @@ from robot_supervisor_interface import *
 from supervisor import *
 from wheel_encoder import *
 
-# Khepera3 Properties (copied from Sim.I.Am by J.P. de la Croix)
+# Khepera3 Properties (from Sim.I.Am by J.P. de la Croix)
 K3_WHEEL_RADIUS = 0.021         # meters
 K3_WHEEL_BASE_LENGTH = 0.0885   # meters
 K3_WHEEL_TICKS_PER_REV = 2765
-K3_SPEED_FACTOR = 6.2953e-6     
-K3_TRANS_VEL_LIMIT = 0.3148     # m/s
-K3_ANG_VEL_LIMIT = 2.2763       # rad/s
+K3_MAX_WHEEL_DRIVE_RATE = 15.0  # rad/s
 
-# Khepera3 Dimensions (copied from Sim.I.Am by J.P. de la Croix)
+# Khepera3 Dimensions (from Sim.I.Am by J.P. de la Croix)
 K3_BOTTOM_PLATE = [[ -0.024,  0.064 ],
                    [  0.033,  0.064 ],
                    [  0.057,  0.043 ],
@@ -100,12 +98,10 @@ class Robot: # Khepera3 robot
   
   # set the drive rates (angular velocities) for this robot's wheels in rad/s 
   def set_wheel_drive_rates( self, v_l, v_r ):
-    # limit the speeds:
-    v, w = self.dynamics.diff_to_uni( v_l, v_r )
-    v = max( min( v, K3_TRANS_VEL_LIMIT ), -K3_TRANS_VEL_LIMIT )
-    w = max( min( w, K3_ANG_VEL_LIMIT ), -K3_ANG_VEL_LIMIT )
-    v_l, v_r = self.dynamics.uni_to_diff( v, w )
-    
+    # simulate physical limit on drive motors
+    v_l = min( K3_MAX_WHEEL_DRIVE_RATE, v_l )
+    v_r = min( K3_MAX_WHEEL_DRIVE_RATE, v_r )
+
     # set drive rates
     self.left_wheel_drive_rate = v_l
     self.right_wheel_drive_rate = v_r

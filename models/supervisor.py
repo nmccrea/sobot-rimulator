@@ -11,6 +11,10 @@ from supervisor_controller_interface import *
 from controller.go_to_angle_controller import *
 from controller.go_to_goal_controller import *
 
+# control parameters
+K3_TRANS_VEL_LIMIT = 0.3148     # m/s
+K3_ANG_VEL_LIMIT = 2.2763       # rad/s
+
 class Supervisor:
 
   def __init__( self, robot_interface,
@@ -74,7 +78,7 @@ class Supervisor:
     self.go_to_goal_controller.execute()
 
     # output the generated control signals to the robot
-    self.robot.set_unicycle_motion( self.v_output, self.omega_output )
+    self._send_robot_commands()
 
   # update the estimated position of the robot using it's wheel encoder readings
   def _update_odometry( self ):
@@ -105,3 +109,37 @@ class Supervisor:
     # save the current tick count for the next iteration
     self.prev_ticks_left = ticks_left
     self.prev_ticks_right = ticks_right
+
+  # generate and send the correct commands to the robot
+  def _send_robot_commands( self ):
+    # limit the speeds:
+    v = max( min( self.v_output, K3_TRANS_VEL_LIMIT ), -K3_TRANS_VEL_LIMIT )
+    omega = max( min( self.omega_output, K3_ANG_VEL_LIMIT ), -K3_ANG_VEL_LIMIT )
+
+    # send the drive commands to the robot
+    v_l, v_r = self._uni_to_diff( v, omega )
+    self.robot.set_wheel_drive_rates( v_l, v_r )
+
+  def _uni_to_diff( self, v, omega ):
+    # v = translational velocity (m/s)
+    # omega = angular velocity (rad/s)
+    
+    R = self.robot_wheel_radius
+    L = self.robot_wheel_base_length
+    
+    v_l = ( (2.0 * v) - (omega*L) ) / (2.0 * R)
+    v_r = ( (2.0 * v) + (omega*L) ) / (2.0 * R)
+    
+    return v_l, v_r
+    
+  def _diff_to_uni( self, v_l, v_r ):
+    # v_l = left-wheel angular velocity (rad/s)
+    # v_r = right-wheel angular velocity (rad/s)
+    
+    R = self.robot_wheel_radius
+    L = self.robot_wheel_base_length
+    
+    v = ( R / 2.0 ) * ( v_r + v_l )
+    omega = ( R / L ) * ( v_r - v_l )
+    
+    return v, omega
