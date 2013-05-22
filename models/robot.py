@@ -6,7 +6,7 @@ from differential_drive_dynamics import *
 from polygon import *
 from pose import *
 from proximity_sensor import *
-from robot_interface import *
+from robot_supervisor_interface import *
 from supervisor import *
 from wheel_encoder import *
 
@@ -74,7 +74,7 @@ class Robot: # Khepera3 robot
     self.dynamics = DifferentialDriveDynamics( self.wheel_radius, self.wheel_base_length )
 
     # supervisor
-    self.supervisor = Supervisor( RobotInterface( self ),
+    self.supervisor = Supervisor( RobotSupervisorInterface( self ),
                                   K3_WHEEL_RADIUS, K3_WHEEL_BASE_LENGTH, K3_WHEEL_TICKS_PER_REV )
     
     ## initialize state

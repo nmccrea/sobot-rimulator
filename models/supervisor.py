@@ -53,8 +53,8 @@ class Supervisor:
     # increment the internal clock time
     self.time += dt
 
-    # NOTE: for simplicity, we assume that the computer executes exactly one control loop for every simulation time increment
-    # although technically this is not likely to be realistic it is a good simplificiation
+    # NOTE: for simplicity, we assume that the onboard computer executes exactly one control loop for every simulation time increment
+    # although technically this is not likely to be realistic, it is a good simplificiation
 
     # execute one full control loop
     self.execute()

@@ -2,7 +2,7 @@
 # -*- Encoding: utf-8 -*
 
 # a class representing the available interactions a supervisor may have with a robot
-class RobotInterface:
+class RobotSupervisorInterface:
 
   def __init__( self, robot ):
     self.robot = robot
