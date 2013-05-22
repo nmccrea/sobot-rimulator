@@ -43,6 +43,10 @@ class Supervisor:
 
     # state estimate
     self.estimated_pose = initial_pose
+
+    # CONTROL OUTPUTS - UNICYCLE
+    self.v_output = 0.0
+    self.omega_output = 0.0
   
   # simulate this supervisor running for one time increment
   def step( self, dt ):
@@ -63,10 +67,16 @@ class Supervisor:
     # run odometry calculations to get updated pose estimate
     self._update_odometry()
 
-    # execute the current controller's control loop
-    # TODO: establish controller-agnostic algorithm here
-    v, omega = self.go_to_goal_controller.execute( self.estimated_pose, self.goal )
-    self.robot.set_unicycle_motion( v, omega )
+    # execute the controller's control loop
+    self.go_to_goal_controller.execute()
+
+    # output the generated control signals to the robot
+    self.robot.set_unicycle_motion( self.v_output, self.omega_output )
+
+  # TODO: move this to the supervisor interface
+  def set_outputs( self, v, omega ):
+    self.v_output = v
+    self.omega_output = omega
 
   # update the estimated position of the robot using it's wheel encoder readings
   def _update_odometry( self ):

@@ -22,17 +22,18 @@ class GoToGoalController:
     self.prev_eP = 0.0
     self.prev_eI = 0.0
 
-  def execute( self, estimated_pose, goal ):
+  def execute( self ):
+    position, theta = self.supervisor.estimated_pose.vunpack()
+
     # calculate the time that has passed since the last iteration
     current_time = self.supervisor.time
     dt = current_time - self.prev_time
 
     # calculate the desired heading
-    vect_to_goal = linalg.sub( goal, estimated_pose.vposition() )
+    vect_to_goal = linalg.sub( self.supervisor.goal, position )
     theta_d = atan2( vect_to_goal[1], vect_to_goal[0] )
 
     # calculate the error terms
-    theta = estimated_pose.theta    
     eP = math_util.normalize_angle( theta_d - theta )
     eI = self.prev_eI + eP*dt
     eD = ( eP - self.prev_eP ) / dt
@@ -51,7 +52,7 @@ class GoToGoalController:
     self.prev_eP = eP
     self.prev_eI = eI
 
-    return v, omega
+    self.supervisor.set_outputs( v, omega )
 
     # print "\n\n"
     # print "=============="
