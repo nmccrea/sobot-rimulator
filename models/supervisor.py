@@ -14,6 +14,7 @@ from controller.go_to_goal_controller import *
 # control parameters
 K3_TRANS_VEL_LIMIT = 0.3148     # m/s
 K3_ANG_VEL_LIMIT = 2.2763       # rad/s
+D_STOP = 0.05                   # meters from goal
 
 class Supervisor:
 
@@ -22,7 +23,6 @@ class Supervisor:
                       wheel_base_length,
                       wheel_encoder_ticks_per_rev,
                       goal = [ 0.0, 0.0 ],
-                      d_stop = 0.05,
                       initial_pose = Pose( 0.0, 0.0, 0.0) ):
 
     # internal clock time in seconds
@@ -46,7 +46,6 @@ class Supervisor:
 
     # goal
     self.goal = goal
-    self.d_stop = d_stop
 
     # state estimate
     self.estimated_pose = initial_pose
@@ -68,7 +67,7 @@ class Supervisor:
 
   # execute one control loop
   def execute( self ):
-    if linalg.distance( self.estimated_pose.vposition(), self.goal ) < self.d_stop:
+    if linalg.distance( self.estimated_pose.vposition(), self.goal ) < D_STOP:
       raise GoalReachedException()
 
     # run odometry calculations to get updated pose estimate
