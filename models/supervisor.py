@@ -2,9 +2,11 @@
 # -*- Encoding: utf-8 -*
 
 from math import *
+
 from utils import linalg2_util as linalg
 from pose import *
 from sim_exceptions.goal_reached_exception import *
+from supervisor_controller_interface import *
 
 from controller.go_to_angle_controller import *
 from controller.go_to_goal_controller import *
@@ -34,8 +36,9 @@ class Supervisor:
     self.prev_ticks_right = 0
 
     # controllers
+    controller_interface = SupervisorControllerInterface( self )
     self.go_to_angle_controller = GoToAngleController()
-    self.go_to_goal_controller = GoToGoalController( self )
+    self.go_to_goal_controller = GoToGoalController( controller_interface )
 
     # goal
     self.goal = goal
@@ -72,11 +75,6 @@ class Supervisor:
 
     # output the generated control signals to the robot
     self.robot.set_unicycle_motion( self.v_output, self.omega_output )
-
-  # TODO: move this to the supervisor interface
-  def set_outputs( self, v, omega ):
-    self.v_output = v
-    self.omega_output = omega
 
   # update the estimated position of the robot using it's wheel encoder readings
   def _update_odometry( self ):
