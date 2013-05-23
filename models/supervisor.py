@@ -8,8 +8,8 @@ from pose import *
 from sim_exceptions.goal_reached_exception import *
 from supervisor_controller_interface import *
 
-from controller.go_to_angle_controller import *
-from controller.go_to_goal_controller import *
+from controllers.go_to_angle_controller import *
+from controllers.go_to_goal_controller import *
 
 # control parameters
 K3_TRANS_VEL_LIMIT = 0.3148     # m/s
