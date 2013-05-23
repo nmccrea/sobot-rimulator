@@ -30,15 +30,13 @@ class ProximitySensorView:
 
     # shade the sensor cone according to positive detection
     if self.proximity_sensor.target_delta != None:
-      color = "dark red"
-      alpha = 0.8
+      alpha = 0.9 - 0.8*self.proximity_sensor.target_delta
     else:
-      color = "light red"
-      alpha = 0.2
+      alpha = 0.1
 
     # add the sensor cone to the frame
     frame.add_polygons( [ sensor_cone_poly ],
-                        color = color,
+                        color = "red",
                         alpha = alpha )
 
     # === FOR DEBUGGING: ===
