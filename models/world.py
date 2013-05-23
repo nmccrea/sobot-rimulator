@@ -6,13 +6,13 @@ from physics import *
 
 class World:
 
-  def __init__( self ):
+  def __init__( self, dt = 0.05 ):
     # initialize physics engine
     self.physics = Physics( self )
 
     # initialize world time
     self.world_time = 0.0 # seconds
-    self.dt = 0.05        # seconds
+    self.dt = dt          # seconds
     
     # initialize lists of world objects
     self.supervisors = []
@@ -38,8 +38,6 @@ class World:
 
     # increment world time
     self.world_time += dt
-    # pause the simulation for a moment
-    time.sleep( dt )
 
   def add_robot( self, robot ):
     self.robots.append( robot )

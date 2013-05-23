@@ -10,11 +10,16 @@ from views.world_view import *
 
 from sim_exceptions.collision_exception import *
 
+REFRESH_RATE = 20.0 # hertz
+
 class Week2Simulator:
 
   def __init__( self ):
+    # timing control
+    self.period = 1.0 / REFRESH_RATE  # seconds
+
     # create the simulation world
-    self.world = World()
+    self.world = World( self.period )
     self.world_view = WorldView()
 
     # create some obstacles
@@ -35,6 +40,9 @@ class Week2Simulator:
     self.run_sim()
 
   def run_sim( self ):
+    # initialize timing control
+    next_refresh_time = time.time() + self.period
+
     # loop the simulation
     while self.world.world_time < 100:
       # render the current state
@@ -49,6 +57,10 @@ class Week2Simulator:
       except GoalReachedException:
         print "\n\nGOAL REACHED!\n\n"
         break
+
+      # pause the simulation until the next refresh time
+      while time.time() < next_refresh_time: time.sleep( 0 )  # loop sleep until time to refresh
+      next_refresh_time = time.time() + self.period           # update next refresh time
     
     # pause the GUI thread ( app crashes otherwise ) 
     self.world_view.wait()
