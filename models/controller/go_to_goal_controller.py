@@ -14,7 +14,7 @@ class GoToGoalController:
 
     # gains
     self.kP = 5.0
-    self.kI = 0.01
+    self.kI = 0.5
     self.kD = 0.1
     
     # stored values - for computing next results
@@ -45,7 +45,7 @@ class GoToGoalController:
     # velocity is v_max when omega is 0,
     # drops rapidly to zero as |omega| rises
     v_max = 2.0 # TODO: move this
-    v = v_max / ( log( abs( omega ) + 1 ) + ( 10 * abs( omega ) ) + 1 )
+    v = v_max / ( abs( omega ) + 1 )**2
 
     # store values for next control iteration
     self.prev_time = current_time
