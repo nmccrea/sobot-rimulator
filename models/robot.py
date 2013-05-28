@@ -73,7 +73,7 @@ class Robot: # Khepera3 robot
 
     # supervisor
     self.supervisor = Supervisor( RobotSupervisorInterface( self ),
-                                  K3_WHEEL_RADIUS, K3_WHEEL_BASE_LENGTH, K3_WHEEL_TICKS_PER_REV )
+                                  K3_WHEEL_RADIUS, K3_WHEEL_BASE_LENGTH, K3_WHEEL_TICKS_PER_REV, K3_SENSOR_POSES )
     
     ## initialize state
     # set wheel drive rates (rad/s)

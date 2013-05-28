@@ -18,12 +18,13 @@ D_STOP = 0.05                   # meters from goal
 
 class Supervisor:
 
-  def __init__( self, robot_interface,
-                      wheel_radius,
-                      wheel_base_length,
-                      wheel_encoder_ticks_per_rev,
-                      goal = [ 0.0, 0.0 ],
-                      initial_pose = Pose( 0.0, 0.0, 0.0) ):
+  def __init__( self, robot_interface,                        # the interface through which this supervisor will interact with the robot
+                      wheel_radius,                           # the radius of a drive wheel on the robot
+                      wheel_base_length,                      # the robot's wheel base
+                      wheel_encoder_ticks_per_rev,            # the number of wheel encoder ticks per revolution of a drive wheel
+                      sensor_placements,                      # placement pose of the sensors on the robot body
+                      goal = [ 0.0, 0.0 ],                    # the goal to which this supervisor will guide the robot
+                      initial_pose = Pose( 0.0, 0.0, 0.0) ):  # the pose the robot will have when control begins
 
     # internal clock time in seconds
     self.time = 0.0
@@ -31,6 +32,9 @@ class Supervisor:
     # robot representation
     # NOTE: the supervisor does NOT have access to the physical robot, only the robot's interface
     self.robot = robot_interface
+
+    # sensor placement poses
+    self.sensor_placements = sensor_placements
 
     # odometry information
     self.robot_wheel_radius = wheel_radius
