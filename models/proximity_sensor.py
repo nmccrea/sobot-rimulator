@@ -10,7 +10,7 @@ from sensor import *
 class ProximitySensor( Sensor ):
 
   def __init__( self, robot,          # robot this sensor is attached to
-                      relative_pose,  # pose of this sensor relative to robot (NOTE: normalized on robot located at origin and with theta 0, i.e. facing east )
+                      placement_pose, # pose of this sensor relative to the robot (NOTE: normalized on robot located at origin and with theta 0, i.e. facing east )
                       min_range,      # min sensor range (meters)
                       max_range,      # max sensor range (meters)
                       phi_view ):     # view angle of this sensor (rad from front of robot)
@@ -20,8 +20,8 @@ class ProximitySensor( Sensor ):
     self.robot = robot
 
     # pose attributes
-    self.relative_pose = relative_pose
-    self.pose = Pose( 0.0, 0.0, 0.0 ) # initialize pose object
+    self.placement_pose = placement_pose  # pose of this sensor relative to the robot
+    self.pose = Pose( 0.0, 0.0, 0.0 )     # global pose of this sensor
     
     # detector line
     self.detector_line_source = LineSegment( [ [0.0, 0.0], [max_range, 0.0] ] )
@@ -80,7 +80,7 @@ class ProximitySensor( Sensor ):
     robot_vect, robot_theta = self.robot.pose.vunpack()
 
     # get the elements of this sensor's relative pose
-    rel_vect, rel_theta = self.relative_pose.vunpack()
+    rel_vect, rel_theta = self.placement_pose.vunpack()
     
     # construct this sensor's global pose
     global_vect_d = linalg.rotate_vector( rel_vect, robot_theta )
