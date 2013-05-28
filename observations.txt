@@ -2,7 +2,7 @@ OBSERVATIONS AND HYPOTHESES TO INVESTIGATE FURTHER
 
 Wheel Encoder Behavior:
 ======================
-The loss in accuracy in wheel encoders seems to always takes the form of the robot believing it is moving slower than it acctually is. This is due to the fraction of a rotation between the most recent tick and the current wheel's position that is "lost" to the internal computer.
+The discrete nature of the wheel encoder essentially results in a discrete set of points in the world where the robot may believe it is located. It would be interesting to figure out what the complete set of such points looks like.
 
 
 GTG PID Controller:
