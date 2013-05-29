@@ -11,6 +11,10 @@ class SupervisorControllerInterface:
   def estimated_pose( self ):
     return self.supervisor.estimated_pose
 
+  # get the placement poses of the robot's sensors
+  def sensor_placements( self ):
+    return self.supervisor.sensor_placements
+
   # get the supervisor's goal
   def goal( self ):
     return self.supervisor.goal

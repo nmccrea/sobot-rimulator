@@ -8,6 +8,7 @@ from pose import *
 from sim_exceptions.goal_reached_exception import *
 from supervisor_controller_interface import *
 
+from controllers.avoid_obstacle_controller import *
 from controllers.go_to_angle_controller import *
 from controllers.go_to_goal_controller import *
 
@@ -25,7 +26,7 @@ class Supervisor:
                       sensor_placements,                      # placement pose of the sensors on the robot body
                       goal = [ 0.0, 0.0 ],                    # the goal to which this supervisor will guide the robot
                       initial_pose = Pose( 0.0, 0.0, 0.0) ):  # the pose the robot will have when control begins
-
+    
     # internal clock time in seconds
     self.time = 0.0
 
@@ -34,7 +35,7 @@ class Supervisor:
     self.robot = robot_interface
 
     # sensor placement poses
-    self.sensor_placements = sensor_placements
+    self.sensor_placements = [ Pose( rawpose[0], rawpose[1], radians( rawpose[2] ) ) for rawpose in sensor_placements ]
 
     # odometry information
     self.robot_wheel_radius = wheel_radius
@@ -47,6 +48,7 @@ class Supervisor:
     controller_interface = SupervisorControllerInterface( self )
     self.go_to_angle_controller = GoToAngleController( controller_interface )
     self.go_to_goal_controller = GoToGoalController( controller_interface )
+    self.avoid_obstacle_controller = AvoidObstacleController( controller_interface )
 
     # goal
     self.goal = goal
