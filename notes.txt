@@ -5,3 +5,5 @@ Development Constraints:
 
   - All solid geometries must be convex. This is the assumption in collision tests and sensor detection algorithms.
     If concave objects are needed, building them out of multiple convex objects should be a fully functional alternative.
+
+  - Regarding physical limits on robot velocities: Sim.I.Am implements limits on angular and translational velocities, i.e. the parameters of the unicycle model. It seemed more realistic to implement physical limits on the individual robot drive wheels (maximum angular velocity of each). In addition, the robot Supervisor can be "programmed" to maintain drive signals within a certain envelope of unicycle-model velocities. The physical and "programmed" limits together will bound the possible behavior of the robot.
