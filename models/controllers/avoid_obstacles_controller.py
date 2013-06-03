@@ -6,7 +6,7 @@ from math import *
 from utils import linalg2_util as linalg
 from utils import math_util
 
-class AvoidObstacleController:
+class AvoidObstaclesController:
 
   def __init__( self, supervisor ):
     # bind the supervisor

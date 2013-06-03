@@ -8,7 +8,7 @@ from pose import *
 from sim_exceptions.goal_reached_exception import *
 from supervisor_controller_interface import *
 
-from controllers.avoid_obstacle_controller import *
+from controllers.avoid_obstacles_controller import *
 from controllers.go_to_angle_controller import *
 from controllers.go_to_goal_controller import *
 
@@ -48,7 +48,7 @@ class Supervisor:
     controller_interface = SupervisorControllerInterface( self )
     self.go_to_angle_controller = GoToAngleController( controller_interface )
     self.go_to_goal_controller = GoToGoalController( controller_interface )
-    self.avoid_obstacle_controller = AvoidObstacleController( controller_interface )
+    self.avoid_obstacles_controller = AvoidObstaclesController( controller_interface )
 
     # goal
     self.goal = goal
