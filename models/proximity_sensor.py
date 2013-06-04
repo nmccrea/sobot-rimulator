@@ -76,15 +76,4 @@ class ProximitySensor( Sensor ):
 
   # update this sensor's pose
   def _update_pose( self ):
-    # get the elements of the robot's pose
-    robot_vect, robot_theta = self.robot.pose.vunpack()
-
-    # get the elements of this sensor's relative pose
-    rel_vect, rel_theta = self.placement_pose.vunpack()
-    
-    # construct this sensor's global pose
-    global_vect_d = linalg.rotate_vector( rel_vect, robot_theta )
-    global_vect = linalg.add( robot_vect, global_vect_d ) 
-    global_theta = robot_theta + rel_theta
-
-    self.pose.vupdate( global_vect, global_theta )
+    self.pose = self.placement_pose.transform_to( self.robot.pose )

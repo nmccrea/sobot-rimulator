@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- Encoding: utf-8 -*
 
+from utils import linalg2_util as linalg
 from utils import math_util
 
 class Pose:
@@ -23,6 +24,18 @@ class Pose:
       self.theta = math_util.normalize_angle( theta )
     else:
       raise TypeError( "Wrong number of arguments. Pose requires 2 or 3 arguments to initialize" )
+
+  # get a new pose given by this pose transformed to a given reference pose
+  def transform_to( self, reference_pose ):
+    rel_vect, rel_theta = self.vunpack()            # elements of this pose (the relative pose)
+    ref_vect, ref_theta = reference_pose.vunpack()  # elements of the reference pose
+
+    # construct the elements of the transformed pose
+    result_vect_d = linalg.rotate_vector( rel_vect, ref_theta )
+    result_vect = linalg.add( ref_vect, result_vect_d ) 
+    result_theta = ref_theta + rel_theta
+
+    return Pose( result_vect, result_theta )
 
   # update pose using a vector
   def vupdate( self, vect, theta ):
