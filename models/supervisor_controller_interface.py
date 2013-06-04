@@ -19,14 +19,7 @@ class SupervisorControllerInterface:
 
   # get the robot's proximity sensor read values converted to real distances in meters
   def proximity_sensor_real_distances( self ):
-    distances = []
-    for readval in self.supervisor.robot.read_proximity_sensors():
-      if readval > 0:
-        distances.append( 0.02-( log(readval/3960.0) )/30.0 )
-      else:
-        distances.append( None )
-    
-    return distances
+    return [   0.02-( log(readval/3960.0) )/30.0   for readval in self.supervisor.robot.read_proximity_sensors() ]
 
   # get the supervisor's goal
   def goal( self ):
