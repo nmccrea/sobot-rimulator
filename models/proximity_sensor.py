@@ -7,6 +7,9 @@ from line_segment import *
 from pose import *
 from sensor import *
 
+MIN_READ_VALUE = 18
+MAX_READ_VALUE = 3960
+
 class ProximitySensor( Sensor ):
 
   def __init__( self, robot,          # robot this sensor is attached to
@@ -40,7 +43,7 @@ class ProximitySensor( Sensor ):
     self.target_delta = None
 
     # sensor output
-    self.read_value = 0
+    self.read_value = MIN_READ_VALUE
 
   # set this proximity sensor to detect an object at distance ( delta * max_range )
   def detect( self, delta ):
@@ -49,7 +52,7 @@ class ProximitySensor( Sensor ):
 
     if delta == None:
       self.target_delta = None
-      self.read_value = 0
+      self.read_value = MIN_READ_VALUE
     else:
       max_range = self.max_range
       min_range = self.min_range
@@ -57,10 +60,12 @@ class ProximitySensor( Sensor ):
       d = max_range * delta   # d is the real distance in meters
       if d <= min_range:        # d in [0.00, 0.02]
         self.target_delta = min_range / max_range
-        self.read_value = 3960
+        self.read_value = MAX_READ_VALUE
       else:                     # d in (0.02, 0.20]
         self.target_delta = delta
-        self.read_value = int( ceil( 3960 * e**( -30 * (d-0.02) ) ) )
+        self.read_value = max(  MIN_READ_VALUE,
+                                int( ceil( MAX_READ_VALUE * e**( -30 * (d-0.02) ) ) )
+                             )
 
   # get this sensor's output
   def read( self ):
