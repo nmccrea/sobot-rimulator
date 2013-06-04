@@ -9,7 +9,7 @@ class RobotSupervisorInterface:
   
   # read the proximity sensors
   def read_proximity_sensors( self ):
-    return [ s.read() for s in self.robot.proximity_sensors ]
+    return [ s.read() for s in self.robot.ir_sensors ]
 
   # read the wheel encoders
   def read_wheel_encoders( self ):

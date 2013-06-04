@@ -34,8 +34,8 @@ class Supervisor:
     # NOTE: the supervisor does NOT have access to the physical robot, only the robot's interface
     self.robot = robot_interface
 
-    # sensor placement poses
-    self.sensor_placements = [ Pose( rawpose[0], rawpose[1], radians( rawpose[2] ) ) for rawpose in sensor_placements ]
+    # proximity sensor placement poses
+    self.proximity_sensor_placements = [ Pose( rawpose[0], rawpose[1], radians( rawpose[2] ) ) for rawpose in sensor_placements ]
 
     # odometry information
     self.robot_wheel_radius = wheel_radius
@@ -80,7 +80,7 @@ class Supervisor:
     self._update_odometry()
 
     # execute the controller's control loop
-    self.go_to_goal_controller.execute()
+    self.avoid_obstacles_controller.execute()
 
     # output the generated control signals to the robot
     self._send_robot_commands()

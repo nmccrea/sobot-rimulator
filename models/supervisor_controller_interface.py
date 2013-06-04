@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- Encoding: utf-8 -*
 
+from math import *
+
 # an interfacing allowing a controller to interact with its supervisor 
 class SupervisorControllerInterface:
 
@@ -12,8 +14,19 @@ class SupervisorControllerInterface:
     return self.supervisor.estimated_pose
 
   # get the placement poses of the robot's sensors
-  def sensor_placements( self ):
-    return self.supervisor.sensor_placements
+  def proximity_sensor_placements( self ):
+    return self.supervisor.proximity_sensor_placements
+
+  # get the robot's proximity sensor read values converted to real distances in meters
+  def proximity_sensor_real_distances( self ):
+    distances = []
+    for readval in self.supervisor.robot.read_proximity_sensors():
+      if readval > 0:
+        distances.append( 0.02-( log(readval/3960.0) )/30.0 )
+      else:
+        distances.append( None )
+    
+    return distances
 
   # get the supervisor's goal
   def goal( self ):

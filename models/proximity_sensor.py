@@ -54,7 +54,7 @@ class ProximitySensor( Sensor ):
       max_range = self.max_range
       min_range = self.min_range
 
-      d = max_range * delta
+      d = max_range * delta   # d is the real distance in meters
       if d <= min_range:        # d in [0.00, 0.02]
         self.target_delta = min_range / max_range
         self.read_value = 3960
