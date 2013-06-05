@@ -20,7 +20,7 @@ class ObstacleView:
     obstacle_poly = obstacle.global_geometry.vertexes
     frame.add_polygons( [ obstacle_poly ],
                         color = "dark red",
-                        alpha = 1.0 )
+                        alpha = 0.4 )
 
     # === FOR DEBUGGING: ===
     # self._draw_bounding_circle_to_frame( frame )
