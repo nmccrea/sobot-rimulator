@@ -46,13 +46,9 @@ class RobotView:
     frame.add_polygons( [ robot_bottom ],
                         color = "blue",
                         alpha = 0.5 ) 
-    
-
     # add decoration
     robot_pos, robot_theta = robot.pose.vunpack()
-    robot_top = linalg.rotate_and_translate_vectors(  K3_TOP_PLATE,
-                                                      robot_theta,
-                                                      robot_pos )
+    robot_top = linalg.rotate_and_translate_vectors( K3_TOP_PLATE, robot_theta, robot_pos )
     frame.add_polygons( [ robot_top ],
                         color = "black",
                         alpha = 0.5 )
