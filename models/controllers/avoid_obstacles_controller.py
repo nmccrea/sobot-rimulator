@@ -29,8 +29,7 @@ class AvoidObstaclesController:
     self.prev_eI = 0.0
 
     # additional calculated values 
-    self.obstacle_vectors_rel = [ [ 0.0, 0.0 ] ] * len( self.proximity_sensor_placements )
-    self.obstacle_vectors_abs = [ [ 0.0, 0.0 ] ] * len( self.proximity_sensor_placements )
+    self.obstacle_vectors = [ [ 0.0, 0.0 ] ] * len( self.proximity_sensor_placements )
     self.heading_vector = [ 0.0, 0.0 ]
 
   def execute( self ):
@@ -38,27 +37,22 @@ class AvoidObstaclesController:
     sensor_distances = self.supervisor.proximity_sensor_real_distances()
 
     # calculate the position of detected obstacles and find an avoidance vector
-    heading_vector = [ 0.0, 0.0 ]        # initialize the heading vector
+    self.heading_vector = [ 0.0, 0.0 ]        # initialize the heading vector
     robot_pos, robot_theta = self.supervisor.estimated_pose().vunpack()
     for i in range( len( sensor_distances ) ):
       # calculate the position of the obstacle
       sensor_pos, sensor_theta = self.proximity_sensor_placements[i].vunpack()
       vector = [ sensor_distances[i], 0.0 ]
       vector = linalg.rotate_and_translate_vector( vector, sensor_theta, sensor_pos )
-      self.obstacle_vectors_rel[i] = vector   # store the obstacle vectors in the robot's reference frame
-      vector = linalg.rotate_and_translate_vector( vector, robot_theta, robot_pos )
-      self.obstacle_vectors_abs[i] = vector   # store the obstacle vectors in the estimated world reference frame
+      self.obstacle_vectors[i] = vector   # store the obstacle vectors in the robot's reference frame
        
       # accumluate the heading vector within the robot's reference frame
-      heading_vector = linalg.sub(  heading_vector,
-                                    linalg.scale( self.obstacle_vectors_rel[i], self.sensor_gains[i] ) )
+      self.heading_vector = linalg.sub( self.heading_vector,
+                                        linalg.scale( vector, self.sensor_gains[i] ) )
 
-    # convert the final heading vector to the estimated world reference frame
-    heading_vector = linalg.rotate_and_translate_vector( heading_vector, robot_theta, robot_pos )
-    self.heading_vector = heading_vector
     
     # calculate the desired heading
-    theta_d = atan2( heading_vector[1], heading_vector[0] )
+    theta_d = atan2( self.heading_vector[1], self.heading_vector[0] )
 
     # calculate the time that has passed since the last control iteration
     current_time = self.supervisor.time()

@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- Encoding: utf-8 -*
 
+import utils.linalg2_util as linalg
+
 class SupervisorView:
 
   def __init__( self, viewer, supervisor, robot_geometry ):
@@ -51,20 +53,21 @@ class SupervisorView:
   
   # avoid obstacles controller state
   def _draw_avoid_obstacles_controller_to_frame( self, frame ):
-    estimated_pose = self.supervisor.estimated_pose
+    robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
     
     # draw the detected environment boundary (i.e. sensor readings)
-    obstacle_vertexes = self.supervisor.avoid_obstacles_controller.obstacle_vectors_abs[:]
+    obstacle_vertexes = self.supervisor.avoid_obstacles_controller.obstacle_vectors[:]
     obstacle_vertexes.append( obstacle_vertexes[0] )  # close the drawn polygon
+    obstacle_vertexes = linalg.rotate_and_translate_vectors( obstacle_vertexes, robot_theta, robot_pos )
     frame.add_lines(  [ obstacle_vertexes ],
                       linewidth = 0.005,
                       color = "black",
                       alpha = 1.0 )
 
     # draw the computed obstacle-avoidance vector
-    heading_vector = self.supervisor.avoid_obstacles_controller.heading_vector
-    line = [ estimated_pose.vposition(), heading_vector ]
-    frame.add_lines( [ line ],
+    vector_line = [ [ 0.0, 0.0 ], self.supervisor.avoid_obstacles_controller.heading_vector ]
+    vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
+    frame.add_lines( [ vector_line ],
                      linewidth = 0.005,
                      color = "blue",
                      alpha = 1.0 )
