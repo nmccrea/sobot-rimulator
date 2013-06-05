@@ -15,6 +15,9 @@ class SupervisorView:
   def draw_supervisor_to_frame( self, frame ):
     self._draw_goal_to_frame( frame )
     self._draw_robot_state_estimate_to_frame( frame )
+    # draw controller state
+    # TODO: determine current controller to draw
+    self._draw_avoid_obstacles_controller_to_frame( frame )
 
   def _draw_goal_to_frame( self, frame ):
     goal = self.supervisor.goal
@@ -45,3 +48,23 @@ class SupervisorView:
                       linewidth = 0.005,
                       color = "red",
                       alpha = 0.5 )
+  
+  # avoid obstacles controller state
+  def _draw_avoid_obstacles_controller_to_frame( self, frame ):
+    estimated_pose = self.supervisor.estimated_pose
+    
+    # draw the detected environment boundary (i.e. sensor readings)
+    obstacle_vertexes = self.supervisor.avoid_obstacles_controller.obstacle_vectors_abs[:]
+    obstacle_vertexes.append( obstacle_vertexes[0] )  # close the drawn polygon
+    frame.add_lines(  [ obstacle_vertexes ],
+                      linewidth = 0.005,
+                      color = "black",
+                      alpha = 1.0 )
+
+    # draw the computed obstacle-avoidance vector
+    heading_vector = self.supervisor.avoid_obstacles_controller.heading_vector
+    line = [ estimated_pose.vposition(), heading_vector ]
+    frame.add_lines( [ line ],
+                     linewidth = 0.005,
+                     color = "blue",
+                     alpha = 1.0 )
