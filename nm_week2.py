@@ -23,8 +23,11 @@ class Week2Simulator:
     self.world_view = WorldView()
 
     # create some obstacles
-    obstacle = RectangleObstacle( 0.3, 0.1,
-                                  Pose( 0.15, 0.12, -pi/6 ) )
+    obstacle = RectangleObstacle( 5.0, 0.05,
+                                  Pose( 0.5, -1.0, 0.0 ) )
+    self._add_obstacle( obstacle )
+    obstacle = RectangleObstacle( 0.2, 3.0,
+                                  Pose( 1.2, 0.0, pi/4 ) )
     self._add_obstacle( obstacle )
     obstacle = RectangleObstacle( 0.1, 0.2,
                                   Pose( 0.3, -0.6, pi/4 ) )

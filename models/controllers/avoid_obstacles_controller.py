@@ -47,19 +47,16 @@ class AvoidObstaclesController:
       self.obstacle_vectors[i] = vector   # store the obstacle vectors in the robot's reference frame
        
       # accumluate the heading vector within the robot's reference frame
-      self.heading_vector = linalg.sub( self.heading_vector,
+      self.heading_vector = linalg.add( self.heading_vector,
                                         linalg.scale( vector, self.sensor_gains[i] ) )
-
-    
-    # calculate the desired heading
-    theta_d = atan2( self.heading_vector[1], self.heading_vector[0] )
 
     # calculate the time that has passed since the last control iteration
     current_time = self.supervisor.time()
     dt = current_time - self.prev_time
 
     # calculate the error terms
-    eP = math_util.normalize_angle( theta_d - robot_theta )
+    theta_d = atan2( self.heading_vector[1], self.heading_vector[0] )
+    eP = theta_d
     eI = self.prev_eI + eP*dt
     eD = ( eP - self.prev_eP ) / dt
 
