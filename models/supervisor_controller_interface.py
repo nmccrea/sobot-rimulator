@@ -21,6 +21,10 @@ class SupervisorControllerInterface:
   def proximity_sensor_real_distances( self ):
     return [   0.02-( log(readval/3960.0) )/30.0   for readval in self.supervisor.robot.read_proximity_sensors() ]
 
+  # get the velocity limit of the supervisor
+  def v_max( self ):
+    return self.supervisor.v_max
+
   # get the supervisor's goal
   def goal( self ):
     return self.supervisor.goal

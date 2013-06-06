@@ -20,8 +20,8 @@ class AvoidObstaclesController:
 
     # control gains
     self.kP = 10.0
-    self.kI = 0.5
-    self.kD = 0.1
+    self.kI = 0.0
+    self.kD = 0.0
     
     # stored values - for computing next results
     self.prev_time = 0.0
@@ -66,8 +66,7 @@ class AvoidObstaclesController:
     # calculate translational velocity
     # velocity is v_max when omega is 0,
     # drops rapidly to zero as |omega| rises
-    v_max = 2.0 # TODO: move this
-    v = v_max / ( abs( omega ) + 1 )**2
+    v = self.supervisor.v_max() / ( abs( omega ) + 1 )**2
 
     # store values for next control iteration
     self.prev_time = current_time

@@ -56,6 +56,10 @@ class Supervisor:
     # state estimate
     self.estimated_pose = initial_pose
 
+    # control bounds
+    self.v_max = K3_TRANS_VEL_LIMIT
+    self.omega_max = K3_ANG_VEL_LIMIT
+
     # CONTROL OUTPUTS - UNICYCLE
     self.v_output = 0.0
     self.omega_output = 0.0
@@ -118,8 +122,8 @@ class Supervisor:
   # generate and send the correct commands to the robot
   def _send_robot_commands( self ):
     # limit the speeds:
-    v = max( min( self.v_output, K3_TRANS_VEL_LIMIT ), -K3_TRANS_VEL_LIMIT )
-    omega = max( min( self.omega_output, K3_ANG_VEL_LIMIT ), -K3_ANG_VEL_LIMIT )
+    v = max( min( self.v_output, self.v_max ), -self.v_max )
+    omega = max( min( self.omega_output, self.omega_max ), -self.omega_max )
 
     # send the drive commands to the robot
     v_l, v_r = self._uni_to_diff( v, omega )
