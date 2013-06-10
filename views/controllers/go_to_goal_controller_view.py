@@ -19,5 +19,5 @@ class GoToGoalControllerView:
     vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
     frame.add_lines( [ vector_line ],
                      linewidth = 0.005,
-                     color = "green",
+                     color = "dark green",
                      alpha = 1.0 )

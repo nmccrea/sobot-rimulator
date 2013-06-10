@@ -11,6 +11,7 @@ from supervisor_controller_interface import *
 from controllers.avoid_obstacles_controller import *
 from controllers.go_to_angle_controller import *
 from controllers.go_to_goal_controller import *
+from controllers.gtg_and_ao_controller import *
 
 # control parameters
 K3_TRANS_VEL_LIMIT = 0.3148     # m/s
@@ -49,9 +50,10 @@ class Supervisor:
     self.go_to_angle_controller = GoToAngleController( controller_interface )
     self.go_to_goal_controller = GoToGoalController( controller_interface )
     self.avoid_obstacles_controller = AvoidObstaclesController( controller_interface )
+    self.gtg_and_ao_controller = GTGAndAOController( controller_interface )
 
     # current controller
-    self.current_controller = self.avoid_obstacles_controller
+    self.current_controller = self.gtg_and_ao_controller
 
     # goal
     self.goal = goal
@@ -95,6 +97,7 @@ class Supervisor:
   # current controller indicator methods
   def currently_gtg( self ): return self.current_controller == self.go_to_goal_controller
   def currently_ao( self ): return self.current_controller == self.avoid_obstacles_controller
+  def currently_blended( self ): return self.current_controller == self.gtg_and_ao_controller
 
   # update the estimated position of the robot using it's wheel encoder readings
   def _update_odometry( self ):
