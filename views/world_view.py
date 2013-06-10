@@ -8,11 +8,11 @@ import Euv.Color as Color
 from obstacle_view import *
 from robot_view import *
 
-VIEW_PORT_PIX_H = 800
-VIEW_PORT_PIX_W = 800
+VIEW_PORT_PIX_H = 950
+VIEW_PORT_PIX_W = 950
 CONTROLS_PIX_H = 50
 
-WORLD_WIDTH = 4 # meters
+WORLD_WIDTH = 12 # meters
 
 MAJOR_GRIDLINE_INTERVAL = 1.0 # meters
 MAJOR_GRIDLINE_SUBDIVISIONS = 5  # minor gridlines for every major gridline
