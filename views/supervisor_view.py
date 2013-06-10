@@ -2,6 +2,8 @@
 # -*- Encoding: utf-8 -*
 
 import utils.linalg2_util as linalg
+from controllers.avoid_obstacles_controller_view import *
+from controllers.go_to_goal_controller_view import *
 
 class SupervisorView:
 
@@ -9,7 +11,15 @@ class SupervisorView:
     self.viewer = viewer
     self.supervisor = supervisor
 
-    # information for rendering
+    # controller views
+    self.go_to_goal_controller_view = GoToGoalControllerView( viewer,
+                                                              supervisor.go_to_goal_controller,
+                                                              supervisor )
+    self.avoid_obstacles_controller_view = AvoidObstaclesControllerView( viewer,
+                                                                         supervisor.avoid_obstacles_controller,
+                                                                         supervisor )
+
+    # additional information for rendering
     self.robot_geometry = robot_geometry      # robot geometry
     self.robot_estimated_traverse_path = []   # path taken by robot's internal image
 
@@ -17,9 +27,7 @@ class SupervisorView:
   def draw_supervisor_to_frame( self, frame ):
     self._draw_goal_to_frame( frame )
     self._draw_robot_state_estimate_to_frame( frame )
-    # draw controller state
-    # TODO: determine current controller to draw
-    self._draw_avoid_obstacles_controller_to_frame( frame )
+    self._draw_current_controller_to_frame( frame )
 
   def _draw_goal_to_frame( self, frame ):
     goal = self.supervisor.goal
@@ -51,23 +59,9 @@ class SupervisorView:
                       color = "red",
                       alpha = 0.5 )
   
-  # avoid obstacles controller state
-  def _draw_avoid_obstacles_controller_to_frame( self, frame ):
-    robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
-    
-    # draw the detected environment boundary (i.e. sensor readings)
-    obstacle_vertexes = self.supervisor.avoid_obstacles_controller.obstacle_vectors[:]
-    obstacle_vertexes.append( obstacle_vertexes[0] )  # close the drawn polygon
-    obstacle_vertexes = linalg.rotate_and_translate_vectors( obstacle_vertexes, robot_theta, robot_pos )
-    frame.add_lines(  [ obstacle_vertexes ],
-                      linewidth = 0.005,
-                      color = "black",
-                      alpha = 1.0 )
-
-    # draw the computed obstacle-avoidance vector
-    vector_line = [ [ 0.0, 0.0 ], self.supervisor.avoid_obstacles_controller.heading_vector ]
-    vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
-    frame.add_lines( [ vector_line ],
-                     linewidth = 0.005,
-                     color = "blue",
-                     alpha = 1.0 )
+  # draw the current controller's state to the frame
+  def _draw_current_controller_to_frame( self, frame ):
+    if self.supervisor.currently_gtg():
+      self.go_to_goal_controller_view.draw_go_to_goal_controller_to_frame( frame )
+    elif self.supervisor.currently_ao():
+      self.avoid_obstacles_controller_view.draw_avoid_obstacles_controller_to_frame( frame )

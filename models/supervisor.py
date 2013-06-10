@@ -50,6 +50,9 @@ class Supervisor:
     self.go_to_goal_controller = GoToGoalController( controller_interface )
     self.avoid_obstacles_controller = AvoidObstaclesController( controller_interface )
 
+    # current controller
+    self.current_controller = self.avoid_obstacles_controller
+
     # goal
     self.goal = goal
 
@@ -84,10 +87,14 @@ class Supervisor:
     self._update_odometry()
 
     # execute the controller's control loop
-    self.avoid_obstacles_controller.execute()
+    self.current_controller.execute()
 
     # output the generated control signals to the robot
     self._send_robot_commands()
+
+  # current controller indicator methods
+  def currently_gtg( self ): return self.current_controller == self.go_to_goal_controller
+  def currently_ao( self ): return self.current_controller == self.avoid_obstacles_controller
 
   # update the estimated position of the robot using it's wheel encoder readings
   def _update_odometry( self ):
