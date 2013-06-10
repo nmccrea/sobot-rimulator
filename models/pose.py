@@ -36,6 +36,13 @@ class Pose:
     result_theta = ref_theta + rel_theta
 
     return Pose( result_vect, result_theta )
+   
+  # get a new pose given by inverting this pose, e.g. return the pose of the "world" relative to this pose
+  def invert( self ):
+    result_theta = -self.theta
+    result_pos = linalg.rotate_vector( [ -self.x, -self.y ], result_theta )
+
+    return Pose( result_pos, result_theta ) 
 
   # update pose using a vector
   def vupdate( self, vect, theta ):
