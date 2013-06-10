@@ -33,22 +33,8 @@ class AvoidObstaclesController:
     self.heading_vector = [ 0.0, 0.0 ]
 
   def execute( self ):
-    # get the distances indicated by the robot's sensor readings
-    sensor_distances = self.supervisor.proximity_sensor_real_distances()
-
-    # calculate the position of detected obstacles and find an avoidance vector
-    self.heading_vector = [ 0.0, 0.0 ]        # initialize the heading vector
-    robot_pos, robot_theta = self.supervisor.estimated_pose().vunpack()
-    for i in range( len( sensor_distances ) ):
-      # calculate the position of the obstacle
-      sensor_pos, sensor_theta = self.proximity_sensor_placements[i].vunpack()
-      vector = [ sensor_distances[i], 0.0 ]
-      vector = linalg.rotate_and_translate_vector( vector, sensor_theta, sensor_pos )
-      self.obstacle_vectors[i] = vector   # store the obstacle vectors in the robot's reference frame
-       
-      # accumluate the heading vector within the robot's reference frame
-      self.heading_vector = linalg.add( self.heading_vector,
-                                        linalg.scale( vector, self.sensor_gains[i] ) )
+    # generate and store new heading and obstacle vectors
+    self.heading_vector, self.obstacle_vectors = self.calculate_heading_vector()
 
     # calculate the time that has passed since the last control iteration
     current_time = self.supervisor.time()
@@ -77,6 +63,32 @@ class AvoidObstaclesController:
 
     # === FOR DEBUGGING ===
     # self._print_vars( eP, eI, eD, v, omega )
+
+  # return a obstacle avoidance vector in the robot's reference frame
+  # also returns vectors to detected obstacles in the robot's reference frame
+  def calculate_heading_vector( self ):
+    # initialize vector
+    obstacle_vectors = [ [ 0.0, 0.0 ] ] * len( self.proximity_sensor_placements )
+    heading_vector = [ 0.0, 0.0 ]             
+
+    # get the distances indicated by the robot's sensor readings
+    sensor_distances = self.supervisor.proximity_sensor_real_distances()
+
+    # calculate the position of detected obstacles and find an avoidance vector
+    robot_pos, robot_theta = self.supervisor.estimated_pose().vunpack()
+    for i in range( len( sensor_distances ) ):
+      # calculate the position of the obstacle
+      sensor_pos, sensor_theta = self.proximity_sensor_placements[i].vunpack()
+      vector = [ sensor_distances[i], 0.0 ]
+      vector = linalg.rotate_and_translate_vector( vector, sensor_theta, sensor_pos )
+      obstacle_vectors[i] = vector   # store the obstacle vectors in the robot's reference frame
+       
+      # accumluate the heading vector within the robot's reference frame
+      heading_vector = linalg.add( heading_vector,
+                                   linalg.scale( vector, self.sensor_gains[i] ) )
+
+    return heading_vector, obstacle_vectors
+
 
   def _print_vars( self, eP, eI, eD, v, omega ):
     print "\n\n"
