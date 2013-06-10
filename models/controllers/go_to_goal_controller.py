@@ -23,18 +23,18 @@ class GoToGoalController:
     self.prev_eI = 0.0
     
     # additional calculated values 
-    self.heading_vector = [ 0.0, 0.0 ]
+    self.gtg_heading_vector = [ 0.0, 0.0 ]
 
   def execute( self ):
     # generate and store new heading vector
-    self.heading_vector = self.calculate_heading_vector()
+    self.gtg_heading_vector = self.calculate_gtg_heading_vector()
 
     # calculate the time that has passed since the last control iteration
     current_time = self.supervisor.time()
     dt = current_time - self.prev_time
 
     # calculate the error terms
-    theta_d = atan2( self.heading_vector[1], self.heading_vector[0] )
+    theta_d = atan2( self.gtg_heading_vector[1], self.gtg_heading_vector[0] )
     eP = theta_d
     eI = self.prev_eI + eP*dt
     eD = ( eP - self.prev_eP ) / dt
@@ -58,7 +58,7 @@ class GoToGoalController:
     # self._print_vars( eP, eI, eD, v, omega )
 
   # return a go-to-goal heading vector in the robot's reference frame
-  def calculate_heading_vector( self ):
+  def calculate_gtg_heading_vector( self ):
     # get the inverse of the robot's pose
     robot_inv_pos, robot_inv_theta = self.supervisor.estimated_pose().inverse().vunpack()
     

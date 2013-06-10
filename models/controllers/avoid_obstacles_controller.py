@@ -30,18 +30,18 @@ class AvoidObstaclesController:
 
     # additional calculated values 
     self.obstacle_vectors = [ [ 0.0, 0.0 ] ] * len( self.proximity_sensor_placements )
-    self.heading_vector = [ 0.0, 0.0 ]
+    self.ao_heading_vector = [ 0.0, 0.0 ]
 
   def execute( self ):
     # generate and store new heading and obstacle vectors
-    self.heading_vector, self.obstacle_vectors = self.calculate_heading_vector()
+    self.ao_heading_vector, self.obstacle_vectors = self.calculate_ao_heading_vector()
 
     # calculate the time that has passed since the last control iteration
     current_time = self.supervisor.time()
     dt = current_time - self.prev_time
 
     # calculate the error terms
-    theta_d = atan2( self.heading_vector[1], self.heading_vector[0] )
+    theta_d = atan2( self.ao_heading_vector[1], self.ao_heading_vector[0] )
     eP = theta_d
     eI = self.prev_eI + eP*dt
     eD = ( eP - self.prev_eP ) / dt
@@ -66,10 +66,10 @@ class AvoidObstaclesController:
 
   # return a obstacle avoidance vector in the robot's reference frame
   # also returns vectors to detected obstacles in the robot's reference frame
-  def calculate_heading_vector( self ):
+  def calculate_ao_heading_vector( self ):
     # initialize vector
     obstacle_vectors = [ [ 0.0, 0.0 ] ] * len( self.proximity_sensor_placements )
-    heading_vector = [ 0.0, 0.0 ]             
+    ao_heading_vector = [ 0.0, 0.0 ]             
 
     # get the distances indicated by the robot's sensor readings
     sensor_distances = self.supervisor.proximity_sensor_real_distances()
@@ -84,10 +84,10 @@ class AvoidObstaclesController:
       obstacle_vectors[i] = vector   # store the obstacle vectors in the robot's reference frame
        
       # accumluate the heading vector within the robot's reference frame
-      heading_vector = linalg.add( heading_vector,
+      ao_heading_vector = linalg.add( ao_heading_vector,
                                    linalg.scale( vector, self.sensor_gains[i] ) )
 
-    return heading_vector, obstacle_vectors
+    return ao_heading_vector, obstacle_vectors
 
 
   def _print_vars( self, eP, eI, eD, v, omega ):
