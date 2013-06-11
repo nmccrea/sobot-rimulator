@@ -23,11 +23,11 @@ class GTGAndAOController:
       for p in self.avoid_obstacles_controller.proximity_sensor_placements ]
 
     # blending factor
-    self.alpha = 0.2  # go-to-goal heading is given this much weight, avoid-obstacles is given the remaining weight
+    self.alpha = 0.1  # go-to-goal heading is given this much weight, avoid-obstacles is given the remaining weight
 
     # control gains
     self.kP = 10.0
-    self.kI = 0.0
+    self.kI = 0.4
     self.kD = 0.0
     
     # stored values - for computing next results
@@ -67,7 +67,7 @@ class GTGAndAOController:
     # calculate translational velocity
     # velocity is v_max when omega is 0,
     # drops rapidly to zero as |omega| rises
-    v = self.supervisor.v_max() / ( abs( omega ) + 1 )**2
+    v = self.supervisor.v_max() / ( abs( omega ) + 1 )**1.5
 
     # store values for next control iteration
     self.prev_time = current_time
