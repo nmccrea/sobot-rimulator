@@ -17,6 +17,11 @@ class GTGAndAOController:
     self.go_to_goal_controller = GoToGoalController( supervisor )
     self.avoid_obstacles_controller = AvoidObstaclesController( supervisor )
 
+    # sensor gains (weights)
+    self.avoid_obstacles_controller.sensor_gains = [
+      1.0-( (0.4*abs(p.theta)) / pi )
+      for p in self.avoid_obstacles_controller.proximity_sensor_placements ]
+
     # blending factor
     self.alpha = 0.2  # go-to-goal heading is given this much weight, avoid-obstacles is given the remaining weight
 

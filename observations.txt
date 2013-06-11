@@ -16,3 +16,9 @@ Idea behind good unicycle velocity as function of unicycle omega (angular veloci
 AO PID Controller:
 =================
 If it happens that all of the sensors are reporting similar distances to obstacles, the resulting avoid-obstacle heading vector behaves similarly to when none of the sensors are detecting obstacles. Thus if the robot finds itself in a very cramped place with obstacles on all sides, it will behave as if there are no obstacles - driving forward and crashing.
+
+Blended GTG/AO Controller:
+========================
+A very heavy weight towards the avoid-obstacle heading seems to be necessary when there is even a small amount of clutter.
+
+Raising the sensor gains on the side-facing sensors significantly improves the robot's ability to handle corners of obstacles.
