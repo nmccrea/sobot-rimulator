@@ -14,8 +14,8 @@ class GoToGoalController:
 
     # gains
     self.kP = 5.0
-    self.kI = 0.5
-    self.kD = 0.1
+    self.kI = 0.0
+    self.kD = 0.0
     
     # stored values - for computing next results
     self.prev_time = 0.0
