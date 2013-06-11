@@ -22,3 +22,13 @@ Blended GTG/AO Controller:
 A very heavy weight towards the avoid-obstacle heading seems to be necessary when there is even a small amount of clutter.
 
 Raising the sensor gains on the side-facing sensors significantly improves the robot's ability to handle corners of obstacles.
+
+Adding some nonlinear scaling to the sensor distances (implemented in the AO controller) seems to offer some subtle improvements to behavior. That is, having the robot react less aggressively to obstacles just barely within its sensor range, but very aggressively to obstacles it is almost colliding with. I am not commiting the code for this at this time but here is a good polynomial formula for scaling a sensor distance vector before adding it to the avoid-obstacle heading vector:
+      # obstacle_vector = the real vector from the robot to the obstacle
+      # d               = real sensor distance (length of obstacle_vector)
+      # dmin, dmax      = min and max distances the sensor is capable of detecting
+      # a               = scaling factor equal to 1.0 / ( dmax-dmin )
+      # b               = exponent - should be between 0.0 and 1.0 to give desired behavior
+      # with these definitions the scaling factor s will be 1.0 when d = dmax, falling at an accelarating rate as d decreases, reaching 0.0 when d = dmin:
+      s = ( a*(d - dmin) )**b
+      scaled_vector = linalg.scale( obstacle_vector, s )
