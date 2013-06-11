@@ -72,7 +72,7 @@ class AvoidObstaclesController:
     ao_heading_vector = [ 0.0, 0.0 ]             
 
     # get the distances indicated by the robot's sensor readings
-    sensor_distances = self.supervisor.proximity_sensor_real_distances()
+    sensor_distances = self.supervisor.proximity_sensor_distances()
 
     # calculate the position of detected obstacles and find an avoidance vector
     robot_pos, robot_theta = self.supervisor.estimated_pose().vunpack()
