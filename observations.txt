@@ -6,9 +6,13 @@ The discrete nature of the wheel encoder essentially results in a discrete set o
 
 
 GTG PID Controller:
-==============
+==================
 When GTG controller uses angle to goal as it's error, a relatively small integral term will induce oscillations, which may be damped by the other terms.
 
 Using the distance to the goal as the error does not work. Is this because the state-space is non-linear in such a model?
 
 Idea behind good unicycle velocity as function of unicycle omega (angular velocity).
+
+AO PID Controller:
+=================
+If it happens that all of the sensors are reporting similar distances to obstacles, the resulting avoid-obstacle heading vector behaves similarly to when none of the sensors are detecting obstacles. Thus if the robot finds itself in a very cramped place with obstacles on all sides, it will behave as if there are no obstacles - driving forward and crashing.
