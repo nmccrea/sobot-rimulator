@@ -30,45 +30,37 @@ class SupervisorStateMachine:
 
   # === STATE PROCEDURES ===
   def execute_state_go_to_goal( self ):
-    print "EXECUTING go_to_goal"
     if self.condition_at_goal():          self.transition_to_state_at_goal()
     elif self.condition_at_obstacle():  self.transition_to_state_avoid_obstacles()
 
   def execute_state_avoid_obstacles( self ):
-    print "EXECUTING avoid_obstacles"
     if self.condition_no_obstacle():    self.transition_to_state_go_to_goal()
 
 
   # === STATE TRANSITIONS ===
   def transition_to_state_at_goal( self ):
-    print "TRANSITIONING TO STATE: AT_GOAL"
     self.current_state = STATE_AT_GOAL
     raise GoalReachedException()
 
   def transition_to_state_avoid_obstacles( self ):
-    print "TRANSITIONING TO STATE: AVOID_OBSTACLES"
     self.current_state = STATE_AVOID_OBSTACLES
     self.supervisor.current_controller = self.supervisor.avoid_obstacles_controller
 
   def transition_to_state_go_to_goal( self ):
-    print "TRANSITIONING TO STATE: GO_TO_GOAL"
     self.current_state = STATE_GO_TO_GOAL
     self.supervisor.current_controller = self.supervisor.go_to_goal_controller
 
 
   # === CONDITIONS ===
   def condition_at_goal( self ):
-    print "TESTING at_goal"
     return linalg.distance( self.supervisor.estimated_pose.vposition(), self.supervisor.goal ) < D_STOP
 
   def condition_at_obstacle( self ):
-    print "TESTING at_obstacle"
     for d in self._forward_sensor_distances():
       if d < D_AVOID: return True
     return False
 
   def condition_no_obstacle( self ):
-    print "TESTING no_obstacle"
     for d in self._forward_sensor_distances():
       if d < D_AVOID: return False
     return True
