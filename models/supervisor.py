@@ -5,7 +5,6 @@ from math import *
 
 from utils import linalg2_util as linalg
 from pose import *
-from sim_exceptions.goal_reached_exception import *
 from supervisor_controller_interface import *
 from supervisor_state_machine import *
 
@@ -17,7 +16,6 @@ from controllers.gtg_and_ao_controller import *
 # control parameters
 K3_TRANS_VEL_LIMIT = 0.3148     # m/s
 K3_ANG_VEL_LIMIT = 2.2763       # rad/s
-D_STOP = 0.05                   # meters from goal
 
 class Supervisor:
 
@@ -59,7 +57,7 @@ class Supervisor:
     # state
     self.proximity_sensor_distances = [ 0.0, 0.0 ] * len( sensor_placements ) # sensor distances
     self.estimated_pose = initial_pose                                        # estimated pose
-    self.current_controller = self.gtg_and_ao_controller                      # current controller
+    self.current_controller = self.go_to_goal_controller                      # current controller
 
     # goal
     self.goal = goal
@@ -85,9 +83,6 @@ class Supervisor:
 
   # execute one control loop
   def execute( self ):
-    if linalg.distance( self.estimated_pose.vposition(), self.goal ) < D_STOP:
-      raise GoalReachedException()
-
     self._update_state()              # update state
     self.current_controller.execute() # execute the controller's control loop
     self._send_robot_commands()       # output the generated control signals to the robot
