@@ -17,13 +17,13 @@ REFRESH_RATE = 20.0 # hertz
 # random environment parameters
 OBS_MIN_DIM = 0.1           # meters
 OBS_MAX_DIM = 2.5           # meters
-OBS_MAX_COMBINED_DIM = 3.0  # meters
+OBS_MAX_COMBINED_DIM = 2.6  # meters
 OBS_MIN_COUNT = 4
 OBS_MAX_COUNT = 30
 OBS_MIN_DIST = 0.4          # meters
-OBS_MAX_DIST = 5.0          # meters
-GOAL_MIN_DIST = 1.0         # meters
-GOAL_MAX_DIST = 6.0         # meters
+OBS_MAX_DIST = 6.0          # meters
+GOAL_MIN_DIST = 2.0         # meters
+GOAL_MAX_DIST = 4.0         # meters
 
 class Week2Simulator:
 
