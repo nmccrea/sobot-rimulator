@@ -7,6 +7,7 @@ from utils import linalg2_util as linalg
 from pose import *
 from sim_exceptions.goal_reached_exception import *
 from supervisor_controller_interface import *
+from supervisor_state_machine import *
 
 from controllers.avoid_obstacles_controller import *
 from controllers.go_to_angle_controller import *
@@ -52,14 +53,16 @@ class Supervisor:
     self.avoid_obstacles_controller = AvoidObstaclesController( controller_interface )
     self.gtg_and_ao_controller = GTGAndAOController( controller_interface )
 
-    # current controller
-    self.current_controller = self.gtg_and_ao_controller
+    # state machine
+    self.state_machine = SupervisorStateMachine( self )
+
+    # state
+    self.proximity_sensor_distances = [ 0.0, 0.0 ] * len( sensor_placements ) # sensor distances
+    self.estimated_pose = initial_pose                                        # estimated pose
+    self.current_controller = self.gtg_and_ao_controller                      # current controller
 
     # goal
     self.goal = goal
-
-    # state estimate
-    self.estimated_pose = initial_pose
 
     # control bounds
     self.v_max = K3_TRANS_VEL_LIMIT
@@ -85,19 +88,28 @@ class Supervisor:
     if linalg.distance( self.estimated_pose.vposition(), self.goal ) < D_STOP:
       raise GoalReachedException()
 
-    # run odometry calculations to get updated pose estimate
-    self._update_odometry()
-
-    # execute the controller's control loop
-    self.current_controller.execute()
-
-    # output the generated control signals to the robot
-    self._send_robot_commands()
+    self._update_state()              # update state
+    self.current_controller.execute() # execute the controller's control loop
+    self._send_robot_commands()       # output the generated control signals to the robot
 
   # current controller indicator methods
   def currently_gtg( self ): return self.current_controller == self.go_to_goal_controller
   def currently_ao( self ): return self.current_controller == self.avoid_obstacles_controller
   def currently_blended( self ): return self.current_controller == self.gtg_and_ao_controller
+
+  # update the estimated robot state and the control state
+  def _update_state( self ):
+    # update estimated robot state from sensor readings
+    self._update_proximity_sensor_distances()
+    self._update_odometry()
+
+    # update the control state
+    self.state_machine.update_state()
+  
+  # update the distances indicated by the proximity sensors
+  def _update_proximity_sensor_distances( self ):
+    self.proximity_sensor_distances = [ 0.02-( log(readval/3960.0) )/30.0
+                                        for readval in self.robot.read_proximity_sensors() ]
 
   # update the estimated position of the robot using it's wheel encoder readings
   def _update_odometry( self ):
