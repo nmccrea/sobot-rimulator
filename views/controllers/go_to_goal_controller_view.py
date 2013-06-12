@@ -18,6 +18,6 @@ class GoToGoalControllerView:
     vector_line = [ [ 0.0, 0.0 ], self.go_to_goal_controller.gtg_heading_vector ]
     vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
     frame.add_lines( [ vector_line ],
-                     linewidth = 0.005,
+                     linewidth = 0.015,
                      color = "dark green",
                      alpha = 1.0 )

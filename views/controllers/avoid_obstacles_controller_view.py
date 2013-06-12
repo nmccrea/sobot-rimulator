@@ -27,6 +27,6 @@ class AvoidObstaclesControllerView:
     vector_line = [ [ 0.0, 0.0 ], self.avoid_obstacles_controller.ao_heading_vector ]
     vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
     frame.add_lines( [ vector_line ],
-                     linewidth = 0.005,
+                     linewidth = 0.015,
                      color = "red",
                      alpha = 1.0 )
