@@ -11,8 +11,9 @@ STATE_AVOID_OBSTACLES = 2
 STATE_GTG_AND_AO      = 3
 
 # event parameters
-D_STOP = 0.05   # meters from goal
-D_AVOID = 0.15  # meters from obstacle
+D_STOP = 0.05     # meters from goal
+D_CAUTION = 0.15  # meters from obstacle
+D_DANGER = 0.06   # meters from obstacle
 
 class SupervisorStateMachine:
 
@@ -25,16 +26,23 @@ class SupervisorStateMachine:
   def update_state( self ):
     if self.current_state == STATE_GO_TO_GOAL:        self.execute_state_go_to_goal()
     elif self.current_state == STATE_AVOID_OBSTACLES: self.execute_state_avoid_obstacles()
+    elif self.current_state == STATE_GTG_AND_AO:      self.execute_state_gtg_and_ao()
     else: raise Exception( "undefined supervisor state" )
 
 
   # === STATE PROCEDURES ===
   def execute_state_go_to_goal( self ):
-    if self.condition_at_goal():          self.transition_to_state_at_goal()
-    elif self.condition_at_obstacle():  self.transition_to_state_avoid_obstacles()
+    if self.condition_at_goal():        self.transition_to_state_at_goal()
+    elif self.condition_at_obstacle():  self.transition_to_state_gtg_and_ao()
 
   def execute_state_avoid_obstacles( self ):
-    if self.condition_no_obstacle():    self.transition_to_state_go_to_goal()
+    if self.condition_at_goal():        self.transition_to_state_at_goal()
+    if not self.condition_danger():     self.transition_to_state_gtg_and_ao()
+
+  def execute_state_gtg_and_ao( self ):
+    if self.condition_at_goal():        self.transition_to_state_at_goal()
+    elif self.condition_danger():       self.transition_to_state_avoid_obstacles()
+    elif self.condition_no_obstacle():  self.transition_to_state_go_to_goal()
 
 
   # === STATE TRANSITIONS ===
@@ -50,6 +58,10 @@ class SupervisorStateMachine:
     self.current_state = STATE_GO_TO_GOAL
     self.supervisor.current_controller = self.supervisor.go_to_goal_controller
 
+  def transition_to_state_gtg_and_ao( self ):
+    self.current_state = STATE_GTG_AND_AO
+    self.supervisor.current_controller = self.supervisor.gtg_and_ao_controller
+
 
   # === CONDITIONS ===
   def condition_at_goal( self ):
@@ -57,12 +69,17 @@ class SupervisorStateMachine:
 
   def condition_at_obstacle( self ):
     for d in self._forward_sensor_distances():
-      if d < D_AVOID: return True
+      if d < D_CAUTION: return True
+    return False
+
+  def condition_danger( self ):
+    for d in self._forward_sensor_distances():
+      if d < D_DANGER: return True
     return False
 
   def condition_no_obstacle( self ):
     for d in self._forward_sensor_distances():
-      if d < D_AVOID: return False
+      if d < D_CAUTION: return False
     return True
     
  
