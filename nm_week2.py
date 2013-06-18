@@ -5,9 +5,10 @@
 
 from random import *
 
-from models.world import *
+from models.polygon import *
 from models.rectangle_obstacle import *
 from models.robot import *
+from models.world import *
 from views.world_view import *
 
 from sim_exceptions.collision_exception import *
@@ -138,11 +139,31 @@ class Week2Simulator:
         obstacles.append( [ width, height, x, y, theta ] )
 
     # generate the goal
-    dist = goal_min_dist + ( random() * goal_dist_range )
-    phi = -pi + ( random() * 2 * pi )
-    x = dist * sin( phi )
-    y = dist * cos( phi )
-    goal = [ x, y ]
+    goal = None
+    while goal == None:
+      dist = goal_min_dist + ( random() * goal_dist_range )
+      phi = -pi + ( random() * 2 * pi )
+      x = dist * sin( phi )
+      y = dist * cos( phi )
+      goal = [ x, y ]
+
+      # make sure the goal is not too close to any obstacles
+      # NOTE: this is currently very hacky and inefficient
+      r = 0.2
+      n = 12
+      goal_test_geometry = []
+      for i in range( n ):
+        goal_test_geometry.append(
+            [ x + r*cos( i * 2*pi/n ),
+              y + r*sin( i * 2*pi/n ) ] )
+      goal_test_geometry = Polygon( goal_test_geometry )
+      for obs in obstacles:
+        width, height, x, y, theta = obs
+        obstacle = RectangleObstacle( width, height,
+                                      Pose( x, y, theta ) )
+        if self._convex_polygon_intersect_test( goal_test_geometry, obstacle.global_geometry ):
+          goal = None
+          break
 
     print "\n\n"
     print "TO RECREATE THIS ENVIRONMENT, USE THE FOLLOWING DROP-IN CODE:"
