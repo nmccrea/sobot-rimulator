@@ -16,7 +16,8 @@ class AvoidObstaclesController:
     self.proximity_sensor_placements = supervisor.proximity_sensor_placements()
 
     # sensor gains (weights)
-    self.sensor_gains = [   1.0-( (0.7*abs(p.theta)) / pi )   for p in supervisor.proximity_sensor_placements() ]
+    self.sensor_gains = [ 1.0-( (0.7*abs(p.theta)) / pi )
+                          for p in supervisor.proximity_sensor_placements() ]
 
     # control gains
     self.kP = 10.0
