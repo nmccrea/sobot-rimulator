@@ -27,7 +27,7 @@ class GTGAndAOController:
 
     # control gains
     self.kP = 10.0
-    self.kI = 0.4
+    self.kI = 0.0
     self.kD = 0.0
     
     # stored values - for computing next results
