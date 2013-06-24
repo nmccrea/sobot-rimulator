@@ -90,7 +90,6 @@ class AvoidObstaclesController:
 
     return linalg.unit( ao_heading_vector ), obstacle_vectors
 
-
   def _print_vars( self, eP, eI, eD, v, omega ):
     print "\n\n"
     print "=============="
