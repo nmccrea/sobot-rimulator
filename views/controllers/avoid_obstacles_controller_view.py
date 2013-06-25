@@ -7,8 +7,8 @@ class AvoidObstaclesControllerView:
 
   def __init__( self, viewer, supervisor ):
     self.viewer = viewer
-    self.avoid_obstacles_controller = supervisor.avoid_obstacles_controller
     self.supervisor = supervisor
+    self.avoid_obstacles_controller = supervisor.avoid_obstacles_controller
 
   # draw a representation of the avoid-obstacles controller's internal state to the frame
   def draw_avoid_obstacles_controller_to_frame( self, frame ):

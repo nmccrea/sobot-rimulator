@@ -7,8 +7,8 @@ class GTGAndAOControllerView:
 
   def __init__( self, viewer, supervisor ):
     self.viewer = viewer
-    self.gtg_and_ao_controller = supervisor.gtg_and_ao_controller
     self.supervisor = supervisor
+    self.gtg_and_ao_controller = supervisor.gtg_and_ao_controller
 
   # draw a representation of the blended controller's internal state to the frame
   def draw_gtg_and_ao_controller_to_frame( self, frame ):

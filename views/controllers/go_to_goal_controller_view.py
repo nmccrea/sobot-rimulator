@@ -7,8 +7,8 @@ class GoToGoalControllerView:
 
   def __init__( self, viewer, supervisor ):
     self.viewer = viewer
-    self.go_to_goal_controller = supervisor.go_to_goal_controller
     self.supervisor = supervisor
+    self.go_to_goal_controller = supervisor.go_to_goal_controller
 
   # draw a representation of the go-to-goal controller's internal state to the frame
   def draw_go_to_goal_controller_to_frame( self, frame ):
