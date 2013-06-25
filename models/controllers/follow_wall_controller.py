@@ -22,6 +22,9 @@ class FollowWallController:
     # follow direction
     self.follow_direction = FWDIR_LEFT
 
+    # follow distance
+    self.follow_distance = 0.15 # meters
+
     # control gains
     self.kP = 10.0
     self.kI = 0.0
@@ -125,10 +128,19 @@ class FollowWallController:
     # robot_to_wall_vector = linalg.sub(  p1,
     #                                     linalg.scale( wall_surface_vector_unit,
     #                                                   linalg.dot( p1, wall_surface_vector_unit ) ) )
+    
     self.robot_to_wall_vector = robot_to_wall_vector
 
+    # COMBINE THE TWO COMPONENT VECTORS INTO A HEADING VECTOR
 
-    return [ 0.0, 0.0 ]  # TODO: fix this
+    if linalg.mag( robot_to_wall_vector ) == 0.0:
+      fw_heading_vector = [ 1.0, 0.0 ]
+    else:
+      fw_heading_vector = linalg.add( linalg.unit(  wall_surface_vector ),
+                                                   linalg.sub( robot_to_wall_vector,
+                                                               linalg.scale( linalg.unit( robot_to_wall_vector ), self.follow_distance ) ) )
+
+    return linalg.unit( fw_heading_vector )  # TODO: fix this
 
 
   def _print_vars( self, eP, eI, eD, v, omega ):

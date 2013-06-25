@@ -35,6 +35,14 @@ class FollowWallControllerView:
                       color = "black",
                       alpha = 1.0 )
 
+    # draw the computed follow-wall vector
+    vector_line = [ [ 0.0, 0.0 ], self.follow_wall_controller.fw_heading_vector ]
+    vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
+    frame.add_lines( [ vector_line ],
+                     linewidth = 0.015,
+                     color = "orange",
+                     alpha = 1.0 )
+
 
     # # draw the wall surface vector
     # wall_surface_vector = [ [ 0.0, 0.0 ], self.follow_wall_controller.wall_surface_vector ]
