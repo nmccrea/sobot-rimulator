@@ -14,13 +14,10 @@ class SupervisorView:
 
     # controller views
     self.go_to_goal_controller_view = GoToGoalControllerView( viewer,
-                                                              supervisor.go_to_goal_controller,
                                                               supervisor )
     self.avoid_obstacles_controller_view = AvoidObstaclesControllerView( viewer,
-                                                                         supervisor.avoid_obstacles_controller,
                                                                          supervisor )
     self.gtg_and_ao_controller_view = GTGAndAOControllerView( viewer,
-                                                              supervisor.gtg_and_ao_controller,
                                                               supervisor )
 
     # additional information for rendering

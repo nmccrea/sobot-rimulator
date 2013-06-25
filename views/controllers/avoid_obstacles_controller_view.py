@@ -5,9 +5,9 @@ import utils.linalg2_util as linalg
 
 class AvoidObstaclesControllerView:
 
-  def __init__( self, viewer, avoid_obstacles_controller, supervisor ):
+  def __init__( self, viewer, supervisor ):
     self.viewer = viewer
-    self.avoid_obstacles_controller = avoid_obstacles_controller
+    self.avoid_obstacles_controller = supervisor.avoid_obstacles_controller
     self.supervisor = supervisor
 
   # draw a representation of the avoid-obstacles controller's internal state to the frame
@@ -15,7 +15,7 @@ class AvoidObstaclesControllerView:
     robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
     
     # draw the detected environment boundary (i.e. sensor readings)
-    obstacle_vertexes = self.supervisor.avoid_obstacles_controller.obstacle_vectors[:]
+    obstacle_vertexes = self.avoid_obstacles_controller.obstacle_vectors[:]
     obstacle_vertexes.append( obstacle_vertexes[0] )  # close the drawn polygon
     obstacle_vertexes = linalg.rotate_and_translate_vectors( obstacle_vertexes, robot_theta, robot_pos )
     frame.add_lines(  [ obstacle_vertexes ],

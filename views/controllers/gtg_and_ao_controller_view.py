@@ -5,9 +5,9 @@ import utils.linalg2_util as linalg
 
 class GTGAndAOControllerView:
 
-  def __init__( self, viewer, gtg_and_ao_controller, supervisor ):
+  def __init__( self, viewer, supervisor ):
     self.viewer = viewer
-    self.gtg_and_ao_controller = gtg_and_ao_controller
+    self.gtg_and_ao_controller = supervisor.gtg_and_ao_controller
     self.supervisor = supervisor
 
   # draw a representation of the blended controller's internal state to the frame
@@ -15,7 +15,7 @@ class GTGAndAOControllerView:
     robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
     
     # draw the detected environment boundary (i.e. sensor readings)
-    obstacle_vertexes = self.supervisor.gtg_and_ao_controller.obstacle_vectors[:]
+    obstacle_vertexes = self.gtg_and_ao_controller.obstacle_vectors[:]
     obstacle_vertexes.append( obstacle_vertexes[0] )  # close the drawn polygon
     obstacle_vertexes = linalg.rotate_and_translate_vectors( obstacle_vertexes, robot_theta, robot_pos )
     frame.add_lines(  [ obstacle_vertexes ],

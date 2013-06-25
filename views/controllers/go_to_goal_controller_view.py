@@ -5,9 +5,9 @@ import utils.linalg2_util as linalg
 
 class GoToGoalControllerView:
 
-  def __init__( self, viewer, go_to_goal_controller, supervisor ):
+  def __init__( self, viewer, supervisor ):
     self.viewer = viewer
-    self.go_to_goal_controller = go_to_goal_controller
+    self.go_to_goal_controller = supervisor.go_to_goal_controller
     self.supervisor = supervisor
 
   # draw a representation of the go-to-goal controller's internal state to the frame
