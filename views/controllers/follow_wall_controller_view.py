@@ -14,19 +14,26 @@ class FollowWallControllerView:
   def draw_follow_wall_controller_to_frame( self, frame ):
     robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
     
-    # # draw the estimated wall surface
-    # surface_line = [ self.follow_wall_controller.v1, self.follow_wall_controller.v2 ]
-    # surface_line = linalg.rotate_and_translate_vectors( surface_line, robot_theta, robot_pos )
-    # frame.add_lines(  [ surface_line ],
-    #                   linewidth = 0.005,
-    #                   color = "black",
-    #                   alpha = 1.0 )
-    # v1_point = self.follow_wall_controller.v1
-    # v1_point = linalg.rotate_and_translate_vector( v1_point, robot_theta, robot_pos )
-    # frame.add_circle( pos = v1_point,
-    #                   radius = 0.01,
-    #                   color = "blue",
-    #                   alpha = 1.0 )
+    # draw the estimated wall surface
+    surface_line = self.follow_wall_controller.wall_surface
+    surface_line = linalg.rotate_and_translate_vectors( surface_line, robot_theta, robot_pos )
+    frame.add_lines(  [ surface_line ],
+                      linewidth = 0.005,
+                      color = "black",
+                      alpha = 1.0 )
+    v1_point = surface_line[0]
+    frame.add_circle( pos = v1_point,
+                      radius = 0.01,
+                      color = "blue",
+                      alpha = 1.0 )
+
+    # draw the vector from the robot to the wall
+    robot_to_wall = [ [ 0.0, 0.0 ], self.follow_wall_controller.robot_to_wall_vector ]
+    robot_to_wall = linalg.rotate_and_translate_vectors( robot_to_wall, robot_theta, robot_pos )
+    frame.add_lines(  [ robot_to_wall ],
+                      linewidth = 0.005,
+                      color = "black",
+                      alpha = 1.0 )
 
 
     # # draw the wall surface vector

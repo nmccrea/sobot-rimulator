@@ -33,6 +33,8 @@ class FollowWallController:
     self.prev_eI = 0.0
 
     # additional calculated values
+    self.wall_surface = [ [ 0.0, 0.0 ], [ 0.0, 0.0 ] ]
+    self.robot_to_wall_vector = [ 0.0, 0.0 ]
     self.fw_heading_vector = [ 0.0, 0.0 ]
 
   def execute( self ):
@@ -71,7 +73,7 @@ class FollowWallController:
   def calculate_fw_heading_vector( self ):
     # NOTE: preexisting knowledge of the how the sensors are stored and indexed used extensively here
 
-    # estimate wall surface:
+    # ESTIMATE WALL SURFACE:
 
     # get the working set of sensor information for the side we are bearing on
     # the working set is the sensors on the bearing side, indexed from front to back on the robot
@@ -95,14 +97,36 @@ class FollowWallController:
     # calculate the vectors to the obstacle in the robot's reference frame
     sensor1_pos, sensor1_theta = sensor_placements[i1].vunpack()
     sensor2_pos, sensor2_theta = sensor_placements[i2].vunpack()
-    v1, v2 = [ d1, 0.0 ], [ d2, 0.0 ]
-    v1 = linalg.rotate_and_translate_vector( v1, sensor1_theta, sensor1_pos )
-    v2 = linalg.rotate_and_translate_vector( v2, sensor2_theta, sensor2_pos )
+    p1, p2 = [ d1, 0.0 ], [ d2, 0.0 ]
+    p1 = linalg.rotate_and_translate_vector( p1, sensor1_theta, sensor1_pos )
+    p2 = linalg.rotate_and_translate_vector( p2, sensor2_theta, sensor2_pos )
 
     # ensure correct orientation by determining which is the forwardmost sensor reading
-    if i2 < i1: v1, v2 = v2, v1 # swap the vectors
+    if i2 < i1: p1, p2 = p2, p1 # swap the vectors
 
-    wall_surface_vector = linalg.sub( v1, v2 )
+    self.wall_surface = [ p1, p2 ]  # TODO: fix this
+
+    wall_surface_vector = linalg.sub( p1, p2 )
+
+    if linalg.mag( wall_surface_vector ) == 0.0:  # TODO: fix this
+      p1 = [ 1.0, 0.0 ]
+      p2 = [ 0.0, 0.0 ]
+      wall_surface_vector = [ 1.0, 0.0 ]
+      
+
+    # ESTIMATE ROBOT-TO-WALL VECTOR
+    
+    # compute the vector from the robot center to the nearest point on the wall surface
+    robot_to_wall_vector = linalg.sub(  p1,
+                                        linalg.proj(  p1,
+                                                      linalg.sub( p1, p2 ) ) )
+    # # this alternative formula is closer to that given in the Coursera course manual, but the result is the same
+    # wall_surface_vector_unit = linalg.unit( wall_surface_vector )
+    # robot_to_wall_vector = linalg.sub(  p1,
+    #                                     linalg.scale( wall_surface_vector_unit,
+    #                                                   linalg.dot( p1, wall_surface_vector_unit ) ) )
+    self.robot_to_wall_vector = robot_to_wall_vector
+
 
     return [ 0.0, 0.0 ]  # TODO: fix this
 
