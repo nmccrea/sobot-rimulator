@@ -33,12 +33,11 @@ class FollowWallController:
     self.prev_eI = 0.0
 
     # additional calculated values
-    self.wall_surface_vector = [ 0.0, 0.0 ]
     self.fw_heading_vector = [ 0.0, 0.0 ]
 
   def execute( self ):
     # generate and store new heading vector
-    self.fw_heading_vector, self.wall_surface_vector = self.calculate_fw_heading_vector()
+    self.fw_heading_vector = self.calculate_fw_heading_vector()
 
     # calculate the time that has passed since the last control iteration
     current_time = self.supervisor.time()
@@ -69,7 +68,6 @@ class FollowWallController:
     # self._print_vars( eP, eI, eD, v, omega )
 
   # return a wall-following vector in the robot's reference frame
-  # also returns the calculated wall surface vector
   def calculate_fw_heading_vector( self ):
     # NOTE: preexisting knowledge of the how the sensors are stored and indexed used extensively here
 
@@ -106,7 +104,7 @@ class FollowWallController:
 
     wall_surface_vector = linalg.sub( v1, v2 )
 
-    return [ 0.0, 0.0 ], wall_surface_vector  # TODO: fix this
+    return [ 0.0, 0.0 ]  # TODO: fix this
 
 
   def _print_vars( self, eP, eI, eD, v, omega ):

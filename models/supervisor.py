@@ -9,6 +9,7 @@ from supervisor_controller_interface import *
 from supervisor_state_machine import *
 
 from controllers.avoid_obstacles_controller import *
+from controllers.follow_wall_controller import *
 from controllers.go_to_angle_controller import *
 from controllers.go_to_goal_controller import *
 from controllers.gtg_and_ao_controller import *
@@ -50,6 +51,7 @@ class Supervisor:
     self.go_to_goal_controller = GoToGoalController( controller_interface )
     self.avoid_obstacles_controller = AvoidObstaclesController( controller_interface )
     self.gtg_and_ao_controller = GTGAndAOController( controller_interface )
+    self.follow_wall_controller = FollowWallController( controller_interface )
 
     # state machine
     self.state_machine = SupervisorStateMachine( self )
@@ -91,6 +93,7 @@ class Supervisor:
   def currently_gtg( self ): return self.current_controller == self.go_to_goal_controller
   def currently_ao( self ): return self.current_controller == self.avoid_obstacles_controller
   def currently_blended( self ): return self.current_controller == self.gtg_and_ao_controller
+  def currently_fw( self ): return self.current_controller == self.follow_wall_controller
 
   # update the estimated robot state and the control state
   def _update_state( self ):

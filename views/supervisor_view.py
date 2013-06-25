@@ -3,6 +3,7 @@
 
 import utils.linalg2_util as linalg
 from controllers.avoid_obstacles_controller_view import *
+from controllers.follow_wall_controller_view import *
 from controllers.go_to_goal_controller_view import *
 from controllers.gtg_and_ao_controller_view import *
 
@@ -19,6 +20,8 @@ class SupervisorView:
                                                                          supervisor )
     self.gtg_and_ao_controller_view = GTGAndAOControllerView( viewer,
                                                               supervisor )
+    self.follow_wall_controller_view = FollowWallControllerView(  viewer,
+                                                                  supervisor )
 
     # additional information for rendering
     self.robot_geometry = robot_geometry      # robot geometry
@@ -68,3 +71,5 @@ class SupervisorView:
       self.avoid_obstacles_controller_view.draw_avoid_obstacles_controller_to_frame( frame )
     elif self.supervisor.currently_blended():
       self.gtg_and_ao_controller_view.draw_gtg_and_ao_controller_to_frame( frame )
+    elif self.supervisor.currently_fw():
+      self.follow_wall_controller_view.draw_follow_wall_controller_to_frame( frame )
