@@ -19,11 +19,9 @@ class FollowWallController:
     # sensor placements
     self.proximity_sensor_placements = supervisor.proximity_sensor_placements()
 
-    # follow direction
+    # follow parameters
     self.follow_direction = FWDIR_LEFT
-
-    # follow distance
-    self.follow_distance = 0.15 # meters
+    self.follow_distance = 0.1 # meters
 
     # control gains
     self.kP = 10.0
@@ -36,13 +34,14 @@ class FollowWallController:
     self.prev_eI = 0.0
 
     # additional calculated values
-    self.wall_surface = [ [ 0.0, 0.0 ], [ 0.0, 0.0 ] ]
-    self.robot_to_wall_vector = [ 0.0, 0.0 ]
-    self.fw_heading_vector = [ 0.0, 0.0 ]
+    self.wall_surface =             [ [ 0.0, 0.0 ], [ 0.0, 0.0 ] ]  # the followed surface, in robot space
+    self.parallel_component =       [ 0.0, 0.0 ]
+    self.perpendicular_component =  [ 0.0, 0.0 ]
+    self.fw_heading_vector =        [ 0.0, 0.0 ]
 
   def execute( self ):
-    # generate and store new heading vector
-    self.fw_heading_vector = self.calculate_fw_heading_vector()
+    # generate and store new heading vector and critical points
+    self.fw_heading_vector, self.parallel_component, self.perpendicular_component, self.wall_surface = self.calculate_fw_heading_vector()
 
     # calculate the time that has passed since the last control iteration
     current_time = self.supervisor.time()
@@ -60,7 +59,7 @@ class FollowWallController:
     # calculate translational velocity
     # velocity is v_max when omega is 0,
     # drops rapidly to zero as |omega| rises
-    v = self.supervisor.v_max() / ( abs( omega ) + 1 )**1.5
+    v = self.supervisor.v_max() / ( abs( omega ) + 1 )**0.5
 
     # store values for next control iteration
     self.prev_time = current_time
@@ -73,74 +72,57 @@ class FollowWallController:
     # self._print_vars( eP, eI, eD, v, omega )
 
   # return a wall-following vector in the robot's reference frame
+  # also returns the component vectors used to calculate the heading
+  # and the vectors representing the followed surface in robot-space
   def calculate_fw_heading_vector( self ):
-    # NOTE: preexisting knowledge of the how the sensors are stored and indexed used extensively here
 
-    # ESTIMATE WALL SURFACE:
-
-    # get the working set of sensor information for the side we are bearing on
-    # the working set is the sensors on the bearing side, indexed from front to back on the robot
+    # get the necessary variables for the working set of sensors
+    #   the working set is the sensors on the side we are bearing on, indexed from rearmost to foremost on the robot
+    #   NOTE: uses preexisting knowledge of the how the sensors are stored and indexed
     if self.follow_direction == FWDIR_LEFT:
-      sensor_placements = self.proximity_sensor_placements[4:8]
-      sensor_distances = self.supervisor.proximity_sensor_distances()[4:8]
+
+      # if we are following to the left, we bear on the righthand sensors
+      sensor_placements = self.proximity_sensor_placements[7:3:-1]
+      sensor_distances = self.supervisor.proximity_sensor_distances()[7:3:-1]
     elif self.follow_direction == FWDIR_RIGHT:
-      sensor_placments = self.proximity_sensor_placments[3::-1]
-      sensor_distances = self.supervisor.proximity_sensor_distances()[3::-1]
+
+      # if we are following to the right, we bear on the lefthand sensors
+      sensor_placements = self.proximity_sensor_placements[:4]
+      sensor_distances = self.supervisor.proximity_sensor_distances()[:4]
     else:
       raise Exception( "unknown wall-following direction" )
 
-
-    # get the smallest sensor distances
-    d1, d2 = sorted( sensor_distances )[0:2]
-
-    # identify the sensors giving these values
-    i1 = sensor_distances.index( d1 )
-    i2 = sensor_distances.index( d2 )
+    # sort the sensor distances along with their corresponding indices
+    sensor_distances, indices = zip( *sorted( zip(
+                                    sensor_distances, # sensor distances
+                                    [0, 1, 2, 3]      # corresponding indices
+                                  ) ) )
+    # get the smallest sensor distances and their corresponding indices
+    d1, d2 = sensor_distances[0:2]
+    i1, i2 = indices[0:2]
     
     # calculate the vectors to the obstacle in the robot's reference frame
-    sensor1_pos, sensor1_theta = sensor_placements[i1].vunpack()
-    sensor2_pos, sensor2_theta = sensor_placements[i2].vunpack()
+    sensor1_pos, sensor1_theta = sensor_placements[i1].vunpack()  # the indices are used here to get the correct placements
+    sensor2_pos, sensor2_theta = sensor_placements[i2].vunpack()                
     p1, p2 = [ d1, 0.0 ], [ d2, 0.0 ]
-    p1 = linalg.rotate_and_translate_vector( p1, sensor1_theta, sensor1_pos )
-    p2 = linalg.rotate_and_translate_vector( p2, sensor2_theta, sensor2_pos )
+    p1 = linalg.rotate_and_translate_vector( p1, sensor1_theta, sensor1_pos )   # p1 is the nearest point measured
+    p2 = linalg.rotate_and_translate_vector( p2, sensor2_theta, sensor2_pos )   # p2 is the second nearest point measured
 
-    # ensure correct orientation by determining which is the forwardmost sensor reading
-    if i2 < i1: p1, p2 = p2, p1 # swap the vectors
-
-    self.wall_surface = [ p1, p2 ]  # TODO: fix this
-
-    wall_surface_vector = linalg.sub( p1, p2 )
-
-    if linalg.mag( wall_surface_vector ) == 0.0:  # TODO: fix this
-      p1 = [ 1.0, 0.0 ]
-      p2 = [ 0.0, 0.0 ]
-      wall_surface_vector = [ 1.0, 0.0 ]
-      
-
-    # ESTIMATE ROBOT-TO-WALL VECTOR
     
-    # compute the vector from the robot center to the nearest point on the wall surface
-    robot_to_wall_vector = linalg.sub(  p1,
-                                        linalg.proj(  p1,
-                                                      linalg.sub( p1, p2 ) ) )
-    # # this alternative formula is closer to that given in the Coursera course manual, but the result is the same
-    # wall_surface_vector_unit = linalg.unit( wall_surface_vector )
-    # robot_to_wall_vector = linalg.sub(  p1,
-    #                                     linalg.scale( wall_surface_vector_unit,
-    #                                                   linalg.dot( p1, wall_surface_vector_unit ) ) )
+    if i2 < i1: p1, p2 = p2, p1 # ensure correct orientation by determining which is the forwardmost sensor reading
     
-    self.robot_to_wall_vector = robot_to_wall_vector
+    # compute the parallel and perpendicular component vectors
+    parallel_component = linalg.sub( p2, p1 ) 
+    perpendicular_component = linalg.sub( p1, linalg.proj( p1, parallel_component ) )
 
-    # COMBINE THE TWO COMPONENT VECTORS INTO A HEADING VECTOR
+    perp_vector = linalg.sub( perpendicular_component,
+                              linalg.scale( linalg.unit( perpendicular_component ), self.follow_distance ) )
+    perp_vector = linalg.scale( perp_vector, 250*linalg.mag(perp_vector)**2 )
 
-    if linalg.mag( robot_to_wall_vector ) == 0.0:
-      fw_heading_vector = [ 1.0, 0.0 ]
-    else:
-      fw_heading_vector = linalg.add( linalg.unit(  wall_surface_vector ),
-                                                   linalg.sub( robot_to_wall_vector,
-                                                               linalg.scale( linalg.unit( robot_to_wall_vector ), self.follow_distance ) ) )
+    fw_heading_vector = linalg.add( parallel_component,
+                                    perp_vector )
 
-    return linalg.unit( fw_heading_vector )  # TODO: fix this
+    return fw_heading_vector, parallel_component, perp_vector, [ p2, p1 ]
 
 
   def _print_vars( self, eP, eI, eD, v, omega ):
