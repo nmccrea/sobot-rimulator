@@ -59,7 +59,7 @@ class FollowWallController:
     # calculate translational velocity
     # velocity is v_max when omega is 0,
     # drops rapidly to zero as |omega| rises
-    v = self.supervisor.v_max() / ( abs( omega ) + 1 )**0.5
+    v = self.supervisor.v_max() / ( abs( omega ) + 1 )**0.7
 
     # store values for next control iteration
     self.prev_time = current_time
@@ -93,7 +93,7 @@ class FollowWallController:
       raise Exception( "unknown wall-following direction" )
 
     # sort the sensor distances along with their corresponding indices
-    sensor_distances, indices = zip( *sorted( zip(
+    sensor_distances, indices = zip( *sorted( zip( # this method ensures two different sensors are always used
                                     sensor_distances, # sensor distances
                                     [0, 1, 2, 3]      # corresponding indices
                                   ) ) )
