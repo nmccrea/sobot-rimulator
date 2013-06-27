@@ -21,7 +21,7 @@ class FollowWallController:
 
     # follow parameters
     self.follow_direction = FWDIR_LEFT
-    self.follow_distance = 0.1 # meters
+    self.follow_distance = 0.15 # meters
 
     # control gains
     self.kP = 10.0
@@ -33,15 +33,22 @@ class FollowWallController:
     self.prev_eP = 0.0
     self.prev_eI = 0.0
 
-    # additional calculated values
+    # key vectors and data
     self.wall_surface =             [ [ 0.0, 0.0 ], [ 0.0, 0.0 ] ]  # the followed surface, in robot space
     self.parallel_component =       [ 0.0, 0.0 ]
     self.perpendicular_component =  [ 0.0, 0.0 ]
+    self.error_vector =             [ 0.0, 0.0 ]
     self.fw_heading_vector =        [ 0.0, 0.0 ]
 
   def execute( self ):
     # generate and store new heading vector and critical points
-    self.fw_heading_vector, self.parallel_component, self.perpendicular_component, self.wall_surface = self.calculate_fw_heading_vector()
+    [
+      self.fw_heading_vector,
+      self.parallel_component,
+      self.perpendicular_component,
+      self.error_vector,
+      self.wall_surface
+                        ] = self.calculate_fw_heading_vector()
 
     # calculate the time that has passed since the last control iteration
     current_time = self.supervisor.time()
@@ -80,12 +87,10 @@ class FollowWallController:
     #   the working set is the sensors on the side we are bearing on, indexed from rearmost to foremost on the robot
     #   NOTE: uses preexisting knowledge of the how the sensors are stored and indexed
     if self.follow_direction == FWDIR_LEFT:
-
       # if we are following to the left, we bear on the righthand sensors
       sensor_placements = self.proximity_sensor_placements[7:3:-1]
       sensor_distances = self.supervisor.proximity_sensor_distances()[7:3:-1]
     elif self.follow_direction == FWDIR_RIGHT:
-
       # if we are following to the right, we bear on the lefthand sensors
       sensor_placements = self.proximity_sensor_placements[:4]
       sensor_distances = self.supervisor.proximity_sensor_distances()[:4]
@@ -102,27 +107,25 @@ class FollowWallController:
     i1, i2 = indices[0:2]
     
     # calculate the vectors to the obstacle in the robot's reference frame
-    sensor1_pos, sensor1_theta = sensor_placements[i1].vunpack()  # the indices are used here to get the correct placements
+    sensor1_pos, sensor1_theta = sensor_placements[i1].vunpack()
     sensor2_pos, sensor2_theta = sensor_placements[i2].vunpack()                
     p1, p2 = [ d1, 0.0 ], [ d2, 0.0 ]
-    p1 = linalg.rotate_and_translate_vector( p1, sensor1_theta, sensor1_pos )   # p1 is the nearest point measured
-    p2 = linalg.rotate_and_translate_vector( p2, sensor2_theta, sensor2_pos )   # p2 is the second nearest point measured
+    p1 = linalg.rotate_and_translate_vector( p1, sensor1_theta, sensor1_pos )
+    p2 = linalg.rotate_and_translate_vector( p2, sensor2_theta, sensor2_pos )
 
+    # ensure correct orientation by determining which is the forwardmost sensor reading
+    if i2 < i1: p1, p2 = p2, p1
     
-    if i2 < i1: p1, p2 = p2, p1 # ensure correct orientation by determining which is the forwardmost sensor reading
-    
-    # compute the parallel and perpendicular component vectors
+    # compute the key vectors and auxiliary data
+    wall_surface = [ p2, p1 ]
     parallel_component = linalg.sub( p2, p1 ) 
-    perpendicular_component = linalg.sub( p1, linalg.proj( p1, parallel_component ) )
+    distance_vector = linalg.sub( p1, linalg.proj( p1, parallel_component ) )
+    unit_perp = linalg.unit( distance_vector )
+    error_vector = linalg.scale( unit_perp, self.follow_distance )
+    perpendicular_component = linalg.sub( distance_vector, error_vector )
+    fw_heading_vector = linalg.add( parallel_component, perpendicular_component )
 
-    perp_vector = linalg.sub( perpendicular_component,
-                              linalg.scale( linalg.unit( perpendicular_component ), self.follow_distance ) )
-    perp_vector = linalg.scale( perp_vector, 250*linalg.mag(perp_vector)**2 )
-
-    fw_heading_vector = linalg.add( parallel_component,
-                                    perp_vector )
-
-    return fw_heading_vector, parallel_component, perp_vector, [ p2, p1 ]
+    return fw_heading_vector, parallel_component, perpendicular_component, error_vector, wall_surface
 
 
   def _print_vars( self, eP, eI, eD, v, omega ):
