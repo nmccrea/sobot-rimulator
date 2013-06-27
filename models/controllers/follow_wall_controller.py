@@ -19,8 +19,8 @@ class FollowWallController:
     # sensor placements
     self.proximity_sensor_placements = supervisor.proximity_sensor_placements()
 
-    # follow parameters
-    self.follow_direction = FWDIR_LEFT
+    # wall-follow parameters
+    self.follow_direction = FWDIR_RIGHT
     self.follow_distance = 0.15 # meters
 
     # control gains
@@ -37,7 +37,7 @@ class FollowWallController:
     self.wall_surface =             [ [ 0.0, 0.0 ], [ 0.0, 0.0 ] ]  # the followed surface, in robot space
     self.parallel_component =       [ 0.0, 0.0 ]
     self.perpendicular_component =  [ 0.0, 0.0 ]
-    self.error_vector =             [ 0.0, 0.0 ]
+    self.distance_vector =          [ 0.0, 0.0 ]
     self.fw_heading_vector =        [ 0.0, 0.0 ]
 
   def execute( self ):
@@ -46,7 +46,7 @@ class FollowWallController:
       self.fw_heading_vector,
       self.parallel_component,
       self.perpendicular_component,
-      self.error_vector,
+      self.distance_vector,
       self.wall_surface
                         ] = self.calculate_fw_heading_vector()
 
@@ -121,12 +121,11 @@ class FollowWallController:
     parallel_component = linalg.sub( p2, p1 ) 
     distance_vector = linalg.sub( p1, linalg.proj( p1, parallel_component ) )
     unit_perp = linalg.unit( distance_vector )
-    error_vector = linalg.scale( unit_perp, self.follow_distance )
-    perpendicular_component = linalg.sub( distance_vector, error_vector )
+    distance_desired = linalg.scale( unit_perp, self.follow_distance )
+    perpendicular_component = linalg.sub( distance_vector, distance_desired )
     fw_heading_vector = linalg.add( parallel_component, perpendicular_component )
 
-    return fw_heading_vector, parallel_component, perpendicular_component, error_vector, wall_surface
-
+    return fw_heading_vector, parallel_component, perpendicular_component, distance_vector, wall_surface
 
   def _print_vars( self, eP, eI, eD, v, omega ):
     print "\n\n"
