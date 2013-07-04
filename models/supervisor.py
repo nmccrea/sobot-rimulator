@@ -25,6 +25,7 @@ class Supervisor:
                       wheel_base_length,                      # the robot's wheel base
                       wheel_encoder_ticks_per_rev,            # the number of wheel encoder ticks per revolution of a drive wheel
                       sensor_placements,                      # placement pose of the sensors on the robot body
+                      sensor_range,                           # max detection range of the sensors
                       goal = [ 0.0, 0.0 ],                    # the goal to which this supervisor will guide the robot
                       initial_pose = Pose( 0.0, 0.0, 0.0) ):  # the pose the robot will have when control begins
     
@@ -35,8 +36,9 @@ class Supervisor:
     # NOTE: the supervisor does NOT have access to the physical robot, only the robot's interface
     self.robot = robot_interface
 
-    # proximity sensor placement poses
+    # proximity sensor information
     self.proximity_sensor_placements = [ Pose( rawpose[0], rawpose[1], radians( rawpose[2] ) ) for rawpose in sensor_placements ]
+    self.proximity_sensor_max_range = sensor_range
 
     # odometry information
     self.robot_wheel_radius = wheel_radius

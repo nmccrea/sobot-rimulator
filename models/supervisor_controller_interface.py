@@ -21,6 +21,11 @@ class SupervisorControllerInterface:
   def proximity_sensor_distances( self ):
     return self.supervisor.proximity_sensor_distances
 
+  # get true/false indicators for which sensors are actually detecting obstacles
+  def proximity_sensor_positive_detections( self ):
+    sensor_range = self.supervisor.proximity_sensor_max_range
+    return [ d < sensor_range - 0.001 for d in self.proximity_sensor_distances() ]
+
   # get the velocity limit of the supervisor
   def v_max( self ):
     return self.supervisor.v_max
