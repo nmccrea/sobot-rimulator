@@ -21,7 +21,7 @@ class FollowWallController:
 
     # wall-follow parameters
     self.follow_direction = FWDIR_RIGHT
-    self.follow_distance = 0.15 # meters
+    self.follow_distance = 0.15 # meters from the center of the robot to the wall
 
     # control gains
     self.kP = 10.0
@@ -90,31 +90,42 @@ class FollowWallController:
       # if we are following to the left, we bear on the righthand sensors
       sensor_placements = self.proximity_sensor_placements[7:3:-1]
       sensor_distances = self.supervisor.proximity_sensor_distances()[7:3:-1]
+      sensor_detections = self.supervisor.proximity_sensor_positive_detections()[7:3:-1]
     elif self.follow_direction == FWDIR_RIGHT:
       # if we are following to the right, we bear on the lefthand sensors
       sensor_placements = self.proximity_sensor_placements[:4]
       sensor_distances = self.supervisor.proximity_sensor_distances()[:4]
+      sensor_detections = self.supervisor.proximity_sensor_positive_detections()[:4]
     else:
       raise Exception( "unknown wall-following direction" )
 
-    # sort the sensor distances along with their corresponding indices
-    sensor_distances, indices = zip( *sorted( zip( # this method ensures two different sensors are always used
-                                    sensor_distances, # sensor distances
-                                    [0, 1, 2, 3]      # corresponding indices
-                                  ) ) )
-    # get the smallest sensor distances and their corresponding indices
-    d1, d2 = sensor_distances[0:2]
-    i1, i2 = indices[0:2]
-    
-    # calculate the vectors to the obstacle in the robot's reference frame
-    sensor1_pos, sensor1_theta = sensor_placements[i1].vunpack()
-    sensor2_pos, sensor2_theta = sensor_placements[i2].vunpack()                
-    p1, p2 = [ d1, 0.0 ], [ d2, 0.0 ]
-    p1 = linalg.rotate_and_translate_vector( p1, sensor1_theta, sensor1_pos )
-    p2 = linalg.rotate_and_translate_vector( p2, sensor2_theta, sensor2_pos )
+    if True not in sensor_detections:
+      # if there is not wall to track detected, we default to predefined reference points
+      # NOTE: these points are designed to turn the robot towards the bearing side, which aids with cornering behavior
+      #       the resulting heading vector is also meant to point almost directly behind the robot
+      #       this helps when determining switching conditions in the supervisor state machine
+      p1 = [ -0.2, 0.0 ]
+      if self.follow_direction == FWDIR_LEFT: p2 = [ -0.2, -0.01 ]
+      if self.follow_direction == FWDIR_RIGHT: p2 = [ -0.2, 0.01 ]
+    else:
+      # sort the sensor distances along with their corresponding indices
+      sensor_distances, indices = zip( *sorted( zip( # this method ensures two different sensors are always used
+                                      sensor_distances, # sensor distances
+                                      [0, 1, 2, 3]      # corresponding indices
+                                    ) ) )
+      # get the smallest sensor distances and their corresponding indices
+      d1, d2 = sensor_distances[0:2]
+      i1, i2 = indices[0:2]
+      
+      # calculate the vectors to the obstacle in the robot's reference frame
+      sensor1_pos, sensor1_theta = sensor_placements[i1].vunpack()
+      sensor2_pos, sensor2_theta = sensor_placements[i2].vunpack()                
+      p1, p2 = [ d1, 0.0 ], [ d2, 0.0 ]
+      p1 = linalg.rotate_and_translate_vector( p1, sensor1_theta, sensor1_pos )
+      p2 = linalg.rotate_and_translate_vector( p2, sensor2_theta, sensor2_pos )
 
-    # ensure correct orientation by determining which is the forwardmost sensor reading
-    if i2 < i1: p1, p2 = p2, p1
+      # ensure p2 is forward of p1
+      if i2 < i1: p1, p2 = p2, p1
     
     # compute the key vectors and auxiliary data
     wall_surface = [ p2, p1 ]
