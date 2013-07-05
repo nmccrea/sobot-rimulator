@@ -88,7 +88,7 @@ class Supervisor:
   # execute one control loop
   def execute( self ):
     self._update_state()              # update state
-    self.current_controller.execute() # execute the controller's control loop
+    self.current_controller.execute() # apply the current controller
     self._send_robot_commands()       # output the generated control signals to the robot
 
   # current controller indicator methods
@@ -102,10 +102,20 @@ class Supervisor:
     # update estimated robot state from sensor readings
     self._update_proximity_sensor_distances()
     self._update_odometry()
+    
+    # calculate new heading vectors for each controller
+    self._update_controller_headings()
 
     # update the control state
     self.state_machine.update_state()
   
+  # calculate updated heading vectors for the active controllers
+  def _update_controller_headings( self ):
+    self.go_to_goal_controller.update_heading()
+    self.avoid_obstacles_controller.update_heading()
+    self.gtg_and_ao_controller.update_heading()
+    self.follow_wall_controller.update_heading()
+
   # update the distances indicated by the proximity sensors
   def _update_proximity_sensor_distances( self ):
     self.proximity_sensor_distances = [ 0.02-( log(readval/3960.0) )/30.0

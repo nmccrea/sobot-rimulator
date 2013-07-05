@@ -29,14 +29,15 @@ class AvoidObstaclesController:
     self.prev_eP = 0.0
     self.prev_eI = 0.0
 
-    # additional calculated values 
+    # key vectors and data
     self.obstacle_vectors = [ [ 0.0, 0.0 ] ] * len( self.proximity_sensor_placements )
     self.ao_heading_vector = [ 0.0, 0.0 ]
 
-  def execute( self ):
+  def update_heading( self ):
     # generate and store new heading and obstacle vectors
     self.ao_heading_vector, self.obstacle_vectors = self.calculate_ao_heading_vector()
 
+  def execute( self ):
     # calculate the time that has passed since the last control iteration
     current_time = self.supervisor.time()
     dt = current_time - self.prev_time

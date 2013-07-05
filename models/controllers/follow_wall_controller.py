@@ -40,7 +40,7 @@ class FollowWallController:
     self.distance_vector =          [ 0.0, 0.0 ]
     self.fw_heading_vector =        [ 0.0, 0.0 ]
 
-  def execute( self ):
+  def update_heading( self ):
     # generate and store new heading vector and critical points
     [
       self.fw_heading_vector,
@@ -50,6 +50,7 @@ class FollowWallController:
       self.wall_surface
                         ] = self.calculate_fw_heading_vector()
 
+  def execute( self ):
     # calculate the time that has passed since the last control iteration
     current_time = self.supervisor.time()
     dt = current_time - self.prev_time
