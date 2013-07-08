@@ -9,6 +9,10 @@ class SupervisorControllerInterface:
   def __init__( self, supervisor ):
     self.supervisor = supervisor
 
+  # get the current control state
+  def current_state( self ):
+    return self.supervisor.state_machine.current_state
+
   # get the supervisor's internal pose estimation
   def estimated_pose( self ):
     return self.supervisor.estimated_pose
