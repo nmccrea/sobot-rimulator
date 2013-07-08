@@ -6,12 +6,14 @@ from controllers.avoid_obstacles_controller_view import *
 from controllers.follow_wall_controller_view import *
 from controllers.go_to_goal_controller_view import *
 from controllers.gtg_and_ao_controller_view import *
+from models.control_state import *
 
 class SupervisorView:
 
   def __init__( self, viewer, supervisor, robot_geometry ):
     self.viewer = viewer
     self.supervisor = supervisor
+    self.supervisor_state_machine = supervisor.state_machine
 
     # controller views
     self.go_to_goal_controller_view = GoToGoalControllerView( viewer,
@@ -65,11 +67,12 @@ class SupervisorView:
   
   # draw the current controller's state to the frame
   def _draw_current_controller_to_frame( self, frame ):
-    if self.supervisor.currently_gtg():
+    current_state = self.supervisor_state_machine.current_state
+    if current_state == ControlState.GO_TO_GOAL:
       self.go_to_goal_controller_view.draw_go_to_goal_controller_to_frame( frame )
-    elif self.supervisor.currently_ao():
+    elif current_state == ControlState.AVOID_OBSTACLES:
       self.avoid_obstacles_controller_view.draw_avoid_obstacles_controller_to_frame( frame )
-    elif self.supervisor.currently_blended():
+    elif current_state == ControlState.GTG_AND_AO:
       self.gtg_and_ao_controller_view.draw_gtg_and_ao_controller_to_frame( frame )
-    elif self.supervisor.currently_fw():
+    elif current_state in [ ControlState.SLIDE_LEFT, ControlState.SLIDE_RIGHT ]:
       self.follow_wall_controller_view.draw_follow_wall_controller_to_frame( frame )

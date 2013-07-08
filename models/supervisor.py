@@ -4,6 +4,7 @@
 from math import *
 
 from utils import linalg2_util as linalg
+from control_state import *
 from pose import *
 from supervisor_controller_interface import *
 from supervisor_state_machine import *
@@ -90,12 +91,6 @@ class Supervisor:
     self._update_state()              # update state
     self.current_controller.execute() # apply the current controller
     self._send_robot_commands()       # output the generated control signals to the robot
-
-  # current controller indicator methods
-  def currently_gtg( self ): return self.current_controller == self.go_to_goal_controller
-  def currently_ao( self ): return self.current_controller == self.avoid_obstacles_controller
-  def currently_blended( self ): return self.current_controller == self.gtg_and_ao_controller
-  def currently_fw( self ): return self.current_controller == self.follow_wall_controller
 
   # update the estimated robot state and the control state
   def _update_state( self ):

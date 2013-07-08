@@ -1,14 +1,9 @@
 #!/usr/bin/python
 # -*- Encoding: utf-8 -*
 
+from control_state import *
 from utils import linalg2_util as linalg
 from sim_exceptions.goal_reached_exception import *
-
-# state enumerations
-STATE_AT_GOAL         = 0
-STATE_GO_TO_GOAL      = 1
-STATE_AVOID_OBSTACLES = 2
-STATE_GTG_AND_AO      = 3
 
 # event parameters
 D_STOP = 0.05     # meters from goal
@@ -24,9 +19,9 @@ class SupervisorStateMachine:
     self.transition_to_state_go_to_goal()
 
   def update_state( self ):
-    if self.current_state == STATE_GO_TO_GOAL:        self.execute_state_go_to_goal()
-    elif self.current_state == STATE_AVOID_OBSTACLES: self.execute_state_avoid_obstacles()
-    elif self.current_state == STATE_GTG_AND_AO:      self.execute_state_gtg_and_ao()
+    if self.current_state == ControlState.GO_TO_GOAL:        self.execute_state_go_to_goal()
+    elif self.current_state == ControlState.AVOID_OBSTACLES: self.execute_state_avoid_obstacles()
+    elif self.current_state == ControlState.GTG_AND_AO:      self.execute_state_gtg_and_ao()
     else: raise Exception( "undefined supervisor state" )
 
 
@@ -47,19 +42,19 @@ class SupervisorStateMachine:
 
   # === STATE TRANSITIONS ===
   def transition_to_state_at_goal( self ):
-    self.current_state = STATE_AT_GOAL
+    self.current_state = ControlState.AT_GOAL
     raise GoalReachedException()
 
   def transition_to_state_avoid_obstacles( self ):
-    self.current_state = STATE_AVOID_OBSTACLES
+    self.current_state = ControlState.AVOID_OBSTACLES
     self.supervisor.current_controller = self.supervisor.avoid_obstacles_controller
 
   def transition_to_state_go_to_goal( self ):
-    self.current_state = STATE_GO_TO_GOAL
+    self.current_state = ControlState.GO_TO_GOAL
     self.supervisor.current_controller = self.supervisor.go_to_goal_controller
 
   def transition_to_state_gtg_and_ao( self ):
-    self.current_state = STATE_GTG_AND_AO
+    self.current_state = ControlState.GTG_AND_AO
     self.supervisor.current_controller = self.supervisor.gtg_and_ao_controller
 
 
@@ -83,6 +78,6 @@ class SupervisorStateMachine:
     return True
     
  
-  # === helper methods ===   
+  # === helper methods === 
   def _forward_sensor_distances( self ):
     return self.supervisor.proximity_sensor_distances[1:7]
