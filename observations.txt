@@ -17,6 +17,8 @@ AO PID Controller:
 =================
 If it happens that all of the sensors are reporting similar distances to obstacles, the resulting avoid-obstacle heading vector behaves similarly to when none of the sensors are detecting obstacles. Thus if the robot finds itself in a very cramped place with obstacles on all sides, it will behave as if there are no obstacles - driving forward and crashing.
 
+It may seem reasonable to give the forward sensors a greater weighting in the computed avoidance heading. However, the fact there is also a greater number of forward-facing sensors on the robot must be taken into account, as this also gives a higher sensitivity to obstacles in front of the robot. It turns out that giving slightly HIGHER weights the further back a sensor points compensates well, and gives the robot a better chance of escaping wedges and other situations where the above note applies.
+
 Blended GTG/AO Controller:
 ========================
 A very heavy weight towards the avoid-obstacle heading seems to be necessary when there is even a small amount of clutter.
