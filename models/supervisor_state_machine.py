@@ -50,7 +50,8 @@ class SupervisorStateMachine:
       sr = self.condition_slide_right()
       if sl and not sr:                 self.transition_to_state_slide_left()
       elif sr and not sl:               self.transition_to_state_slide_right()
-      elif sl and sr: raise Exception( "cannot determine slide direction" )
+      elif not sr and not sl:           self.transition_to_state_go_to_goal()
+      else: raise Exception( "cannot determine slide direction" )
 
   def execute_state_slide_left( self ):
     if self.condition_at_goal():        self.transition_to_state_at_goal()
@@ -153,3 +154,17 @@ class SupervisorStateMachine:
 
   def _update_best_distance_to_goal( self ):
     self.best_distance_to_goal = min( self.best_distance_to_goal, self._distance_to_goal() )
+    
+
+  # === FOR DEBUGGING ===
+  def _print_debug_info( self ):
+    print "\n ======== \n"
+    print "STATE: " + str( [ "At Goal", "Go to Goal", "Avoid Obstacles", "Blended", "Slide Left", "Slide Right" ][ self.current_state ] )
+    print ""
+    print "CONDITIONS:"
+    print "At Obstacle: " + str( self.condition_at_obstacle() )
+    print "Danger: " + str( self.condition_danger() )
+    print "No Obstacle: " + str( self.condition_no_obstacle() )
+    print "Progress Made: " + str( self.condition_progress_made() ) + " ( Best Dist: " + str( round( self.best_distance_to_goal, 3 ) ) + ", Current Dist: " + str( round( self._distance_to_goal(), 3 ) ) + " )"
+    print "Slide Left: " + str( self.condition_slide_left() )
+    print "Slide Right: " + str( self.condition_slide_right() )
