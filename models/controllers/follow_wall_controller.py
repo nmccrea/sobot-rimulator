@@ -126,8 +126,8 @@ class FollowWallController:
       #       the resulting heading vector is also meant to point almost directly behind the robot
       #       this helps when determining switching conditions in the supervisor state machine
       p1 = [ -0.2, 0.0 ]
-      if follow_direction == FWDIR_LEFT: p2 = [ -0.2, -0.01 ]
-      if follow_direction == FWDIR_RIGHT: p2 = [ -0.2, 0.01 ]
+      if follow_direction == FWDIR_LEFT: p2 = [ -0.2, -0.0001 ]
+      if follow_direction == FWDIR_RIGHT: p2 = [ -0.2, 0.0001 ]
     else:
       # sort the sensor distances along with their corresponding indices
       sensor_distances, indices = zip( *sorted( zip( # this method ensures two different sensors are always used
