@@ -3,6 +3,8 @@
 
 import utils.linalg2_util as linalg
 
+VECTOR_LEN = 0.75 # length of heading vector
+
 class AvoidObstaclesControllerView:
 
   def __init__( self, viewer, supervisor ):
@@ -24,9 +26,10 @@ class AvoidObstaclesControllerView:
                       alpha = 1.0 )
 
     # draw the computed avoid-obstacles vector
-    vector_line = [ [ 0.0, 0.0 ], self.avoid_obstacles_controller.ao_heading_vector ]
+    ao_heading_vector = linalg.scale( linalg.unit( self.avoid_obstacles_controller.ao_heading_vector ), VECTOR_LEN )
+    vector_line = [ [ 0.0, 0.0 ], ao_heading_vector ]
     vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
     frame.add_lines( [ vector_line ],
-                     linewidth = 0.015,
+                     linewidth = 0.02,
                      color = "red",
                      alpha = 1.0 )

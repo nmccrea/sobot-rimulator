@@ -89,7 +89,7 @@ class AvoidObstaclesController:
       ao_heading_vector = linalg.add( ao_heading_vector,
                                    linalg.scale( vector, self.sensor_gains[i] ) )
 
-    return linalg.unit( ao_heading_vector ), obstacle_vectors
+    return ao_heading_vector, obstacle_vectors
 
   def _print_vars( self, eP, eI, eD, v, omega ):
     print "\n\n"

@@ -35,6 +35,9 @@ class SupervisorView:
     self._draw_robot_state_estimate_to_frame( frame )
     self._draw_current_controller_to_frame( frame )
 
+    # === FOR DEBUGGING ===
+    # self._draw_all_controllers_to_frame( frame )
+
   def _draw_goal_to_frame( self, frame ):
     goal = self.supervisor.goal
     frame.add_circle( pos = goal,
@@ -75,4 +78,11 @@ class SupervisorView:
     elif current_state == ControlState.GTG_AND_AO:
       self.gtg_and_ao_controller_view.draw_gtg_and_ao_controller_to_frame( frame )
     elif current_state in [ ControlState.SLIDE_LEFT, ControlState.SLIDE_RIGHT ]:
-      self.follow_wall_controller_view.draw_follow_wall_controller_to_frame( frame )
+      self.follow_wall_controller_view.draw_active_follow_wall_controller_to_frame( frame )
+
+  # draw all of the controllers's to the frame
+  def _draw_all_controllers_to_frame( self, frame ):
+    self.go_to_goal_controller_view.draw_go_to_goal_controller_to_frame( frame )
+    self.avoid_obstacles_controller_view.draw_avoid_obstacles_controller_to_frame( frame )
+    # self.gtg_and_ao_controller_view.draw_gtg_and_ao_controller_to_frame( frame )
+    self.follow_wall_controller_view.draw_complete_follow_wall_controller_to_frame( frame )

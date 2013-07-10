@@ -46,10 +46,13 @@ class GTGAndAOController:
     self.gtg_heading_vector = self.go_to_goal_controller.calculate_gtg_heading_vector()
     self.ao_heading_vector, self.obstacle_vectors = self.avoid_obstacles_controller.calculate_ao_heading_vector()
 
+    # normalize the heading vectors
+    self.gtg_heading_vector = linalg.unit( self.gtg_heading_vector )
+    self.ao_heading_vector = linalg.unit( self.ao_heading_vector )
+
     # generate the blended vector
-    self.blended_heading_vector = linalg.unit(
-                                    linalg.add( linalg.scale( self.gtg_heading_vector, self.alpha ),
-                                                linalg.scale( self.ao_heading_vector, 1.0 - self.alpha ) ) )
+    self.blended_heading_vector = linalg.add( linalg.scale( self.gtg_heading_vector, self.alpha ),
+                                              linalg.scale( self.ao_heading_vector, 1.0 - self.alpha ) )
 
   def execute( self ):
     # calculate the time that has passed since the last control iteration

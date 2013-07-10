@@ -63,9 +63,6 @@ class Week2Simulator:
 
     # loop the simulation
     while self.world.world_time < 100:
-      # render the current state
-      self.world_view.render_frame()
-      
       # increment the simulation
       try:
         self.world.step()
@@ -75,6 +72,9 @@ class Week2Simulator:
       except GoalReachedException:
         print "\n\nGOAL REACHED!\n\n"
         break
+
+      # render the current state
+      self.world_view.render_frame()
 
       # pause the simulation until the next refresh time
       while time.time() < next_refresh_time: time.sleep( 0 )  # loop sleep until time to refresh

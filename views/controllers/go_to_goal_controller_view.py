@@ -3,6 +3,8 @@
 
 import utils.linalg2_util as linalg
 
+VECTOR_LEN = 0.75 # length of heading vector
+
 class GoToGoalControllerView:
 
   def __init__( self, viewer, supervisor ):
@@ -15,9 +17,10 @@ class GoToGoalControllerView:
     robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
     
     # draw the computed go-to-goal vector
-    vector_line = [ [ 0.0, 0.0 ], self.go_to_goal_controller.gtg_heading_vector ]
+    gtg_heading_vector = linalg.scale( linalg.unit( self.go_to_goal_controller.gtg_heading_vector ), VECTOR_LEN )
+    vector_line = [ [ 0.0, 0.0 ], gtg_heading_vector ]
     vector_line = linalg.rotate_and_translate_vectors( vector_line, robot_theta, robot_pos )
     frame.add_lines( [ vector_line ],
-                     linewidth = 0.015,
+                     linewidth = 0.02,
                      color = "dark green",
                      alpha = 1.0 )

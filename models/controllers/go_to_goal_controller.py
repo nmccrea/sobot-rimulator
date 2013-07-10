@@ -67,7 +67,7 @@ class GoToGoalController:
     goal = self.supervisor.goal()
     goal = linalg.rotate_and_translate_vector( goal, robot_inv_theta, robot_inv_pos )
 
-    return linalg.unit( goal )
+    return goal
 
   def _print_vars( self, eP, eI, eD, v, omega ):
     print "\n\n"
