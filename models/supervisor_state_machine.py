@@ -41,7 +41,7 @@ class SupervisorStateMachine:
       sr = self.condition_slide_right()
       if sl and not sr:                 self.transition_to_state_slide_left()
       elif sr and not sl:               self.transition_to_state_slide_right()
-      elif sl and sr: raise Exception( "cannot determine slide direction" )
+      # elif sl and sr: raise Exception( "cannot determine slide direction" )
 
   def execute_state_avoid_obstacles( self ):
     if self.condition_at_goal():        self.transition_to_state_at_goal()
@@ -51,7 +51,7 @@ class SupervisorStateMachine:
       if sl and not sr:                 self.transition_to_state_slide_left()
       elif sr and not sl:               self.transition_to_state_slide_right()
       elif not sr and not sl:           self.transition_to_state_go_to_goal()
-      else: raise Exception( "cannot determine slide direction" )
+      # else: raise Exception( "cannot determine slide direction" )
 
   def execute_state_slide_left( self ):
     if self.condition_at_goal():        self.transition_to_state_at_goal()
