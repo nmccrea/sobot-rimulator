@@ -42,7 +42,7 @@ class Pose:
     result_theta = -self.theta
     result_pos = linalg.rotate_vector( [ -self.x, -self.y ], result_theta )
 
-    return Pose( result_pos, result_theta ) 
+    return Pose( result_pos, result_theta )
 
   # update pose using a vector
   def vupdate( self, vect, theta ):
