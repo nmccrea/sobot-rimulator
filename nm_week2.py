@@ -62,7 +62,7 @@ class Week2Simulator:
     next_refresh_time = time.time() + self.period
 
     # loop the simulation
-    while self.world.world_time < 100:
+    while self.world.world_time < 500:
       # increment the simulation
       try:
         self.world.step()
