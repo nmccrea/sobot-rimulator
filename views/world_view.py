@@ -19,7 +19,7 @@ MAJOR_GRIDLINE_SUBDIVISIONS = 5  # minor gridlines for every major gridline
 
 class WorldView:
 
-  def __init__( self ):
+  def __init__( self, world ):
     # create viewer
     self.viewer = Euv.Viewer( size = (VIEW_PORT_PIX_W, VIEW_PORT_PIX_H+CONTROLS_PIX_H),
                           view_port_center = (0, 0),
@@ -30,9 +30,12 @@ class WorldView:
     # initialize the current frame object
     self.current_frame = Frame.Frame()
 
-    # initialize lists of drawable objects
+    # initialize views for world objects
     self.robot_views = []
+    for robot in world.robots: self.add_robot( robot )
+
     self.obstacle_views = []
+    for obstacle in world.obstacles: self.add_obstacle( obstacle )
 
   def add_robot( self, robot ):
     robot_view = RobotView( self.viewer, robot )
