@@ -12,7 +12,7 @@ from sim_exceptions.collision_exception import *
 
 REFRESH_RATE = 20.0 # hertz
 
-class Week2Simulator:
+class Week2Simulator: 
 
   def __init__( self ):
     # timing control
