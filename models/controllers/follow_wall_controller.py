@@ -121,9 +121,9 @@ class FollowWallController:
       raise Exception( "unknown wall-following direction" )
 
     if True not in sensor_detections:
-      # if there is not wall to track detected, we default to predefined reference points
+      # if there is no wall to track detected, we default to predefined reference points
       # NOTE: these points are designed to turn the robot towards the bearing side, which aids with cornering behavior
-      #       the resulting heading vector is also meant to point almost directly behind the robot
+      #       the resulting heading vector is also meant to point close to directly aft of the robot
       #       this helps when determining switching conditions in the supervisor state machine
       p1 = [ -0.2, 0.0 ]
       if follow_direction == FWDIR_LEFT: p2 = [ -0.2, -0.0001 ]
