@@ -7,12 +7,20 @@ import gtk
 from frame import *
 from painter import *
 
+DEFAULT_VIEW_PIX_W = 800    # pixels
+DEFAULT_VIEW_PIX_H = 800    # pixels
+DEFAULT_ZOOM = 100          # pixels per meter
+
 class Viewer:
   
   def __init__( self ):
     self.frames = []
     self.current_frame = None
-    self.width, self.height = 800, 800
+    
+    # geometric parameters
+    self.view_width_pixels = DEFAULT_VIEW_PIX_W
+    self.view_height_pixels = DEFAULT_VIEW_PIX_H
+    self.pixels_per_meter = DEFAULT_ZOOM
     
     # initialize the window
     self.window = gtk.Window( gtk.WINDOW_TOPLEVEL )
@@ -25,12 +33,12 @@ class Viewer:
     
     # initialize the drawing_area
     self.drawing_area = gtk.DrawingArea()
-    self.drawing_area.set_size_request( self.width, self.height )
+    self.drawing_area.set_size_request( self.view_width_pixels, self.view_height_pixels )
     self.drawing_area.connect( "expose_event", self.expose_event )
     self.layout_box.pack_start( self.drawing_area )
     
     # initialize the painter
-    self.painter = Painter( self.drawing_area )
+    self.painter = Painter( self.drawing_area, self.pixels_per_meter )
     
     
     
@@ -49,7 +57,7 @@ class Viewer:
     self.frames.append( frame )
     self.current_frame = frame
     
-    self.drawing_area.queue_draw_area( 0, 0, self.width, self.height )
+    self.drawing_area.queue_draw_area( 0, 0, self.view_width_pixels, self.view_height_pixels )
     
     
   def expose_event( self, widget, event ):

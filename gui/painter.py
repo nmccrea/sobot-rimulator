@@ -5,12 +5,19 @@ from math import *
 
 class Painter:
   
-  def __init__( self, drawing_area ):
+  def __init__( self, drawing_area, pixels_per_meter ):
     self.drawing_area = drawing_area
+    self.pixels_per_meter = pixels_per_meter
     
     
   def draw_frame( self, frame ):
     context = self.drawing_area.window.cairo_create()
+    
+    # transform the the view
+    width_pixels = self.drawing_area.allocation.width
+    height_pixels = self.drawing_area.allocation.height
+    context.translate( width_pixels/2.0, height_pixels/2.0 )        # move origin to center of window
+    context.scale( self.pixels_per_meter, -self.pixels_per_meter )  # pull view to edges of window ( also flips y-axis )
     
     draw_list = frame.draw_list
     for component in draw_list:
