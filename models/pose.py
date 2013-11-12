@@ -14,7 +14,7 @@ class Pose:
       self.x = vect[0]
       self.y = vect[1]
       self.theta = math_util.normalize_angle( theta )
-    elif len( args ) == 3: #initialize using scalars ( x, y theta )
+    elif len( args ) == 3: # initialize using scalars ( x, y theta )
       x = args[0]
       y = args[1]
       theta = args[2]
@@ -48,13 +48,13 @@ class Pose:
   def vupdate( self, vect, theta ):
     self.x = vect[0]
     self.y = vect[1]
-    self.theta = theta
+    self.theta = math_util.normalize_angle( theta )
 
   # update pose using scalars
   def supdate( self, x, y, theta ):
     self.x = x
     self.y = y
-    self.theta = theta
+    self.theta = math_util.normalize_angle( theta )
 
   # return the constituents of this pose with location as a vector
   def vunpack( self ):
