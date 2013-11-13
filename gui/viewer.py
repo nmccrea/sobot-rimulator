@@ -58,7 +58,7 @@ class Viewer:
     self.window.show_all()
     
     
-  def add_frame( self, frame ):
+  def draw_frame( self, frame ):
     self.current_frame = frame
     self.drawing_area.queue_draw_area( 0, 0, self.view_width_pixels, self.view_height_pixels )
     

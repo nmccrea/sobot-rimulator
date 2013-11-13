@@ -80,7 +80,7 @@ class Simulator:
     self.world_view.draw_world_to_frame( self.current_frame )
     
     # cycle the frame
-    self.viewer.add_frame( self.current_frame )   # push the current frame
+    self.viewer.draw_frame( self.current_frame )   # push the current frame
     self.current_frame = frame.Frame()            # prepare the next frame
 
 
