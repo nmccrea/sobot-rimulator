@@ -6,7 +6,7 @@
 import pygtk
 pygtk.require( '2.0' )
 import gtk
-import glib
+import gobject
 
 from models.map_generator import *
 from models.robot import *
@@ -25,7 +25,7 @@ class Simulator:
 
   def __init__( self ):
     # create the GUI
-    self.viewer = viewer.Viewer()
+    self.viewer = viewer.Viewer( self )
     
     # initialize the current frame
     self.current_frame = frame.Frame()
@@ -55,21 +55,22 @@ class Simulator:
     # create the world view
     self.world_view = WorldView( self.world, self.viewer )
     
-    # start the simulation
-    glib.idle_add( self.run_sim )
+    self.render_frame()
+    
+    # start gtk
     gtk.main()
     
   def run_sim( self ):
-    s = glib.timeout_add( int( self.period * 1000 ), self.run_sim )
+    s = gobject.timeout_add( int( self.period * 1000 ), self.run_sim )
     
     # increment the simulation
     try:
       self.world.step()
     except CollisionException:
-      glib.source_remove( s )
+      gobject.source_remove( s )
       print "\n\nCOLLISION!\n\n"
     except GoalReachedException:
-      glib.source_remove( s )
+      gobject.source_remove( s )
       print "\n\nGOAL REACHED!\n\n"
   
     # render the current state
