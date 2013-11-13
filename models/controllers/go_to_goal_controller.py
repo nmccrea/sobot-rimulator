@@ -22,8 +22,8 @@ class GoToGoalController:
     self.prev_eP = 0.0
     self.prev_eI = 0.0
     
-    # key vectors and data
-    self.gtg_heading_vector = [ 0.0, 0.0 ]
+    # key vectors and data (initialize to any non-zero vector)
+    self.gtg_heading_vector = [ 1.0, 0.0 ]
 
   def update_heading( self ):
     # generate and store new heading vector

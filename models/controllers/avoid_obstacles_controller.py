@@ -29,9 +29,9 @@ class AvoidObstaclesController:
     self.prev_eP = 0.0
     self.prev_eI = 0.0
 
-    # key vectors and data
-    self.obstacle_vectors = [ [ 0.0, 0.0 ] ] * len( self.proximity_sensor_placements )
-    self.ao_heading_vector = [ 0.0, 0.0 ]
+    # key vectors and data (initialize to any non-zero vector)
+    self.obstacle_vectors = [ [ 1.0, 0.0 ] ] * len( self.proximity_sensor_placements )
+    self.ao_heading_vector = [ 1.0, 0.0 ]
 
   def update_heading( self ):
     # generate and store new heading and obstacle vectors

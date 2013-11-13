@@ -33,18 +33,18 @@ class FollowWallController:
     self.prev_eP = 0.0
     self.prev_eI = 0.0
 
-    # key vectors and data
-    self.l_wall_surface =             [ [ 0.0, 0.0 ], [ 0.0, 0.0 ] ]  # the followed surface, in robot space
-    self.l_parallel_component =       [ 0.0, 0.0 ]
-    self.l_perpendicular_component =  [ 0.0, 0.0 ]
-    self.l_distance_vector =          [ 0.0, 0.0 ]
-    self.l_fw_heading_vector =        [ 0.0, 0.0 ]
+    # key vectors and data (initialize to any non-zero vector)
+    self.l_wall_surface =             [ [ 1.0, 0.0 ], [ 1.0, 0.0 ] ]  # the followed surface, in robot space
+    self.l_parallel_component =       [ 1.0, 0.0 ]
+    self.l_perpendicular_component =  [ 1.0, 0.0 ]
+    self.l_distance_vector =          [ 1.0, 0.0 ]
+    self.l_fw_heading_vector =        [ 1.0, 0.0 ]
 
-    self.r_wall_surface =             [ [ 0.0, 0.0 ], [ 0.0, 0.0 ] ]  # the followed surface, in robot space
-    self.r_parallel_component =       [ 0.0, 0.0 ]
-    self.r_perpendicular_component =  [ 0.0, 0.0 ]
-    self.r_distance_vector =          [ 0.0, 0.0 ]
-    self.r_fw_heading_vector =        [ 0.0, 0.0 ]
+    self.r_wall_surface =             [ [ 1.0, 0.0 ], [ 1.0, 0.0 ] ]  # the followed surface, in robot space
+    self.r_parallel_component =       [ 1.0, 0.0 ]
+    self.r_perpendicular_component =  [ 1.0, 0.0 ]
+    self.r_distance_vector =          [ 1.0, 0.0 ]
+    self.r_fw_heading_vector =        [ 1.0, 0.0 ]
 
   def update_heading( self ):
     # generate and store new heading vector and critical points for following to the left
