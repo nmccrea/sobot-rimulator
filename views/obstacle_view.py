@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- Encoding: utf-8 -*
 
-import Euv.Shapes as Shapes
 import utils.linalg2_util as linalg
 
 class ObstacleView:

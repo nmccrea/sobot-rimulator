@@ -2,7 +2,6 @@
 # -*- Encoding: utf-8 -*
 
 from math import *
-import Euv.Shapes as Shapes
 import utils.linalg2_util as linalg
 
 class ProximitySensorView:

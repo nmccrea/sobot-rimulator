@@ -1,18 +1,13 @@
 #!/usr/bin/python
 # -*- Encoding: utf-8 -*
 
-import Euv.EuvGtk as Euv
-import Euv.Frame as Frame
-import Euv.Shapes as Shapes
-import Euv.Color as Color
+import gui.viewer as viewer
+import gui.frame as frame
+
 from obstacle_view import *
 from robot_view import *
 
-VIEW_PORT_PIX_H = 950
-VIEW_PORT_PIX_W = 950
 CONTROLS_PIX_H = 50
-
-WORLD_WIDTH = 8 # meters
 
 MAJOR_GRIDLINE_INTERVAL = 1.0 # meters
 MAJOR_GRIDLINE_SUBDIVISIONS = 5  # minor gridlines for every major gridline
@@ -21,14 +16,10 @@ class WorldView:
 
   def __init__( self, world ):
     # create viewer
-    self.viewer = Euv.Viewer( size = (VIEW_PORT_PIX_W, VIEW_PORT_PIX_H+CONTROLS_PIX_H),
-                          view_port_center = (0, 0),
-                          view_port_width = WORLD_WIDTH,
-                          recording = False,
-                          flip_y = True )
+    self.viewer = viewer.Viewer()
 
     # initialize the current frame object
-    self.current_frame = Frame.Frame()
+    self.current_frame = frame.Frame()
 
     # initialize views for world objects
     self.robot_views = []
@@ -48,7 +39,7 @@ class WorldView:
   def render_frame( self ):
     # draw the grid
     self._draw_grid_to_frame()
-
+    
     # draw all the robots
     for robot_view in self.robot_views:
       robot_view.draw_robot_to_frame( self.current_frame )
@@ -58,7 +49,7 @@ class WorldView:
 
     # cycle the frame
     self.viewer.add_frame( self.current_frame )   # push the current frame
-    self.current_frame = Frame.Frame()            # prepare the next frame
+    self.current_frame = frame.Frame()            # prepare the next frame
   
   def wait( self ):
     self.viewer.wait()
@@ -72,8 +63,9 @@ class WorldView:
     minor_gridline_interval = MAJOR_GRIDLINE_INTERVAL / MAJOR_GRIDLINE_SUBDIVISIONS
     
     # determine world space to draw grid upon
-    width = self._meters_per_pixel() * VIEW_PORT_PIX_W
-    height = self._meters_per_pixel() * VIEW_PORT_PIX_H
+    meters_per_pixel = 1.0 / self.viewer.pixels_per_meter
+    width = meters_per_pixel * self.viewer.view_width_pixels
+    height = meters_per_pixel * self.viewer.view_height_pixels
     x_halfwidth = width * 0.5
     y_halfwidth = height * 0.5
     
@@ -108,14 +100,10 @@ class WorldView:
 
     # draw the gridlines
     self.current_frame.add_lines( major_lines_accum,          # draw major gridlines
-                      linewidth = self._meters_per_pixel(),
+                      linewidth = meters_per_pixel,           # roughly 1 pixel
                       color = "black",
                       alpha = 0.2 )
     self.current_frame.add_lines( minor_lines_accum,          # draw minor gridlines
-                      linewidth = self._meters_per_pixel(),
-                      colro = "black",
+                      linewidth = meters_per_pixel,           # roughly 1 pixel
+                      color = "black",
                       alpha = 0.1 )
-
-
-  def _meters_per_pixel( self ):
-    return float( WORLD_WIDTH ) / float( VIEW_PORT_PIX_W )
