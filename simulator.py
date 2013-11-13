@@ -11,6 +11,10 @@ import glib
 from models.map_generator import *
 from models.robot import *
 from models.world import *
+
+import gui.viewer as viewer
+import gui.frame as frame
+
 from views.world_view import *
 
 from sim_exceptions.collision_exception import *
@@ -20,6 +24,12 @@ REFRESH_RATE = 20.0 # hertz
 class Simulator:
 
   def __init__( self ):
+    # create the GUI
+    self.viewer = viewer.Viewer()
+    
+    # initialize the current frame
+    self.current_frame = frame.Frame()
+    
     # timing control
     self.period = 1.0 / REFRESH_RATE  # seconds
 
@@ -43,7 +53,7 @@ class Simulator:
     supervisor = robot.supervisor.goal = goal
     
     # create the world view
-    self.world_view = WorldView( self.world )
+    self.world_view = WorldView( self.world, self.viewer )
     
     # start the simulation
     glib.idle_add( self.run_sim )
@@ -63,15 +73,14 @@ class Simulator:
       print "\n\nGOAL REACHED!\n\n"
   
     # render the current state
-    self.world_view.render_frame()
+    self.render_frame()
     
-  def _add_robot( self, robot ):
-    self.world.add_robot( robot )
-    self.world_view.add_robot( robot )
-
-  def _add_obstacle( self, obstacle ):
-    self.world.add_obstacle( obstacle )
-    self.world_view.add_obstacle( obstacle )
+  def render_frame( self ):
+    self.world_view.draw_world_to_frame( self.current_frame )
+    
+    # cycle the frame
+    self.viewer.add_frame( self.current_frame )   # push the current frame
+    self.current_frame = frame.Frame()            # prepare the next frame
 
 
 # RUN THE SIM:
