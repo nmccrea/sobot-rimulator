@@ -55,6 +55,7 @@ class Simulator:
     # create the world view
     self.world_view = WorldView( self.world, self.viewer )
     
+    # render the first frame
     self.render_frame()
     
     # start gtk
