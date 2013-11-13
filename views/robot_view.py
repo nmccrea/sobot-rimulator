@@ -31,8 +31,6 @@ class RobotView:
     self.traverse_path = []  # this robot's traverse path
 
   def draw_robot_to_frame( self, frame ):
-    robot = self.robot
-
     # draw the internal state ( supervisor ) to the frame
     self.supervisor_view.draw_supervisor_to_frame( frame )
 
@@ -41,12 +39,12 @@ class RobotView:
       ir_sensor_view.draw_proximity_sensor_to_frame( frame )
 
     # draw the robot
-    robot_bottom = robot.global_geometry.vertexes
+    robot_bottom = self.robot.global_geometry.vertexes
     frame.add_polygons( [ robot_bottom ],
                         color = "blue",
                         alpha = 0.5 ) 
     # add decoration
-    robot_pos, robot_theta = robot.pose.vunpack()
+    robot_pos, robot_theta = self.robot.pose.vunpack()
     robot_top = linalg.rotate_and_translate_vectors( K3_TOP_PLATE, robot_theta, robot_pos )
     frame.add_polygons( [ robot_top ],
                         color = "black",
