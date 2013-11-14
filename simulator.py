@@ -1,19 +1,17 @@
 #!/usr/bin/python
 # -*- Encoding: utf-8 -*
 
-# Python implementation of the Week 2 exercise.
-
 import pygtk
 pygtk.require( '2.0' )
 import gtk
 import gobject
 
+import gui.frame
+import gui.viewer
+
 from models.map_generator import *
 from models.robot import *
 from models.world import *
-
-import gui.viewer as viewer
-import gui.frame as frame
 
 from views.world_view import *
 
@@ -25,10 +23,7 @@ class Simulator:
 
   def __init__( self ):
     # create the GUI
-    self.viewer = viewer.Viewer( self )
-    
-    # initialize the current frame
-    self.current_frame = frame.Frame()
+    self.viewer = gui.viewer.Viewer( self )
     
     # timing control
     self.period = 1.0 / REFRESH_RATE  # seconds
@@ -61,6 +56,7 @@ class Simulator:
     # start gtk
     gtk.main()
     
+
   def run_sim( self ):
     s = gobject.timeout_add( int( self.period * 1000 ), self.run_sim )
     
@@ -77,12 +73,11 @@ class Simulator:
     # render the current state
     self.render_frame()
     
-  def render_frame( self ):
-    self.world_view.draw_world_to_frame( self.current_frame )
     
-    # cycle the frame
-    self.viewer.draw_frame( self.current_frame )   # push the current frame
-    self.current_frame = frame.Frame()            # prepare the next frame
+  def render_frame( self ):
+    frame = gui.frame.Frame()
+    self.world_view.draw_world_to_frame( frame )  # draw the world onto the frame
+    self.viewer.draw_frame( frame )               # render the frame
 
 
 # RUN THE SIM:
