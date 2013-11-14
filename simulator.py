@@ -51,7 +51,7 @@ class Simulator:
     self.world_view = WorldView( self.world, self.viewer )
     
     # render the first frame
-    self.render_frame()
+    self.draw_world()
     
     # start gtk
     gtk.main()
@@ -71,10 +71,10 @@ class Simulator:
       print "\n\nGOAL REACHED!\n\n"
   
     # render the current state
-    self.render_frame()
+    self.draw_world()
     
     
-  def render_frame( self ):
+  def draw_world( self ):
     frame = gui.frame.Frame()
     self.world_view.draw_world_to_frame( frame )  # draw the world onto the frame
     self.viewer.draw_frame( frame )               # render the frame
