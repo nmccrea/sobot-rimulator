@@ -37,7 +37,34 @@ class Simulator:
     # start gtk
     gtk.main()
     
-
+    
+  def initialize_sim( self ):
+    # create the simulation world
+    self.world = World( self.period )
+    
+    # create the robot
+    robot = Robot()
+    self.world.add_robot( robot )
+    
+    # generate a random environment
+    obstacles, goal = MapGenerator().random_init( robot.global_geometry )
+    # override random initialization here
+    
+    # add the generated obstacles
+    for o in obstacles:
+      width, height, x, y, theta = o
+      self.world.add_obstacle( RectangleObstacle( width, height, Pose( x, y, theta ) ) )
+      
+    # program the robot supervisor
+    robot.supervisor.goal = goal
+    
+    # create the world view
+    self.world_view = WorldView( self.world, self.viewer )
+    
+    # render the first frame
+    self.draw_world()
+    
+    
   def run_sim( self ):
     self.sim_event_source = gobject.timeout_add( int( self.period * 1000 ), self.run_sim )
     self.step_sim()
@@ -65,33 +92,6 @@ class Simulator:
   def reset_sim( self ):
     self.stop_sim()
     self.initialize_sim()
-    
-    
-  def initialize_sim( self ):
-    # create the simulation world
-    self.world = World( self.period )
-    
-    # create the robot
-    robot = Robot()
-    self.world.add_robot( robot )
-    
-    # generate a random environment
-    obstacles, goal = MapGenerator().random_init( robot.global_geometry )
-    # override random initialization here
-    
-    # add the generated obstacles
-    for o in obstacles:
-      width, height, x, y, theta = o
-      self.world.add_obstacle( RectangleObstacle( width, height, Pose( x, y, theta ) ) )
-      
-    # program the robot supervisor
-    robot.supervisor.goal = goal
-    
-    # create the world view
-    self.world_view = WorldView( self.world, self.viewer )
-    
-    # render the first frame
-    self.draw_world()
     
     
   def draw_world( self ):
