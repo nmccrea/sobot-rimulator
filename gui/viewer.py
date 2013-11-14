@@ -28,7 +28,7 @@ class Viewer:
     
     # initialize the window
     self.window = gtk.Window( gtk.WINDOW_TOPLEVEL )
-    self.window.set_title( "Application" )
+    self.window.set_title( "Robot Simulator" )
     self.window.connect( "delete_event", self.on_delete )
     
     # initialize the layout container
