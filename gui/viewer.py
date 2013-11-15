@@ -19,7 +19,7 @@ class Viewer:
     self.simulator = simulator
     
     # initialize frame
-    self.current_frame = None
+    self.current_frame = Frame()
     
     # initialize geometric parameters
     self.view_width_pixels = DEFAULT_VIEW_PIX_W
@@ -73,8 +73,11 @@ class Viewer:
     self.window.show_all()
     
     
-  def draw_frame( self, frame ):
-    self.current_frame = frame
+  def new_frame( self ):
+    self.current_frame = Frame()
+    
+    
+  def draw_frame( self ):
     self.drawing_area.queue_draw_area( 0, 0, self.view_width_pixels, self.view_height_pixels )
     
     
@@ -97,7 +100,7 @@ class Viewer:
     
     
   def on_expose( self, widget, event ):
-    if self.current_frame: self.painter.draw_frame( self.current_frame )
+    self.painter.draw_frame( self.current_frame )
     
     
   def on_delete( self, widget, event ):

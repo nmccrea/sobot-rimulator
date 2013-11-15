@@ -61,8 +61,8 @@ class Simulator:
     # create the world view
     self.world_view = WorldView( self.world, self.viewer )
     
-    # render the first frame
-    self.draw_world()
+    # render the initial world
+    self._draw_world()
     
     
   def run_sim( self ):
@@ -85,8 +85,8 @@ class Simulator:
       self.stop_sim()
       print "\n\nGOAL REACHED!\n\n"
     
-    # draw the result
-    self.draw_world()
+    # draw the resulting world
+    self._draw_world()
     
     
   def reset_sim( self ):
@@ -94,10 +94,10 @@ class Simulator:
     self.initialize_sim()
     
     
-  def draw_world( self ):
-    frame = gui.frame.Frame()
-    self.world_view.draw_world_to_frame( frame )  # draw the world onto the frame
-    self.viewer.draw_frame( frame )               # render the frame
+  def _draw_world( self ):  
+    self.viewer.new_frame()                 # start a fresh frame
+    self.world_view.draw_world_to_frame()   # draw the world onto the frame
+    self.viewer.draw_frame()                # render the frame
 
 
 # RUN THE SIM:

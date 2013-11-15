@@ -28,21 +28,21 @@ class WorldView:
     obstacle_view = ObstacleView( self.viewer, obstacle )
     self.obstacle_views.append( obstacle_view )
 
-  def draw_world_to_frame( self, frame ):
+  def draw_world_to_frame( self ):
     # draw the grid
-    self._draw_grid_to_frame( frame )
+    self._draw_grid_to_frame()
     
     # draw all the robots
     for robot_view in self.robot_views:
-      robot_view.draw_robot_to_frame( frame )
+      robot_view.draw_robot_to_frame()
     # draw all the obstacles
     for obstacle_view in self.obstacle_views:
-      obstacle_view.draw_obstacle_to_frame( frame )
+      obstacle_view.draw_obstacle_to_frame()
   
   def wait( self ):
     self.viewer.wait()
 
-  def _draw_grid_to_frame( self, frame ):
+  def _draw_grid_to_frame( self ):
     # NOTE: THIS FORMULA ASSUMES THE FOLLOWING:
     # - Window size never changes
     # - Window is always centered at (0, 0)
@@ -87,11 +87,11 @@ class WorldView:
       accum.append( [ [ -x_halfwidth, -y ], [ x_halfwidth, -y ] ] )   # negative-side gridline
 
     # draw the gridlines
-    frame.add_lines( major_lines_accum,                 # draw major gridlines
-                     linewidth = meters_per_pixel,      # roughly 1 pixel
-                     color = "black",
-                     alpha = 0.2 )
-    frame.add_lines( minor_lines_accum,                 # draw minor gridlines
-                     linewidth = meters_per_pixel,      # roughly 1 pixel
-                     color = "black",
-                     alpha = 0.1 )
+    self.viewer.current_frame.add_lines( major_lines_accum,                 # draw major gridlines
+                                         linewidth = meters_per_pixel,      # roughly 1 pixel
+                                         color = "black",
+                                         alpha = 0.2 )
+    self.viewer.current_frame.add_lines( minor_lines_accum,                 # draw minor gridlines
+                                         linewidth = meters_per_pixel,      # roughly 1 pixel
+                                         color = "black",
+                                         alpha = 0.1 )
