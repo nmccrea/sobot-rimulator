@@ -21,7 +21,7 @@ GOAL_MAX_DIST = 4.0         # meters
 
 class MapGenerator:
 
-  def random_init( self, robot_geometry ):
+  def random_map( self, robot_geometry ):
     # OBSTACLE PARAMS
     obs_min_dim = OBS_MIN_DIM
     obs_max_dim = OBS_MAX_DIM

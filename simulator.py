@@ -47,7 +47,7 @@ class Simulator:
     self.world.add_robot( robot )
     
     # generate a random environment
-    obstacles, goal = MapGenerator().random_init( robot.global_geometry )
+    obstacles, goal = MapGenerator().random_map( robot.global_geometry )
     # override random initialization here
     
     # add the generated obstacles
