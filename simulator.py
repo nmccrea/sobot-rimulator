@@ -25,6 +25,9 @@ class Simulator:
     # create the GUI
     self.viewer = gui.viewer.Viewer( self )
     
+    # create the map manager
+    self.map_manager = MapGenerator()
+    
     # timing control
     self.period = 1.0 / REFRESH_RATE  # seconds
     
@@ -47,7 +50,7 @@ class Simulator:
     self.world.add_robot( robot )
     
     # generate a random environment
-    obstacles, goal = MapGenerator().random_map( robot.global_geometry )
+    obstacles, goal = self.map_manager.random_map( robot.global_geometry )
     # override random initialization here
     
     # add the generated obstacles

@@ -20,6 +20,10 @@ GOAL_MIN_DIST = 2.0         # meters
 GOAL_MAX_DIST = 4.0         # meters
 
 class MapGenerator:
+  
+  def __init__( self ):
+    self.current_obstacles = []
+    self.current_goal = None
 
   def random_map( self, robot_geometry ):
     # OBSTACLE PARAMS
@@ -99,5 +103,20 @@ class MapGenerator:
     print "TO RECREATE THIS ENVIRONMENT, USE THE FOLLOWING DROP-IN CODE:"
     print "obstacles, goal = " + str( obstacles ) + ", " + str( goal )
     print "\n\n"
+    
+    self.current_obstacles = obstacles
+    self.current_goal = goal
 
     return obstacles, goal
+    
+    
+  def save_map( self, filename ):
+    with open( filename, 'wb' ) as file:
+      pickle.dump( self.current_obstacles, file )
+      pickle.dump( self.current_goal, file )
+      
+      
+  def load_map( self, filename ):
+    with open( filename, 'rb' ) as file:
+      self.current_obstacles = pickle.load( file )
+      self.current_goal = pickle.load( file )
