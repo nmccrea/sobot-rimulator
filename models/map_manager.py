@@ -19,7 +19,7 @@ OBS_MAX_DIST = 6.0          # meters
 GOAL_MIN_DIST = 2.0         # meters
 GOAL_MAX_DIST = 4.0         # meters
 
-class MapGenerator:
+class MapManager:
   
   def __init__( self ):
     self.current_obstacles = []

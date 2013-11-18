@@ -9,7 +9,7 @@ import gobject
 import gui.frame
 import gui.viewer
 
-from models.map_generator import *
+from models.map_manager import *
 from models.robot import *
 from models.world import *
 
@@ -26,7 +26,7 @@ class Simulator:
     self.viewer = gui.viewer.Viewer( self )
     
     # create the map manager
-    self.map_manager = MapGenerator()
+    self.map_manager = MapManager()
     
     # timing control
     self.period = 1.0 / REFRESH_RATE  # seconds
