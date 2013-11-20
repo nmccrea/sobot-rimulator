@@ -21,7 +21,7 @@ class Viewer:
     # initialize frame
     self.current_frame = Frame()
     
-    # initialize geometric parameters
+    # initialize camera parameters
     self.view_width_pixels = DEFAULT_VIEW_PIX_W
     self.view_height_pixels = DEFAULT_VIEW_PIX_H
     self.pixels_per_meter = DEFAULT_ZOOM
