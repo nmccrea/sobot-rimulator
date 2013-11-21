@@ -91,8 +91,7 @@ class Viewer:
     
     
   def on_step( self, widget ):
-    self.simulator.stop_sim()
-    self.simulator.step_sim()
+    self.simulator.step_sim_once()
     
     
   def on_reset( self, widget ):

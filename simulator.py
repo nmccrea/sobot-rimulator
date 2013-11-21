@@ -70,26 +70,16 @@ class Simulator:
     
   def run_sim( self ):
     self.sim_event_source = gobject.timeout_add( int( self.period * 1000 ), self.run_sim )
-    self.step_sim()
+    self._step_sim()
     
     
   def stop_sim( self ):
     gobject.source_remove( self.sim_event_source )
     
     
-  def step_sim( self ):
-    # increment the simulation
-    try:
-      self.world.step()
-    except CollisionException:
-      self.stop_sim()
-      print "\n\nCOLLISION!\n\n"
-    except GoalReachedException:
-      self.stop_sim()
-      print "\n\nGOAL REACHED!\n\n"
-    
-    # draw the resulting world
-    self._draw_world()
+  def step_sim_once( self ):
+    self.stop_sim()
+    self._step_sim()
     
     
   def reset_sim( self ):
@@ -101,6 +91,21 @@ class Simulator:
     self.viewer.new_frame()                 # start a fresh frame
     self.world_view.draw_world_to_frame()   # draw the world onto the frame
     self.viewer.draw_frame()                # render the frame
+    
+    
+  def _step_sim( self ):
+    # increment the simulation
+    try:
+      self.world.step()
+    except CollisionException:
+      self.stop_sim()
+      print "\n\nCOLLISION!\n\n"
+    except GoalReachedException:
+      self.stop_sim()
+      print "\n\nGOAL REACHED!\n\n"
+      
+    # draw the resulting world
+    self._draw_world()
 
 
 # RUN THE SIM:
