@@ -2,6 +2,7 @@
 # -*- Encoding: utf-8 -*
 
 from random import *
+import pickle
 
 from models.polygon import *
 from models.rectangle_obstacle import *

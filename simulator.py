@@ -87,6 +87,15 @@ class Simulator:
     self.initialize_sim()
     
     
+  def save_map( self, filename ):
+    self.map_manager.save_map( filename )
+    
+    
+  def load_map( self, filename ):
+    self.map_manager.load_map( filename )
+    self.reset_sim()
+    
+    
   def _draw_world( self ):  
     self.viewer.new_frame()                 # start a fresh frame
     self.world_view.draw_world_to_frame()   # draw the world onto the frame
