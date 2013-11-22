@@ -42,13 +42,31 @@ class MapManager:
 
 
     # BUILD RANDOM ELEMENTS
+    # generate the goal
+    goal_dist_range = goal_max_dist - goal_min_dist
+    dist = goal_min_dist + ( random() * goal_dist_range )
+    phi = -pi + ( random() * 2 * pi )
+    x = dist * sin( phi )
+    y = dist * cos( phi )
+    goal = [ x, y ]
+
+    # generate a proximity test geometry for the goal
+    r = 0.2
+    n = 6
+    goal_test_geometry = []
+    for i in range( n ):
+      goal_test_geometry.append(
+          [ x + r*cos( i * 2*pi/n ),
+            y + r*sin( i * 2*pi/n ) ] )
+    goal_test_geometry = Polygon( goal_test_geometry )
+    
+    # generate the obstacles
     obstacles = []
     obs_dim_range = obs_max_dim - obs_min_dim
     obs_dist_range = obs_max_dist - obs_min_dist
-    goal_dist_range = goal_max_dist - goal_min_dist
-
-    # generate the obstacles
     num_obstacles = randrange( obs_min_count, obs_max_count+1 )
+    
+    test_geometries = [ r.global_geometry for r in world.robots ] + [ goal_test_geometry ]
     while len( obstacles ) < num_obstacles:
       
       # generate dimensions
@@ -66,44 +84,19 @@ class MapManager:
       # generate orientation
       theta = -pi + ( random() * 2 * pi )
 
-      # test if the obstacle overlaps the robots
+      # test if the obstacle overlaps the robots or the goal
       obstacle = RectangleObstacle( width, height,
                                     Pose( x, y, theta ) )
       intersects = False
       for robot in world.robots:
         intersects |= geometrics.convex_polygon_intersect_test( robot.global_geometry, obstacle.global_geometry )
-      if intersects == False: obstacles.append( [ width, height, x, y, theta ] )
-
-    # generate the goal
-    goal = None
-    while goal == None:
-      dist = goal_min_dist + ( random() * goal_dist_range )
-      phi = -pi + ( random() * 2 * pi )
-      x = dist * sin( phi )
-      y = dist * cos( phi )
-      goal = [ x, y ]
-
-      # make sure the goal is not too close to any obstacles
-      # NOTE: this is currently very hacky and inefficient
-      r = 0.2
-      n = 12
-      goal_test_geometry = []
-      for i in range( n ):
-        goal_test_geometry.append(
-            [ x + r*cos( i * 2*pi/n ),
-              y + r*sin( i * 2*pi/n ) ] )
-      goal_test_geometry = Polygon( goal_test_geometry )
-      for obs in obstacles:
-        width, height, x, y, theta = obs
-        obstacle = RectangleObstacle( width, height,
-                                      Pose( x, y, theta ) )
-        if geometrics.convex_polygon_intersect_test( goal_test_geometry, obstacle.global_geometry ):
-          goal = None
-          break
+      if intersects == False: obstacles.append( obstacle )
     
+    # update the current obstacles and goal
     self.current_obstacles = obstacles
     self.current_goal = goal
     
+    # apply the new obstacles and goal to the world
     self.apply_to_world( world )
     
     
@@ -121,11 +114,10 @@ class MapManager:
       
   def apply_to_world( self, world ):
     # add the current obstacles
-    for o in self.current_obstacles:
-      width, height, x, y, theta = o
-      world.add_obstacle( RectangleObstacle( width, height, Pose( x, y, theta ) ) )
+    for obstacle in self.current_obstacles:
+      world.add_obstacle( obstacle )
       
-    # program the robot supervisor
+    # program the robot supervisors
     for robot in world.robots:
       robot.supervisor.goal = self.current_goal[:]
       
