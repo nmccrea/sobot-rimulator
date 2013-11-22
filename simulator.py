@@ -90,7 +90,7 @@ class Simulator:
     self.reset_sim()
     
     
-  def random_map( self, filename ):
+  def random_map( self ):
     self.stop_sim()
     self.initialize_sim( random = True )
     

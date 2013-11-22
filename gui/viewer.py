@@ -54,32 +54,37 @@ class Viewer:
     self.button_play = gtk.Button( 'Play' )
     self.button_play.connect( 'clicked', self.on_play )
     self.button_play.set_size_request( 120, 30 )
-    self.layout_box.pack_start( self.button_play, True, False, 5 )
+    self.layout_box.pack_start( self.button_play, True, False, 0 )
     
     
     self.button_stop = gtk.Button( 'Stop' )
     self.button_stop.connect( 'clicked', self.on_stop )
-    self.layout_box.pack_start( self.button_stop, True, False, 5 )
+    self.layout_box.pack_start( self.button_stop, True, False, 0 )
     
     
     self.button_step = gtk.Button( 'Step' )
     self.button_step.connect( 'clicked', self.on_step )
-    self.layout_box.pack_start( self.button_step, True, False, 5 )
+    self.layout_box.pack_start( self.button_step, True, False, 0 )
     
     
     self.button_reset = gtk.Button( 'Reset' )
     self.button_reset.connect( 'clicked', self.on_reset )
-    self.layout_box.pack_start( self.button_reset, True, False, 5 )
+    self.layout_box.pack_start( self.button_reset, True, False, 0 )
     
     
     self.button_save_map = gtk.Button( 'Save Map' )
     self.button_save_map.connect( 'clicked', self.on_save_map )
-    self.layout_box.pack_start( self.button_save_map, True, False, 5 )
+    self.layout_box.pack_start( self.button_save_map, True, False, 0 )
     
     
     self.button_load_map = gtk.Button( 'Load Map' )
     self.button_load_map.connect( 'clicked', self.on_load_map )
-    self.layout_box.pack_start( self.button_load_map, True, False, 5 )
+    self.layout_box.pack_start( self.button_load_map, True, False, 0 )
+    
+    
+    self.button_random_map = gtk.Button( 'Random Map' )
+    self.button_random_map.connect( 'clicked', self.on_random_map )
+    self.layout_box.pack_start( self.button_random_map, True, False, 0 )
     
     
     
@@ -153,6 +158,10 @@ class Viewer:
     elif response_id == LS_DIALOG_RESPONSE_ACCEPT:
       self.simulator.load_map( file_chooser.get_filename() )
       file_chooser.destroy()
+      
+      
+  def on_random_map( self, widget ):
+    self.simulator.random_map()
     
     
   def on_expose( self, widget, event ):
