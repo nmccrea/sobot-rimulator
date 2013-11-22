@@ -63,6 +63,7 @@ class Simulator:
     
     
   def run_sim( self ):
+    gobject.source_remove( self.sim_event_source )
     self.sim_event_source = gobject.timeout_add( int( self.period * 1000 ), self.run_sim )
     self._step_sim()
     
