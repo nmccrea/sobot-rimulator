@@ -19,6 +19,7 @@ OBS_MIN_DIST = 0.4          # meters
 OBS_MAX_DIST = 6.0          # meters
 GOAL_MIN_DIST = 2.0         # meters
 GOAL_MAX_DIST = 4.0         # meters
+MIN_GOAL_CLEARANCE = 0.2    # meters
 
 class MapManager:
   
@@ -51,7 +52,7 @@ class MapManager:
     goal = [ x, y ]
 
     # generate a proximity test geometry for the goal
-    r = 0.2
+    r = MIN_GOAL_CLEARANCE
     n = 6
     goal_test_geometry = []
     for i in range( n ):
@@ -88,8 +89,8 @@ class MapManager:
       obstacle = RectangleObstacle( width, height,
                                     Pose( x, y, theta ) )
       intersects = False
-      for robot in world.robots:
-        intersects |= geometrics.convex_polygon_intersect_test( robot.global_geometry, obstacle.global_geometry )
+      for test_geometry in test_geometries:
+        intersects |= geometrics.convex_polygon_intersect_test( test_geometry, obstacle.global_geometry )
       if intersects == False: obstacles.append( obstacle )
     
     # update the current obstacles and goal
