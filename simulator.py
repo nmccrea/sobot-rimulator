@@ -50,16 +50,15 @@ class Simulator:
     self.world.add_robot( robot )
     
     # generate a random environment
-    obstacles, goal = self.map_manager.random_map( robot.global_geometry )
-    # override random initialization here
+    self.map_manager.random_map( robot.global_geometry )
     
     # add the generated obstacles
-    for o in obstacles:
+    for o in self.map_manager.current_obstacles:
       width, height, x, y, theta = o
       self.world.add_obstacle( RectangleObstacle( width, height, Pose( x, y, theta ) ) )
       
     # program the robot supervisor
-    robot.supervisor.goal = goal
+    robot.supervisor.goal = self.map_manager.current_goal
     
     # create the world view
     self.world_view = WorldView( self.world, self.viewer )

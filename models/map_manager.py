@@ -99,16 +99,9 @@ class MapManager:
         if geometrics.convex_polygon_intersect_test( goal_test_geometry, obstacle.global_geometry ):
           goal = None
           break
-
-    print "\n\n"
-    print "TO RECREATE THIS ENVIRONMENT, USE THE FOLLOWING DROP-IN CODE:"
-    print "obstacles, goal = " + str( obstacles ) + ", " + str( goal )
-    print "\n\n"
     
     self.current_obstacles = obstacles
     self.current_goal = goal
-
-    return obstacles, goal
     
     
   def save_map( self, filename ):
