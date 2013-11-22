@@ -26,7 +26,7 @@ class MapManager:
     self.current_obstacles = []
     self.current_goal = None
 
-  def random_map( self, robot_geometry ):
+  def random_map( self, world ):
     # OBSTACLE PARAMS
     obs_min_dim = OBS_MIN_DIM
     obs_max_dim = OBS_MAX_DIM
@@ -66,12 +66,13 @@ class MapManager:
       # generate orientation
       theta = -pi + ( random() * 2 * pi )
 
-      # test if the obstacle overlaps the robot
+      # test if the obstacle overlaps the robots
       obstacle = RectangleObstacle( width, height,
                                     Pose( x, y, theta ) )
-
-      if geometrics.convex_polygon_intersect_test( robot_geometry, obstacle.global_geometry ) == False:
-        obstacles.append( [ width, height, x, y, theta ] )
+      intersects = False
+      for robot in world.robots:
+        intersects |= geometrics.convex_polygon_intersect_test( robot.global_geometry, obstacle.global_geometry )
+      if intersects == False: obstacles.append( [ width, height, x, y, theta ] )
 
     # generate the goal
     goal = None
@@ -103,6 +104,8 @@ class MapManager:
     self.current_obstacles = obstacles
     self.current_goal = goal
     
+    self.apply_to_world( world )
+    
     
   def save_map( self, filename ):
     with open( filename, 'wb' ) as file:
@@ -114,3 +117,15 @@ class MapManager:
     with open( filename, 'rb' ) as file:
       self.current_obstacles = pickle.load( file )
       self.current_goal = pickle.load( file )
+      
+      
+  def apply_to_world( self, world ):
+    # add the current obstacles
+    for o in self.current_obstacles:
+      width, height, x, y, theta = o
+      world.add_obstacle( RectangleObstacle( width, height, Pose( x, y, theta ) ) )
+      
+    # program the robot supervisor
+    for robot in world.robots:
+      robot.supervisor.goal = self.current_goal[:]
+      

@@ -35,13 +35,13 @@ class Simulator:
     self.sim_event_source = gobject.idle_add( self.stop_sim )
     
     # initialize the simulation
-    self.initialize_sim()
+    self.initialize_sim( random = True )
     
     # start gtk
     gtk.main()
     
     
-  def initialize_sim( self ):
+  def initialize_sim( self, random=False ):
     # create the simulation world
     self.world = World( self.period )
     
@@ -50,15 +50,10 @@ class Simulator:
     self.world.add_robot( robot )
     
     # generate a random environment
-    self.map_manager.random_map( robot.global_geometry )
-    
-    # add the generated obstacles
-    for o in self.map_manager.current_obstacles:
-      width, height, x, y, theta = o
-      self.world.add_obstacle( RectangleObstacle( width, height, Pose( x, y, theta ) ) )
-      
-    # program the robot supervisor
-    robot.supervisor.goal = self.map_manager.current_goal
+    if random:
+      self.map_manager.random_map( self.world )
+    else:
+      self.map_manager.apply_to_world( self.world )
     
     # create the world view
     self.world_view = WorldView( self.world, self.viewer )
@@ -93,6 +88,11 @@ class Simulator:
   def load_map( self, filename ):
     self.map_manager.load_map( filename )
     self.reset_sim()
+    
+    
+  def random_map( self, filename ):
+    self.stop_sim()
+    self.initialize_sim( random = True )
     
     
   def _draw_world( self ):  
