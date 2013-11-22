@@ -139,7 +139,6 @@ class Viewer:
       file_chooser.destroy()
     
     
-    
   def on_load_map( self, widget ):
     # create the file chooser
     file_chooser = gtk.FileChooserDialog( title = 'Load Map',
