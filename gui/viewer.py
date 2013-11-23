@@ -35,61 +35,97 @@ class Viewer:
     self.window.set_title( 'Robot Simulator' )
     self.window.connect( 'delete_event', self.on_delete )
     
-    # initialize the layout container
-    self.layout_box = gtk.VBox()
-    self.window.add( self.layout_box )
-    
     # initialize the drawing_area
     self.drawing_area = gtk.DrawingArea()
     self.drawing_area.set_size_request( self.view_width_pixels, self.view_height_pixels )
     self.drawing_area.connect( 'expose_event', self.on_expose )
-    self.layout_box.pack_start( self.drawing_area )
     
     # initialize the painter
     self.painter = Painter( self.drawing_area, self.pixels_per_meter )
     
-    
-    
-    # initialize buttons
+    # initialize the buttons
+    # build the play button
     self.button_play = gtk.Button( 'Play' )
+    play_image = gtk.Image()
+    play_image.set_from_stock( gtk.STOCK_MEDIA_PLAY, gtk.ICON_SIZE_BUTTON )
+    self.button_play.set_image( play_image )
+    self.button_play.set_image_position( gtk.POS_TOP )
     self.button_play.connect( 'clicked', self.on_play )
-    self.button_play.set_size_request( 120, 30 )
-    self.layout_box.pack_start( self.button_play, True, False, 0 )
     
-    
+    # build the stop button
     self.button_stop = gtk.Button( 'Stop' )
+    stop_image = gtk.Image()
+    stop_image.set_from_stock( gtk.STOCK_MEDIA_STOP, gtk.ICON_SIZE_BUTTON )
+    self.button_stop.set_image( stop_image )
+    self.button_stop.set_image_position( gtk.POS_TOP )
     self.button_stop.connect( 'clicked', self.on_stop )
-    self.layout_box.pack_start( self.button_stop, True, False, 0 )
     
-    
+    # build the step button
     self.button_step = gtk.Button( 'Step' )
+    step_image = gtk.Image()
+    step_image.set_from_stock( gtk.STOCK_MEDIA_NEXT, gtk.ICON_SIZE_BUTTON )
+    self.button_step.set_image( step_image )
+    self.button_step.set_image_position( gtk.POS_TOP )
     self.button_step.connect( 'clicked', self.on_step )
-    self.layout_box.pack_start( self.button_step, True, False, 0 )
     
-    
+    # build the reset button
     self.button_reset = gtk.Button( 'Reset' )
+    reset_image = gtk.Image()
+    reset_image.set_from_stock( gtk.STOCK_MEDIA_REWIND, gtk.ICON_SIZE_BUTTON )
+    self.button_reset.set_image( reset_image )
+    self.button_reset.set_image_position( gtk.POS_TOP )
     self.button_reset.connect( 'clicked', self.on_reset )
-    self.layout_box.pack_start( self.button_reset, True, False, 0 )
     
-    
+    # build the save map button
     self.button_save_map = gtk.Button( 'Save Map' )
+    save_map_image = gtk.Image()
+    save_map_image.set_from_stock( gtk.STOCK_SAVE, gtk.ICON_SIZE_BUTTON )
+    self.button_save_map.set_image( save_map_image )
+    self.button_save_map.set_image_position( gtk.POS_TOP )
     self.button_save_map.connect( 'clicked', self.on_save_map )
-    self.layout_box.pack_start( self.button_save_map, True, False, 0 )
     
-    
+    # build the load map button
     self.button_load_map = gtk.Button( 'Load Map' )
+    load_map_image = gtk.Image()
+    load_map_image.set_from_stock( gtk.STOCK_OPEN, gtk.ICON_SIZE_BUTTON )
+    self.button_load_map.set_image( load_map_image )
+    self.button_load_map.set_image_position( gtk.POS_TOP )
     self.button_load_map.connect( 'clicked', self.on_load_map )
-    self.layout_box.pack_start( self.button_load_map, True, False, 0 )
     
-    
+    # build the random map buttons
     self.button_random_map = gtk.Button( 'Random Map' )
+    random_map_image = gtk.Image()
+    random_map_image.set_from_stock( gtk.STOCK_REFRESH, gtk.ICON_SIZE_BUTTON )
+    self.button_random_map.set_image( random_map_image )
+    self.button_random_map.set_image_position( gtk.POS_TOP )
     self.button_random_map.connect( 'clicked', self.on_random_map )
-    self.layout_box.pack_start( self.button_random_map, True, False, 0 )
+    
+    # pack the simulation control buttons
+    sim_controls_box = gtk.HBox( spacing = 5 )
+    sim_controls_box.pack_start( self.button_play, False, False )
+    sim_controls_box.pack_start( self.button_stop, False, False )
+    sim_controls_box.pack_start( self.button_step, False, False )
+    sim_controls_box.pack_start( self.button_reset, False, False )
+    
+    # pack the map control buttons
+    map_controls_box = gtk.HBox( spacing = 5 )
+    map_controls_box.pack_start( self.button_save_map, False, False )
+    map_controls_box.pack_start( self.button_load_map, False, False )
+    map_controls_box.pack_start( self.button_random_map, False, False )
     
     
+    # initialize the layout container
+    layout_box = gtk.VBox()
     
+    # lay out the simulation view and all of the controls
+    layout_box.pack_start( self.drawing_area )
+    layout_box.pack_start( sim_controls_box )
+    layout_box.pack_start( map_controls_box )
     
+    # apply the layout
+    self.window.add( layout_box )
     
+    # show the simulator window
     self.window.show_all()
     
     
