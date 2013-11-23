@@ -49,7 +49,7 @@ class Viewer:
     play_image = gtk.Image()
     play_image.set_from_stock( gtk.STOCK_MEDIA_PLAY, gtk.ICON_SIZE_BUTTON )
     self.button_play.set_image( play_image )
-    self.button_play.set_image_position( gtk.POS_TOP )
+    self.button_play.set_image_position( gtk.POS_LEFT )
     self.button_play.connect( 'clicked', self.on_play )
     
     # build the stop button
@@ -57,7 +57,7 @@ class Viewer:
     stop_image = gtk.Image()
     stop_image.set_from_stock( gtk.STOCK_MEDIA_STOP, gtk.ICON_SIZE_BUTTON )
     self.button_stop.set_image( stop_image )
-    self.button_stop.set_image_position( gtk.POS_TOP )
+    self.button_stop.set_image_position( gtk.POS_LEFT )
     self.button_stop.connect( 'clicked', self.on_stop )
     
     # build the step button
@@ -65,7 +65,7 @@ class Viewer:
     step_image = gtk.Image()
     step_image.set_from_stock( gtk.STOCK_MEDIA_NEXT, gtk.ICON_SIZE_BUTTON )
     self.button_step.set_image( step_image )
-    self.button_step.set_image_position( gtk.POS_TOP )
+    self.button_step.set_image_position( gtk.POS_LEFT )
     self.button_step.connect( 'clicked', self.on_step )
     
     # build the reset button
@@ -73,7 +73,7 @@ class Viewer:
     reset_image = gtk.Image()
     reset_image.set_from_stock( gtk.STOCK_MEDIA_REWIND, gtk.ICON_SIZE_BUTTON )
     self.button_reset.set_image( reset_image )
-    self.button_reset.set_image_position( gtk.POS_TOP )
+    self.button_reset.set_image_position( gtk.POS_LEFT )
     self.button_reset.connect( 'clicked', self.on_reset )
     
     # build the save map button
@@ -81,7 +81,7 @@ class Viewer:
     save_map_image = gtk.Image()
     save_map_image.set_from_stock( gtk.STOCK_SAVE, gtk.ICON_SIZE_BUTTON )
     self.button_save_map.set_image( save_map_image )
-    self.button_save_map.set_image_position( gtk.POS_TOP )
+    self.button_save_map.set_image_position( gtk.POS_LEFT )
     self.button_save_map.connect( 'clicked', self.on_save_map )
     
     # build the load map button
@@ -89,7 +89,7 @@ class Viewer:
     load_map_image = gtk.Image()
     load_map_image.set_from_stock( gtk.STOCK_OPEN, gtk.ICON_SIZE_BUTTON )
     self.button_load_map.set_image( load_map_image )
-    self.button_load_map.set_image_position( gtk.POS_TOP )
+    self.button_load_map.set_image_position( gtk.POS_LEFT )
     self.button_load_map.connect( 'clicked', self.on_load_map )
     
     # build the random map buttons
@@ -97,7 +97,7 @@ class Viewer:
     random_map_image = gtk.Image()
     random_map_image.set_from_stock( gtk.STOCK_REFRESH, gtk.ICON_SIZE_BUTTON )
     self.button_random_map.set_image( random_map_image )
-    self.button_random_map.set_image_position( gtk.POS_TOP )
+    self.button_random_map.set_image_position( gtk.POS_LEFT )
     self.button_random_map.connect( 'clicked', self.on_random_map )
     
     # pack the simulation control buttons
@@ -113,14 +113,17 @@ class Viewer:
     map_controls_box.pack_start( self.button_load_map, False, False )
     map_controls_box.pack_start( self.button_random_map, False, False )
     
-    
-    # initialize the layout container
-    layout_box = gtk.VBox()
+    # align the controls
+    sim_controls_alignment = gtk.Alignment( 0.5, 0.0, 0.0, 1.0 )
+    map_controls_alignment = gtk.Alignment( 0.5, 0.0, 0.0, 1.0 )
+    sim_controls_alignment.add( sim_controls_box )
+    map_controls_alignment.add( map_controls_box )
     
     # lay out the simulation view and all of the controls
+    layout_box = gtk.VBox()
     layout_box.pack_start( self.drawing_area )
-    layout_box.pack_start( sim_controls_box )
-    layout_box.pack_start( map_controls_box )
+    layout_box.pack_start( sim_controls_alignment, False, False, 5 )
+    layout_box.pack_start( map_controls_alignment, False, False, 5 )
     
     # apply the layout
     self.window.add( layout_box )
