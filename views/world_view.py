@@ -38,9 +38,6 @@ class WorldView:
     # draw all the obstacles
     for obstacle_view in self.obstacle_views:
       obstacle_view.draw_obstacle_to_frame()
-  
-  def wait( self ):
-    self.viewer.wait()
 
   def _draw_grid_to_frame( self ):
     # NOTE: THIS FORMULA ASSUMES THE FOLLOWING:
