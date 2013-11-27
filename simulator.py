@@ -31,7 +31,7 @@ class Simulator:
     # timing control
     self.period = 1.0 / REFRESH_RATE  # seconds
     
-    # gtk simulation event source
+    # gtk simulation event source - for simulation control
     self.sim_event_source = gobject.idle_add( self.stop_sim )
     
     # initialize the simulation
@@ -42,6 +42,9 @@ class Simulator:
     
     
   def initialize_sim( self, random=False ):
+    # clear any alerts
+    self.viewer.alert( '' )
+    
     # create the simulation world
     self.world = World( self.period )
     
@@ -108,10 +111,10 @@ class Simulator:
       self.world.step()
     except CollisionException:
       self.stop_sim()
-      print "\n\nCOLLISION!\n\n"
+      self.viewer.alert( 'Collision!' )
     except GoalReachedException:
       self.stop_sim()
-      print "\n\nGOAL REACHED!\n\n"
+      self.viewer.alert( 'Goal Reached!' )
       
     # draw the resulting world
     self._draw_world()

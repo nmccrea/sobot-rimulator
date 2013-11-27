@@ -119,9 +119,13 @@ class Viewer:
     sim_controls_alignment.add( sim_controls_box )
     map_controls_alignment.add( map_controls_box )
     
+    # create the alert box
+    self.alert_box = gtk.Label()
+    
     # lay out the simulation view and all of the controls
     layout_box = gtk.VBox()
     layout_box.pack_start( self.drawing_area )
+    layout_box.pack_start( self.alert_box, False, False, 5 )
     layout_box.pack_start( sim_controls_alignment, False, False, 5 )
     layout_box.pack_start( map_controls_alignment, False, False, 5 )
     
@@ -138,6 +142,10 @@ class Viewer:
     
   def draw_frame( self ):
     self.drawing_area.queue_draw_area( 0, 0, self.view_width_pixels, self.view_height_pixels )
+    
+    
+  def alert( self, alert_text ):
+    self.alert_box.set_text( alert_text )
     
     
   # EVENT HANDLERS:
