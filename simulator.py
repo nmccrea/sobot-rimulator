@@ -42,8 +42,8 @@ class Simulator:
     
     
   def initialize_sim( self, random=False ):
-    # clear any alerts
-    self.viewer.alert( '' )
+    # reset the viewer
+    self.viewer.reset()
     
     # create the simulation world
     self.world = World( self.period )
@@ -111,10 +111,10 @@ class Simulator:
       self.world.step()
     except CollisionException:
       self.stop_sim()
-      self.viewer.alert( 'Collision!' )
+      self.viewer.restrict( 'Collision!' )
     except GoalReachedException:
       self.stop_sim()
-      self.viewer.alert( 'Goal Reached!' )
+      self.viewer.restrict( 'Goal Reached!' )
       
     # draw the resulting world
     self._draw_world()

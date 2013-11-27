@@ -144,12 +144,22 @@ class Viewer:
     self.drawing_area.queue_draw_area( 0, 0, self.view_width_pixels, self.view_height_pixels )
     
     
-  def alert( self, alert_text ):
+  def restrict( self, alert_text ):
     self.alert_box.set_text( alert_text )
+    self.button_play.set_sensitive( False )
+    self.button_step.set_sensitive( False )
+    
+    
+  def reset( self ):
+    self.alert_box.set_text( '' )
+    self.button_play.set_sensitive( True )
+    self.button_step.set_sensitive( True )
+    self.button_reset.set_sensitive( False )
     
     
   # EVENT HANDLERS:
   def on_play( self, widget ):
+    self.button_reset.set_sensitive( True )
     self.simulator.run_sim()
     
     
@@ -158,6 +168,7 @@ class Viewer:
     
     
   def on_step( self, widget ):
+    self.button_reset.set_sensitive( True )
     self.simulator.step_sim_once()
     
     
