@@ -147,12 +147,14 @@ class Viewer:
   def restrict( self, alert_text ):
     self.alert_box.set_text( alert_text )
     self.button_play.set_sensitive( False )
+    self.button_stop.set_sensitive( False )
     self.button_step.set_sensitive( False )
     
     
   def reset( self ):
     self.alert_box.set_text( '' )
     self.button_play.set_sensitive( True )
+    self.button_stop.set_sensitive( True )
     self.button_step.set_sensitive( True )
     self.button_reset.set_sensitive( False )
     
