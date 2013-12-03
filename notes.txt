@@ -5,11 +5,12 @@ Development Constraints:
 
   - All solid geometries must be convex. This is the assumption in collision tests and sensor detection algorithms.
     If concave objects are needed, building them out of multiple convex objects should be a fully functional alternative.
+    Alternatively, more advanced collision detection algorithms can be added.
 
-  - Regarding physical limits on robot velocities: Sim.I.Am implements limits on angular and translational velocities, i.e. the parameters of the unicycle model. It seemed more realistic to implement physical limits on the individual robot drive wheels (maximum angular velocity of each). In addition, the robot Supervisor can be "programmed" to maintain drive signals within a certain envelope of unicycle-model velocities. The physical and "programmed" limits together will bound the possible behavior of the robot.
+  - Regarding physical limits on robot velocities: Sim.I.Am implements limits on angular and translational velocities, i.e. the parameters of the unicycle model. It seemed more realistic to implement physical limits on the individual robot drive motors (maximum angular velocity of each). In addition, the robot Supervisor can be "programmed" to maintain drive signals within a certain envelope of unicycle-model velocities. The physical and "programmed" limits together will bound the possible behavior of the robot.
 
 
 Potential Performance Improvements:
   - Efficient linear algebra library to replace custom-built functions in linalg2_util.py
   - More sophisticated detection algorithm improvements, particularly line-polygon intersect test
-  - Better control loop architecture to ensure ONLY necessary headings are computed ONLY one time per loop
+  - Better control loop architecture to ensure ONLY necessary robot headings are computed ONLY one time per loop
