@@ -154,22 +154,28 @@ class Viewer:
   def reset( self ):
     self.alert_box.set_text( '' )
     self.button_play.set_sensitive( True )
-    self.button_stop.set_sensitive( True )
+    self.button_stop.set_sensitive( False )
     self.button_step.set_sensitive( True )
     self.button_reset.set_sensitive( False )
     
     
   # EVENT HANDLERS:
   def on_play( self, widget ):
+    self.button_play.set_sensitive( False )
+    self.button_stop.set_sensitive( True )
     self.button_reset.set_sensitive( True )
     self.simulator.run_sim()
     
     
   def on_stop( self, widget ):
+    self.button_play.set_sensitive( True )
+    self.button_stop.set_sensitive( False )
     self.simulator.stop_sim()
     
     
   def on_step( self, widget ):
+    self.button_play.set_sensitive( True )
+    self.button_stop.set_sensitive( False )
     self.button_reset.set_sensitive( True )
     self.simulator.step_sim_once()
     
