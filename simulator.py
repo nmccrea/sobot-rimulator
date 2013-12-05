@@ -3,7 +3,7 @@
 
 
 # Robot Simulator - A robotic control theory programming tool.
-# Copyright (C) 2013  Nicholas McCrea
+# Copyright (C) 2013 Nicholas McCrea
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -54,10 +54,7 @@ class Simulator:
     self.period = 1.0 / REFRESH_RATE  # seconds
     
     # gtk simulation event source - for simulation control
-    self.sim_event_source = gobject.idle_add( self.stop_sim )
-    
-    # initialize the simulation
-    self.initialize_sim( random = True )
+    self.sim_event_source = gobject.idle_add( self.initialize_sim, True ) # we use this opportunity to initialize the sim
     
     # start gtk
     gtk.main()
@@ -65,7 +62,7 @@ class Simulator:
     
   def initialize_sim( self, random=False ):
     # reset the viewer
-    self.viewer.reset()
+    self.viewer.state_init()
     
     # create the simulation world
     self.world = World( self.period )
@@ -87,23 +84,29 @@ class Simulator:
     self._draw_world()
     
     
-  def run_sim( self ):
-    gobject.source_remove( self.sim_event_source )
-    self.sim_event_source = gobject.timeout_add( int( self.period * 1000 ), self.run_sim )
-    self._step_sim()
+  def play_sim( self ):
+    gobject.source_remove( self.sim_event_source )  # this ensures multiple calls to play_sim do not speed up the simulator
+    self._run_sim()
+    self.viewer.state_playing()
     
     
-  def stop_sim( self ):
+  def pause_sim( self ):
     gobject.source_remove( self.sim_event_source )
+    self.viewer.state_paused()
     
     
   def step_sim_once( self ):
-    self.stop_sim()
+    self.pause_sim()
     self._step_sim()
     
     
+  def end_sim( self, alert_text='' ):
+    gobject.source_remove( self.sim_event_source )
+    self.viewer.state_finished( alert_text )
+    
+    
   def reset_sim( self ):
-    self.stop_sim()
+    self.pause_sim()
     self.initialize_sim()
     
     
@@ -117,7 +120,7 @@ class Simulator:
     
     
   def random_map( self ):
-    self.stop_sim()
+    self.pause_sim()
     self.initialize_sim( random = True )
     
     
@@ -127,16 +130,19 @@ class Simulator:
     self.viewer.draw_frame()                # render the frame
     
     
+  def _run_sim( self ):
+    self.sim_event_source = gobject.timeout_add( int( self.period * 1000 ), self._run_sim )
+    self._step_sim()
+    
+    
   def _step_sim( self ):
     # increment the simulation
     try:
       self.world.step()
     except CollisionException:
-      self.stop_sim()
-      self.viewer.restrict( 'Collision!' )
+      self.end_sim( 'Collision!' )
     except GoalReachedException:
-      self.stop_sim()
-      self.viewer.restrict( 'Goal Reached!' )
+      self.end_sim( 'Goal Reached!' )
       
     # draw the resulting world
     self._draw_world()

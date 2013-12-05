@@ -144,14 +144,7 @@ class Viewer:
     self.drawing_area.queue_draw_area( 0, 0, self.view_width_pixels, self.view_height_pixels )
     
     
-  def restrict( self, alert_text ):
-    self.alert_box.set_text( alert_text )
-    self.button_play.set_sensitive( False )
-    self.button_stop.set_sensitive( False )
-    self.button_step.set_sensitive( False )
-    
-    
-  def reset( self ):
+  def state_init( self ):
     self.alert_box.set_text( '' )
     self.button_play.set_sensitive( True )
     self.button_stop.set_sensitive( False )
@@ -159,24 +152,35 @@ class Viewer:
     self.button_reset.set_sensitive( False )
     
     
-  # EVENT HANDLERS:
-  def on_play( self, widget ):
+  def state_playing( self ):
     self.button_play.set_sensitive( False )
     self.button_stop.set_sensitive( True )
     self.button_reset.set_sensitive( True )
-    self.simulator.run_sim()
     
     
-  def on_stop( self, widget ):
-    self.button_play.set_sensitive( True )
-    self.button_stop.set_sensitive( False )
-    self.simulator.stop_sim()
-    
-    
-  def on_step( self, widget ):
+  def state_paused( self ):
     self.button_play.set_sensitive( True )
     self.button_stop.set_sensitive( False )
     self.button_reset.set_sensitive( True )
+    
+    
+  def state_finished( self, alert_text ):
+    self.alert_box.set_text( alert_text )
+    self.button_play.set_sensitive( False )
+    self.button_stop.set_sensitive( False )
+    self.button_step.set_sensitive( False )
+    
+    
+  # EVENT HANDLERS:
+  def on_play( self, widget ):
+    self.simulator.play_sim()
+    
+    
+  def on_stop( self, widget ):
+    self.simulator.pause_sim()
+    
+    
+  def on_step( self, widget ):
     self.simulator.step_sim_once()
     
     
