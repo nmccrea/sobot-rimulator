@@ -62,7 +62,7 @@ class Simulator:
     
   def initialize_sim( self, random=False ):
     # reset the viewer
-    self.viewer.state_init()
+    self.viewer.control_panel_state_init()
     
     # create the simulation world
     self.world = World( self.period )
@@ -87,12 +87,12 @@ class Simulator:
   def play_sim( self ):
     gobject.source_remove( self.sim_event_source )  # this ensures multiple calls to play_sim do not speed up the simulator
     self._run_sim()
-    self.viewer.state_playing()
+    self.viewer.control_panel_state_playing()
     
     
   def pause_sim( self ):
     gobject.source_remove( self.sim_event_source )
-    self.viewer.state_paused()
+    self.viewer.control_panel_state_paused()
     
     
   def step_sim_once( self ):
@@ -102,7 +102,7 @@ class Simulator:
     
   def end_sim( self, alert_text='' ):
     gobject.source_remove( self.sim_event_source )
-    self.viewer.state_finished( alert_text )
+    self.viewer.control_panel_state_finished( alert_text )
     
     
   def reset_sim( self ):
