@@ -100,6 +100,13 @@ class Viewer:
     self.button_random_map.set_image_position( gtk.POS_LEFT )
     self.button_random_map.connect( 'clicked', self.on_random_map )
     
+    # build the draw-invisibles toggle button
+    self.draw_invisibles = False                  # controls whether invisible world elements are displayed
+    self.button_draw_invisibles = gtk.Button()
+    self._decorate_draw_invisibles_button_inactive()
+    self.button_draw_invisibles.set_image_position( gtk.POS_TOP )
+    self.button_draw_invisibles.connect( 'clicked', self.on_draw_invisibles )
+    
     # pack the simulation control buttons
     sim_controls_box = gtk.HBox( spacing = 5 )
     sim_controls_box.pack_start( self.button_play, False, False )
@@ -128,6 +135,9 @@ class Viewer:
     layout_box.pack_start( self.alert_box, False, False, 5 )
     layout_box.pack_start( sim_controls_alignment, False, False, 5 )
     layout_box.pack_start( map_controls_alignment, False, False, 5 )
+    
+    
+    layout_box.pack_start( self.button_draw_invisibles, False, False, 5 )
     
     # apply the layout
     self.window.add( layout_box )
@@ -233,6 +243,16 @@ class Viewer:
     self.simulator.random_map()
     
     
+  def on_draw_invisibles( self, widget ):    
+    # toggle the draw_invisibles state
+    self.draw_invisibles = not self.draw_invisibles
+    if self.draw_invisibles:
+      self._decorate_draw_invisibles_button_active()
+    else:
+      self._decorate_draw_invisibles_button_inactive()
+    self.simulator.draw_world()
+    
+    
   def on_expose( self, widget, event ):
     self.painter.draw_frame( self.current_frame )
     
@@ -240,3 +260,17 @@ class Viewer:
   def on_delete( self, widget, event ):
     gtk.main_quit()
     return False
+    
+    
+  def _decorate_draw_invisibles_button_active( self ):
+    draw_invisibles_image = gtk.Image()
+    draw_invisibles_image.set_from_stock( gtk.STOCK_REMOVE, gtk.ICON_SIZE_BUTTON )
+    self.button_draw_invisibles.set_image( draw_invisibles_image )
+    self.button_draw_invisibles.set_label( 'Hide Invisibles' )
+    
+    
+  def _decorate_draw_invisibles_button_inactive( self ):
+    draw_invisibles_image = gtk.Image()
+    draw_invisibles_image.set_from_stock( gtk.STOCK_ADD, gtk.ICON_SIZE_BUTTON )
+    self.button_draw_invisibles.set_image( draw_invisibles_image )
+    self.button_draw_invisibles.set_label( 'Show Invisibles' )

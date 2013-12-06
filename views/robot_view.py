@@ -31,12 +31,17 @@ class RobotView:
     self.traverse_path = []  # this robot's traverse path
 
   def draw_robot_to_frame( self ):
+    # update the robot traverse path
+    position = self.robot.pose.vposition()
+    self.traverse_path.append( position )
+    
     # draw the internal state ( supervisor ) to the frame
     self.supervisor_view.draw_supervisor_to_frame()
 
-    # draw the IR sensors to the frame
-    for ir_sensor_view in self.ir_sensor_views:
-      ir_sensor_view.draw_proximity_sensor_to_frame()
+    # draw the IR sensors to the frame if indicated
+    if self.viewer.draw_invisibles:
+      for ir_sensor_view in self.ir_sensor_views:
+        ir_sensor_view.draw_proximity_sensor_to_frame()
 
     # draw the robot
     robot_bottom = self.robot.global_geometry.vertexes
@@ -50,21 +55,17 @@ class RobotView:
                                             color = "black",
                                             alpha = 0.5 )
     
-    # draw the robot's traverse path
-    self._draw_traverse_path_to_frame()
+    # draw the robot's traverse path if indicated
+    if self.viewer.draw_invisibles:
+      self._draw_traverse_path_to_frame()
 
   def _draw_traverse_path_to_frame( self ):
-    position = self.robot.pose.vposition()
-    self.traverse_path.append( position )
     self.viewer.current_frame.add_lines(  [ self.traverse_path ],
                                           color = "black",
                                           linewidth = 0.01 )
 
   # draws the traverse path as dots weighted according to robot speed
   def _draw_rich_traverse_path_to_frame( self ):
-    position = self.robot.pose.vposition()
-    self.traverse_path.append( position )
-
     # when robot is moving fast, draw small, opaque dots
     # when robot is moving slow, draw large, transparent dots
     d_min,  d_max = 0.0, 0.01574  # possible distances between dots

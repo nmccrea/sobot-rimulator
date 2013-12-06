@@ -31,9 +31,16 @@ class SupervisorView:
 
   # draw a representation of the supervisor's internal state to the frame
   def draw_supervisor_to_frame( self ):
+    # update the estimated robot traverse path
+    self.robot_estimated_traverse_path.append( self.supervisor.estimated_pose.vposition() )
+    
+    # draw the goal to frame
     self._draw_goal_to_frame()
-    self._draw_robot_state_estimate_to_frame()
-    self._draw_current_controller_to_frame()
+    
+    # draw the supervisor-generated data to frame if indicated
+    if self.viewer.draw_invisibles:
+      self._draw_robot_state_estimate_to_frame()
+      self._draw_current_controller_to_frame()
 
     # === FOR DEBUGGING ===
     # self._draw_all_controllers_to_frame()
@@ -50,19 +57,15 @@ class SupervisorView:
                                           alpha = 0.5 )
 
   def _draw_robot_state_estimate_to_frame( self ):
-    estimated_pose = self.supervisor.estimated_pose
-
-    # draw the supposed position of the robot
-    vertexes = self.robot_geometry.get_transformation_to_pose( estimated_pose ).vertexes[:]
+    # draw the estimated position of the robot
+    vertexes = self.robot_geometry.get_transformation_to_pose( self.supervisor.estimated_pose ).vertexes[:]
     vertexes.append( vertexes[0] )    # close the drawn polygon
     self.viewer.current_frame.add_lines(  [ vertexes ],
                                           color = "black",
                                           linewidth = 0.0075,
                                           alpha = 0.5 )
 
-    # draw the supposed traverse path of the robot
-    position = estimated_pose.vposition()
-    self.robot_estimated_traverse_path.append( position )
+    # draw the estimated traverse path of the robot
     self.viewer.current_frame.add_lines(  [ self.robot_estimated_traverse_path ],
                                           linewidth = 0.005,
                                           color = "red",

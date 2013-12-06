@@ -14,3 +14,8 @@ Potential Performance Improvements:
   - Efficient linear algebra library to replace custom-built functions in linalg2_util.py
   - More sophisticated detection algorithm improvements, particularly line-polygon intersect test
   - Better control loop architecture to ensure ONLY necessary robot headings are computed ONLY one time per loop
+
+
+
+Known Issues:
+  - Drawn traverse paths are appended to every time a frame is drawn. This design assumes the frame is drawn only one time between simulation steps. However, this might not be the case - e.g. when invisibles are toggles, the frame is redrawn. Therefore, every time invisibles are toggled, the traverse path is appended with an additional copy of it's current position. This is not a problem as of this writing, but can, for example, cause the (currently-disabled) "rich" traverse path to display incorrectly.
