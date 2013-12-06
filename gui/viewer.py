@@ -43,7 +43,8 @@ class Viewer:
     # initialize the painter
     self.painter = Painter( self.drawing_area, self.pixels_per_meter )
     
-    # initialize the buttons
+    # == initialize the buttons
+    
     # build the play button
     self.button_play = gtk.Button( 'Play' )
     play_image = gtk.Image()
@@ -104,8 +105,10 @@ class Viewer:
     self.draw_invisibles = False                  # controls whether invisible world elements are displayed
     self.button_draw_invisibles = gtk.Button()
     self._decorate_draw_invisibles_button_inactive()
-    self.button_draw_invisibles.set_image_position( gtk.POS_TOP )
+    self.button_draw_invisibles.set_image_position( gtk.POS_LEFT )
     self.button_draw_invisibles.connect( 'clicked', self.on_draw_invisibles )
+    
+    # == lay out the window
     
     # pack the simulation control buttons
     sim_controls_box = gtk.HBox( spacing = 5 )
@@ -120,11 +123,17 @@ class Viewer:
     map_controls_box.pack_start( self.button_load_map, False, False )
     map_controls_box.pack_start( self.button_random_map, False, False )
     
+    # pack the invisibles button
+    invisibles_button_box = gtk.HBox()
+    invisibles_button_box.pack_start( self.button_draw_invisibles, False, False )
+    
     # align the controls
     sim_controls_alignment = gtk.Alignment( 0.5, 0.0, 0.0, 1.0 )
     map_controls_alignment = gtk.Alignment( 0.5, 0.0, 0.0, 1.0 )
+    invisibles_button_alignment = gtk.Alignment( 0.5, 0.0, 0.0, 1.0 )
     sim_controls_alignment.add( sim_controls_box )
     map_controls_alignment.add( map_controls_box )
+    invisibles_button_alignment.add( invisibles_button_box )
     
     # create the alert box
     self.alert_box = gtk.Label()
@@ -135,9 +144,7 @@ class Viewer:
     layout_box.pack_start( self.alert_box, False, False, 5 )
     layout_box.pack_start( sim_controls_alignment, False, False, 5 )
     layout_box.pack_start( map_controls_alignment, False, False, 5 )
-    
-    
-    layout_box.pack_start( self.button_draw_invisibles, False, False, 5 )
+    layout_box.pack_start( invisibles_button_alignment, False, False, 5 )
     
     # apply the layout
     self.window.add( layout_box )
