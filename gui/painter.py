@@ -20,6 +20,10 @@ class Painter:
     context.translate( width_pixels/2.0, height_pixels/2.0 )        # move origin to center of window
     context.scale( self.pixels_per_meter, -self.pixels_per_meter )  # pull view to edges of window ( also flips y-axis )
     
+    # draw the background in white
+    self.set_color( context, 'white', 1.0 )
+    context.paint()
+    
     draw_list = frame.draw_list
     for component in draw_list:
       if component['type'] == 'circle':
