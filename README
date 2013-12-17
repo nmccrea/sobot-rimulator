@@ -15,6 +15,8 @@ Jean-Pierre de la Croix of The Georgia Institute of Technology, who's robot simu
 
 All the visionary people at Coursera, who have provided an invaluable education service for those of us who previously have been without a practical option for continuing learning.
 
+Carmen Gutierrez, for her effortless genius coming up with titles. Without her, this software would have been named "Robot Simulator".
+
 
 
 REQUIREMENTS:
@@ -67,7 +69,7 @@ A grid is drawn onto the map to help you judge distances. Major gridlines are la
 Alert Text Panel:
 -----------------
 
-When events such as a collision or successful arrival at the goal occur, it will be reported in the space between the simulation view port and the control panel. When the simulation beings, the alert text panel is blank.
+When events such as a collision or successful arrival at the goal occur, it will be reported in the space between the simulation view port and the control panel. When the simulation begins, the alert text panel is blank.
 
 
 Control Panel:
@@ -97,15 +99,15 @@ The second row of buttons gives gives you control over the map:
 
 The final row provides a more detailed visualization of what the robot is doing:
 
--- Pressing the "Show Invisibles" button causes extra information to be drawn to the simulation view that would not be visible in the real world. This includes the robots traverse path (where it has been so far), the robot's infrared sensors, the robot's current desired heading, and other information specific to the current control mode the robot is in:
+-- Pressing the "Show Invisibles" button causes extra information to be drawn to the simulation view that would not be visible in the real world. This includes the robot's traverse path (where it has been so far), the robot's infrared sensors, the robot's current desired heading, and other information specific to the current control mode the robot is in:
 
     -  A green heading bar indicates that the robot is currently in Go to Goal mode.
 
-    -  A red heading bar indicates that the robot is currently in Avoid Obstacles mode. This will be accompanied by a black envelope indicated the robot's detected surroundings.
+    -  A red heading bar indicates that the robot is currently in Avoid Obstacles mode. This will be accompanied by a black envelope indicating the robot's detected surroundings.
     
     -  A blue heading bar indicates that the robot is currently in blended Go to Goal and Avoid Obstacles mode. This will be accompanied by two lesser heading bars each corresponding to the pure heading of Go to Goal mode and Avoid Obstacles mode, as well as the black envelope displayed by the Avoid Obstacles mode.
     
-    -  An orange heading bar indicates that the robot is currently in Follow Wall mode. This will be accompanied by two black lines - one indicating the obstacle surface calculation that the robot is bearing on, and another indicating the stand-off distance to the obstacle.
+    -  An orange heading bar indicates that the robot is currently in Follow Wall mode. This will be accompanied by two black lines - one indicating the obstacle surface calculated by the robot for bearing upon, and another indicating the stand-off distance to that obstacle surface.
   
   
 PROGRAMMING THE ROBOT:
