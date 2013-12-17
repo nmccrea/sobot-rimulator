@@ -1,4 +1,4 @@
-Thank you for using Robot Simulator! It is my sincere hope that this program will help you practice some of the basics of mobile robot control theory. The following is a brief manual for how to run and make use of the simulator.
+Thank you for using Sobot Rimulator! It is my sincere hope that this program will help you practice some of the basics of mobile robot control theory. The following is a brief manual for how to run and make use of the simulator.
 
 This software and all accompanying materials are Copyright 2013 Nicholas Sloan Dowson McCrea. It is being released under the GNU General Public License, Version 3. Please see the accompanying LICENSE file for more information.
 
@@ -7,11 +7,11 @@ This software and all accompanying materials are Copyright 2013 Nicholas Sloan D
 ACKNOWLEDGEMENTS:
 =================
 
-I would like to thank the following folks for inspiring the creation of Robot Simulator:
+I would like to thank the following folks for inspiring the creation of Sobot Rimulator:
 
 Dr. Magnus Egerstedt of The Georgia Institute of Technology, who's Coursera course "Control of Mobile Robots" was my first formal introduction to robotic control theory and was the inspiration for this software.
 
-Jean-Pierre de la Croix of The Georgia Institute of Technology, who's robot simulator Sim.I.Am served as a design template for Robot Simulator.
+Jean-Pierre de la Croix of The Georgia Institute of Technology, who's robot simulator Sim.I.Am served as a design template for Sobot Rimulator.
 
 All the visionary people at Coursera, who have provided an invaluable education service for those of us who previously have been without a practical option for continuing learning.
 
@@ -20,7 +20,7 @@ All the visionary people at Coursera, who have provided an invaluable education 
 REQUIREMENTS:
 =============
 
-Robot Simulator is cross-platform compatible and should be able to run on Windows, Mac OSX, and Linux/Unix machines. In order to run, the following two items must be installed on your computer:
+Sobot Rimulator is cross-platform compatible and should be able to run on Windows, Mac OSX, and Linux/Unix machines. In order to run, the following two items must be installed on your computer:
 - Python 2.6.1 or higher
 - PyGTK 2.7 or higher
 
@@ -77,7 +77,7 @@ The control panel is divided into three rows.
 
 The first row of buttons controls the simulation progress:
 
---  Pressing the "Play" button will cause the simulation to proceed until you stop it, or the robot reaches the goal or collides with an obstacle.
+-- Pressing the "Play" button will cause the simulation to proceed until you stop it, or the robot reaches the goal or collides with an obstacle.
 
 -- Pressing the "Stop" button will stop the simulation in its current state until you press Play.
 
@@ -88,7 +88,7 @@ The first row of buttons controls the simulation progress:
 
 The second row of buttons gives gives you control over the map:
 
--- Pressing the "Save Map" button will cause a save dialog to appear. The location to save maps is in the /maps folder of the simulator directory. Saving a map will NOT save the current state of the simulation. It only saves the location of the obstacles and the goal.
+-- Pressing the "Save Map" button will cause a save dialog to appear. The default location to save maps is in the /maps folder of the simulator directory. Saving a map will NOT save the current state of the simulation. It only saves the location of the obstacles and the goal.
 
 -- Pressing the "Load Map" button will cause a load dialog to appear. From here you can load previously saved maps. The simulation resets when a new map is loaded, so the robot will return to the center of the map.
 

@@ -2,7 +2,7 @@
 # -*- Encoding: utf-8 -*
 
 
-# Robot Simulator - A robotic control theory programming tool.
+# Sobot Rimulator - A robotic control theory programming tool.
 # Copyright (C) 2013 Nicholas McCrea
 # 
 # This program is free software: you can redistribute it and/or modify
