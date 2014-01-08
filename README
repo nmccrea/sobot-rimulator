@@ -11,7 +11,7 @@ I would like to thank the following folks for inspiring the creation of Sobot Ri
 
 Dr. Magnus Egerstedt of The Georgia Institute of Technology, who's Coursera course "Control of Mobile Robots" was my first formal introduction to robotic control theory and was the inspiration for this software.
 
-Jean-Pierre de la Croix of The Georgia Institute of Technology, who's robot simulator Sim.I.Am served as a design template for Sobot Rimulator.
+Jean-Pierre de la Croix of The Georgia Institute of Technology, who's robot simulator Sim.I.Am served as a design inspiration for Sobot Rimulator.
 
 All the visionary people at Coursera, who have provided an invaluable education service for those of us who previously have been without a practical option for continuing learning.
 
@@ -37,7 +37,7 @@ Alternatively, both pieces of software should be available through package manag
 RUNNING THE SIMULATOR:
 ======================
 
-To run the simulator, open a command prompt (terminal) and navigate to the folder where you downloaded the simulator. Then type:
+To run the simulator, open a command prompt (terminal) and navigate to the folder containing the simulator files. Then type:
 
 $ python simulator.py
 
