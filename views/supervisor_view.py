@@ -70,7 +70,7 @@ class SupervisorView:
     self.viewer.current_frame.add_circle( pos = goal,
                                           radius = 0.05,
                                           color = "dark green",
-                                          alpha = 0.25 )
+                                          alpha = 0.65 )
     self.viewer.current_frame.add_circle( pos = goal,
                                           radius = 0.01,
                                           color = "black",
