@@ -1,9 +1,5 @@
-#!/usr/bin/python
-# -*- Encoding: utf-8 -*
-
-
-# Sobot Rimulator - A robotic control theory programming tool.
-# Copyright (C) 2013 Nicholas McCrea
+# Sobot Rimulator - A robot programming tool.
+# Copyright (C) 2013-2014 Nicholas S. D. McCrea
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,6 +17,8 @@
 # Email nmgeneric@gmail.com for questions, comments, or to report bugs.
 # 
 # Enjoy!
+
+
 
 
 import pygtk
