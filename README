@@ -1,6 +1,8 @@
 Thank you for using Sobot Rimulator! It is my sincere hope that this program will help you practice some of the basics of mobile robot control theory. The following is a brief manual for how to run and make use of the simulator.
 
-This software and all accompanying materials are Copyright 2013 Nicholas Sloan Dowson McCrea. It is being released under the GNU General Public License, Version 3. Please see the accompanying LICENSE file for more information.
+This software and all accompanying materials are Copyright 2013-2014 Nicholas Sloan Dowson McCrea. It is being released under the GNU General Public License, Version 3. Please see the accompanying LICENSE file for more information.
+
+For questions or comments, email me at nmgeneric@gmail.com.
 
 
 
@@ -15,7 +17,7 @@ Jean-Pierre de la Croix of The Georgia Institute of Technology, who's robot simu
 
 All the visionary people at Coursera, who have provided an invaluable education service for those of us who previously have been without a practical option for continuing learning.
 
-Carmen Gutierrez, for her effortless genius coming up with titles. Without her, this software would have been named "Robot Simulator".
+Carmen, for her effortless genius coming up with titles. We should all be thankful: without her, this software would have been named "Robot Simulator".
 
 
 
@@ -110,11 +112,64 @@ The final row provides a more detailed visualization of what the robot is doing:
     -  An orange heading bar indicates that the robot is currently in Follow Wall mode. This will be accompanied by two black lines - one indicating the obstacle surface calculated by the robot for bearing upon, and another indicating the stand-off distance to that obstacle surface.
   
   
+  
 PROGRAMMING THE ROBOT:
 ======================
-- supervisor.py
-- controllers
-  - go_to_goal_controller.py
-  - avoid_obstacles_controller.py
-  - gtg_and_ao_controller.py
-  - follow_wall_controller.py
+
+
+********************************************************
+ATTENTION! This section contains programming talk!
+
+This section serves only as a quick and dirty description of the control architecture as provided with this distribution of Sobot Rimulator. As the primary purpose of Sobot Rimulator is to allow you to play with your own designs, please do not feel any obligation to stick to or maintain the design described here. There are certainly ways it can be improved.
+********************************************************
+
+
+Each robot is controlled by a Supervisor object. Instead of talking directly to the Robot object, a Supervisor is given a RobotSupervisorInterface that defines the entirety of available commands the Supervisor can send the Robot. The RobotSupervisorInterface can therefore be thought of as an API to the robot, providing these instructions:
+  - read_proximity_sensors
+  - read_wheel_encoders
+  - set_wheel_drive_rates
+  
+This design separates the code for programming the robot Supervisor from the rest of the program's source code, so that programming the simulated robot is similar to programming a real Khepera III robot with the same API.
+
+
+Supervisor (supervisor.py)
+--------------------------
+
+The Supervisor is the brains of the robot. It contains a RobotSupervisorInterface, a SupervisorStateMachine that manages control state transitions, and several different controllers that can generate control parameters by various criteria. It also contains odometry code for maintaining an estimate of the robot's current position and heading. The Supervisor control-loop sequence is as follows:
+
+  1. Update State - update sensor readings, odometry, and controller headings; update the SupervisorStateMachine based on the new readings; set new active controller based on the new control state
+  
+  2. Execute Controller - generate new control parameters using the active controller and the current sensor readings
+  
+  3. Send Commands - apply the new control parameters to the robot by sending the appropriate robot commands
+  
+  
+SupervisorStateMachine (supervisor_state_machine.py)
+----------------------------------------------------
+
+The SupervisorStateMachine controls the robot's control state. The version distributed with Sobot Rimulator supports the following control states, defined in control_state.py:
+  - ControlState.AT_GOAL
+  - ControlState.GO_TO_GOAL
+  - ControlState.AVOID_OBSTACLES
+  - ControlState.GTG_AND_AO
+  - ControlState.SLIDE_LEFT
+  - ControlState.SLIDE_RIGHT
+
+Once per control loop iteration, the SupervisorStateMachine updates itself. It first checks if certain conditions are met (e.g, sensors indicate that an obstacle is very close). Depending on the set of conditions that are met, the state machine may then transition the control state to a new state. A state transition will include changing the active controller used by the Supervisor.
+
+
+Controllers
+-----------
+
+Sobot Rimulator is distributed with five controllers built into the Supervisor (although additional controllers can be added fairly easily). These are:
+  - GoToAngleController       (go_to_angle_controller.py)
+  - GoToGoalController        (go_to_goal_controller.py)
+  - AvoidObstaclesController  (avoid_obstacles_controller.py)
+  - GTGAndAOController        (gtg_and_ao_controller.py)
+  - FollowWallController      (follow_wall_controller.py)
+  
+Before the SupervisorStateMachine updates, each controller generates a heading vector. Each heading will likely be different, representing the direction the robot should go to perform the behavior that particular controller is designed to effect. These headings are then compared to each other by the SupervisorStateMachine as part of its test for control conditions.
+
+After the SupervisorStateMachine has updated the control state, the controller that it chose to activate is executed. The active controller generates movement parameters intended to effectively move the robot towards that controller's heading vector. These parameters are given using the "unicycle model" of movement (i.e. a translational velocity parameter (v) and an angular velocity parameter (omega)). The controller updates the Supervisor with these new parameters.
+
+Once the final movement parameters have been calculated and applied, the Supervisor will transform them from the "unicycle" model into the corresponding wheel movement rates of a "differential drive" model, and command the robot to drive the wheels using these rates.
