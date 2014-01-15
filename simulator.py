@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # Sobot Rimulator - A robot programming tool.
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
 # 
