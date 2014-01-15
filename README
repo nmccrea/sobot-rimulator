@@ -23,6 +23,7 @@ To run the simulator, open a command prompt (terminal) and navigate to the folde
 $ python simulator.py
 
 
+
 ******************
 This software and all accompanying materials are Copyright 2013-2014 Nicholas Sloan Dowson McCrea. It is being released under the GNU General Public License, Version 3. Please see the accompanying LICENSE file for more information.
 
