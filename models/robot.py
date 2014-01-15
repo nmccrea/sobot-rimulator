@@ -30,13 +30,13 @@ from robot_supervisor_interface import *
 from supervisor import *
 from wheel_encoder import *
 
-# Khepera3 Properties (from Sim.I.Am by J.P. de la Croix)
+# Khepera III Properties
 K3_WHEEL_RADIUS = 0.021         # meters
 K3_WHEEL_BASE_LENGTH = 0.0885   # meters
 K3_WHEEL_TICKS_PER_REV = 2765
 K3_MAX_WHEEL_DRIVE_RATE = 15.0  # rad/s
 
-# Khepera3 Dimensions (from Sim.I.Am by J.P. de la Croix)
+# Khepera III Dimensions
 K3_BOTTOM_PLATE = [[ -0.024,  0.064 ],
                    [  0.033,  0.064 ],
                    [  0.057,  0.043 ],
@@ -62,7 +62,7 @@ K3_SENSOR_POSES = [[ -0.038,  0.048,  128 ], # x, y, theta_degrees
                    [ -0.038, -0.048, -128 ],
                    [ -0.048,  0.000,  180 ]]
 
-class Robot: # Khepera3 robot 
+class Robot: # Khepera III robot 
   
   def __init__( self ):
     # geometry

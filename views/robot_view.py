@@ -25,7 +25,7 @@ import utils.linalg2_util as linalg
 from proximity_sensor_view import *
 from supervisor_view import *
 
-# Khepera3 Dimensions (from Sim.I.Am by J.P. de la Croix)
+# Khepera III Dimensions
 K3_TOP_PLATE = [[ -0.031,  0.043 ],
                 [ -0.031, -0.043 ],
                 [  0.033, -0.043 ],
