@@ -1,4 +1,10 @@
-Thank you for using Sobot Rimulator! It is my sincere hope that this program will help you practice some of the basics of mobile robot control theory. The following is a brief manual for how to run and make use of the simulator.
+===============================
+======= Sobot Rimulator =======
+== A Robot Programming Tool ===
+===============================
+
+
+Thank you for downloading Sobot Rimulator! It is my sincere hope that this program will help you practice mobile robot control theory. The following is a brief manual for how to run and make use of the simulator.
 
 This software and all accompanying materials are Copyright 2013-2014 Nicholas Sloan Dowson McCrea. It is being released under the GNU General Public License, Version 3. Please see the accompanying LICENSE file for more information.
 
@@ -6,14 +12,25 @@ For questions or comments, email me at nmgeneric@gmail.com.
 
 
 
-ACKNOWLEDGEMENTS:
+TABLE OF CONTENTS
 =================
 
-I would like to thank the following folks for inspiring the creation of Sobot Rimulator:
+1. ACKNOWLEDGEMENTS
+2. REQUIREMENTS
+3. RUNNING THE SIMULATOR
+4. USING THE SIMULATOR
+5. PROGRAMMING THE ROBOT
 
-Dr. Magnus Egerstedt of The Georgia Institute of Technology, who's Coursera course "Control of Mobile Robots" was my first formal introduction to robotic control theory and the catalyst of this software.
 
-Jean-Pierre de la Croix of The Georgia Institute of Technology, for aiding the Coursera course, and who's robot simulator Sim.I.Am served as the design inspiration for Sobot Rimulator.
+
+1. ACKNOWLEDGEMENTS
+===================
+
+I would like to thank the following folks for their part in the creation of Sobot Rimulator:
+
+Dr. Magnus Egerstedt of The Georgia Institute of Technology, who's Coursera course "Control of Mobile Robots" was my first formal introduction to robotic control theory and the catalyst for this software's creation.
+
+Jean-Pierre de la Croix of The Georgia Institute of Technology, for aiding the Coursera course. JP's robot simulator Sim.I.Am served as the design inspiration for Sobot Rimulator.
 
 All the visionary people at Coursera, who provide an invaluable education service.
 
@@ -23,8 +40,8 @@ And geniuses everywhere.
 
 
 
-REQUIREMENTS:
-=============
+2. REQUIREMENTS
+===============
 
 Sobot Rimulator is cross-platform compatible and should be able to run on Windows, Mac OSX, and Linux/Unix machines. In order to run, the following two items must be installed on your computer:
 - Python 2.6.1 or higher
@@ -38,17 +55,17 @@ Alternatively, both pieces of software should be available through package manag
 
 
 
-RUNNING THE SIMULATOR:
-======================
+3. RUNNING THE SIMULATOR
+========================
 
-To run the simulator, open a command prompt (terminal) and navigate to the folder containing the simulator files. Then type:
+To run the simulator, open a command prompt (terminal) and navigate to the Sobot Rimulator directory. Then type:
 
   python rimulator.py
 
 
 
-USING THE SIMULATOR:
-====================
+4. USING THE SIMULATOR
+======================
 
 The simulator window contains the following elements:
 - Simulation Viewport
@@ -56,12 +73,12 @@ The simulator window contains the following elements:
 - Control Panel
 
 
-Simulation Viewport:
---------------------
+Simulation Viewport
+-------------------
 
 When the program starts, a randomized map is loaded.
 
-A small blue and black circular object in the center of the viewport is the robot. The shape and capabilities of this robot are modeled after the Khepera III research robot. (See http://www.k-team.com/mobile-robotics-products/khepera-iii). The Khepera III is a differential-drive mobile robot. It is equipped with 9 infrared proximity sensors forming a "skirt", with which it can detect nearby obstacles.
+A small blue and black circular object in the center of the viewport is the robot. The dimensions and capabilities of this robot are modeled after the Khepera III research robot. (See http://www.k-team.com/mobile-robotics-products/khepera-iii). The Khepera III is a differential-drive mobile robot. It is equipped with 9 infrared proximity sensors forming a "skirt", with which it can detect nearby obstacles.
 
 A green circle indicates the location of the goal the robot will attempt to reach.
 
@@ -70,8 +87,8 @@ Red rectangles scattered throughout the map are obstacles - if the robot makes c
 A grid is drawn onto the map to help you judge distances. Major gridlines are laid out every meter. Minor gridlines are laid out every 20 centimeters.
 
 
-Alert Text Panel:
------------------
+Alert Text Panel
+----------------
 
 When events such as a collision or successful arrival at the goal occur, it will be reported in the space between the simulation view port and the control panel. When the simulation begins, the alert text panel is blank.
 
@@ -81,52 +98,60 @@ Control Panel:
 
 The control panel is divided into three rows.
 
-The first row of buttons controls the simulation progress:
+The FIRST ROW of buttons controls the simulation progress:
 
--- Pressing the "Play" button will cause the simulation to proceed until you stop it, or the robot reaches the goal or collides with an obstacle.
+== "Play"
+Causes the simulation to proceed until you stop it, or the robot reaches the goal or collides with an obstacle.
 
--- Pressing the "Stop" button will stop the simulation in its current state until you press Play.
+== "Stop"
+Stops the simulation in its current state.
 
--- Pressing the "Step" button will advance the simulation by one simulation cycle. The simulation will be stopped after this button is pressed.
+== "Step"
+Advances the simulation by one simulation cycle. The simulation will be stopped after this button is pressed.
 
--- Pressing the "Reset" button will clear all progress of the robot and reset the simulation.
-
-
-The second row of buttons gives gives you control over the map:
-
--- Pressing the "Save Map" button will cause a save dialog to appear. The default location to save maps is in the /maps folder of the simulator directory. Saving a map will NOT save the current state of the simulation. It only saves the location of the obstacles and the goal.
-
--- Pressing the "Load Map" button will cause a load dialog to appear. From here you can load previously saved maps. The simulation resets when a new map is loaded, so the robot will return to the center of the map.
-
--- Pressing the "Random Map" button will cause a randomized map to be generated on the fly. The simulation resets when a new random map is generated, so the robot will return to the center of the map.
+== "Reset"
+Clears all progress of the robot and resets the simulation.
 
 
-The final row provides a more detailed visualization of what the robot is doing:
+The SECOND ROW of buttons gives gives you control over the map:
 
--- Pressing the "Show Invisibles" button causes extra information to be drawn to the simulation view that would not be visible in the real world. This includes the robot's traverse path (where it has been so far), the robot's infrared sensors, the robot's current desired heading, and other information specific to the current control mode the robot is in:
+== "Save Map"
+Causes a save dialog to appear. The default location to save maps is in the /maps folder of the simulator directory. Saving a map will NOT save the current state of the simulation. It only saves the location of the obstacles and the goal.
+
+== "Load Map"
+Causes a load dialog to appear. From here you can load previously saved maps.
+
+== "Random Map"
+Generates a random map on the fly. The simulation resets when a new random map is generated.
+
+
+The THIRD ROW of buttons provides a more detailed visualization of what the robot is doing:
+
+== "Show Invisibles"
+Causes extra information to be drawn to the simulation view that would not be visible in the real world. This includes the robot's traverse path (where it has been so far), the robot's infrared sensor cones, the robot's current desired heading, and other information specific to the current control mode the robot is in:
 
     -  A green heading bar indicates that the robot is currently in Go to Goal mode.
 
-    -  A red heading bar indicates that the robot is currently in Avoid Obstacles mode. This will be accompanied by a black envelope indicating the robot's detected surroundings.
+    -  A red heading bar indicates that the robot is currently in Avoid Obstacles mode. This will be accompanied by a black outline indicating the robot's detected surroundings.
     
-    -  A blue heading bar indicates that the robot is currently in blended Go to Goal and Avoid Obstacles mode. This will be accompanied by two lesser heading bars each corresponding to the pure heading of Go to Goal mode and Avoid Obstacles mode, as well as the black envelope displayed by the Avoid Obstacles mode.
+    -  A blue heading bar indicates that the robot is currently in blended Go to Goal and Avoid Obstacles mode. This will be accompanied by two lesser heading bars each corresponding to the pure heading of Go to Goal mode and Avoid Obstacles mode, as well as the black outline displayed by the Avoid Obstacles mode.
     
-    -  An orange heading bar indicates that the robot is currently in Follow Wall mode. This will be accompanied by two black lines - one indicating the obstacle surface calculated by the robot for bearing upon, and another indicating the stand-off distance to that obstacle surface.
+    -  An orange heading bar indicates that the robot is currently in Follow Wall mode. This will be accompanied by two black lines - one indicating the followed surface calculated by the robot, and another indicating the stand-off distance to that obstacle surface.
   
   
   
-PROGRAMMING THE ROBOT:
-======================
+5. PROGRAMMING THE ROBOT
+========================
 
 
 ********************************************************
-ATTENTION! This section contains programming talk!
+WARNING! This section contains programming talk!
 
 This section serves only as a quick and dirty description of the control architecture as provided with this distribution of Sobot Rimulator. As the primary purpose of Sobot Rimulator is to allow you to play with your own designs, please do not feel any obligation to stick to or maintain the design described here. There are certainly ways it can be improved.
 ********************************************************
 
 
-Each robot is controlled by a Supervisor object. Instead of talking directly to the Robot object, a Supervisor is given a RobotSupervisorInterface that defines the entirety of available commands the Supervisor can send the Robot. The RobotSupervisorInterface can therefore be thought of as an API to the robot, providing these instructions:
+Each robot is controlled by a Supervisor object. Instead of talking directly to the Robot object, a Supervisor is given a RobotSupervisorInterface (robot_supervisor_interface.py) that defines the entirety of available commands the Supervisor can send the Robot. The RobotSupervisorInterface can therefore be thought of as an API to the robot, providing these instructions:
   - read_proximity_sensors
   - read_wheel_encoders
   - set_wheel_drive_rates
@@ -149,7 +174,7 @@ The Supervisor is the brains of the robot. It contains a RobotSupervisorInterfac
 SupervisorStateMachine (supervisor_state_machine.py)
 ----------------------------------------------------
 
-The SupervisorStateMachine controls the robot's control state. The version distributed with Sobot Rimulator supports the following control states, defined in control_state.py:
+The SupervisorStateMachine manages the robot's control state. The version distributed with Sobot Rimulator supports the following control states (defined in control_state.py):
   - ControlState.AT_GOAL
   - ControlState.GO_TO_GOAL
   - ControlState.AVOID_OBSTACLES
@@ -157,20 +182,20 @@ The SupervisorStateMachine controls the robot's control state. The version distr
   - ControlState.SLIDE_LEFT
   - ControlState.SLIDE_RIGHT
 
-Once per control loop iteration, the SupervisorStateMachine updates itself. It first checks if certain conditions are met (e.g, sensors indicate that an obstacle is very close). Depending on the set of conditions that are met, the state machine may then transition the control state to a new state. A state transition will include changing the active controller used by the Supervisor.
+Once per control loop iteration, the SupervisorStateMachine updates itself. It first checks if certain conditions are met (e.g, sensors indicate that an obstacle is very close). Depending on the set of conditions that are met, the state machine may then transition the control state to a new state. A state transition will usually include changing the active controller used by the Supervisor.
 
 
 Controllers
 -----------
 
-Sobot Rimulator is distributed with five controllers built into the Supervisor (although additional controllers can be added fairly easily). These are:
+This distribution of Sobot Rimulator comes with five controllers built into the Supervisor (although additional controllers can be added fairly easily). These are:
   - GoToAngleController       (go_to_angle_controller.py)
   - GoToGoalController        (go_to_goal_controller.py)
   - AvoidObstaclesController  (avoid_obstacles_controller.py)
   - GTGAndAOController        (gtg_and_ao_controller.py)
   - FollowWallController      (follow_wall_controller.py)
   
-Before the SupervisorStateMachine updates, each controller generates a heading vector. Each heading will likely be different, representing the direction the robot should go to perform the behavior that particular controller is designed to effect. These headings are then compared to each other by the SupervisorStateMachine as part of its test for control conditions.
+Before the SupervisorStateMachine updates, each controller generates a heading vector. Each heading will likely be different, representing the direction the robot should go to perform the behavior that particular controller is designed to effect. These headings are then compared to each other by the SupervisorStateMachine as part of its test for state transitions.
 
 After the SupervisorStateMachine has updated the control state, the controller that it chose to activate is executed. The active controller generates movement parameters intended to effectively move the robot towards that controller's heading vector. These parameters are given using the "unicycle model" of movement (i.e. a translational velocity parameter (v) and an angular velocity parameter (omega)). The controller updates the Supervisor with these new parameters.
 
