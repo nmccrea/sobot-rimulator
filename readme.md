@@ -15,7 +15,7 @@ Alternatively, both pieces of software should be available through package manag
 ### To Run
 Open a command prompt (terminal) and navigate to the *Sobot Rimulator* directory. Then type:
 
-    python simulator.py
+    python rimulator.py
 
 
 ### For More Information

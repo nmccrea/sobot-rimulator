@@ -43,7 +43,7 @@ RUNNING THE SIMULATOR:
 
 To run the simulator, open a command prompt (terminal) and navigate to the folder containing the simulator files. Then type:
 
-$ python simulator.py
+  python rimulator.py
 
 
 
