@@ -1,4 +1,4 @@
-# Sobot Rimulator - A robot programming tool
+# Sobot Rimulator - A Robot Programming Tool
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
 # 
 # This program is free software: you can redistribute it and/or modify
