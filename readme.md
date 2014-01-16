@@ -1,8 +1,7 @@
 ## Sobot Rimulator - A Robot Programming Tool
 
 ### Requirements
-
-Sobot Rimulator is cross-platform compatible. In order to run, the following two items must be installed on your computer:
+*Sobot Rimulator* is cross-platform compatible. In order to run, the following two items must be installed on your computer:
 - Python 2.6.1 or higher
 - PyGTK 2.7 or higher
 
@@ -14,11 +13,10 @@ Alternatively, both pieces of software should be available through package manag
 
 
 ### To Run
-
-Open a command prompt (terminal) and navigate to the Sobot Rimulator directory. Then type:
+Open a command prompt (terminal) and navigate to the *Sobot Rimulator* directory. Then type:
 
     python simulator.py
 
-  
-  
-*See the included Manual for more information.*
+
+### For More Information
+See the included Manual.
