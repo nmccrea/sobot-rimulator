@@ -8,7 +8,7 @@ Thank you for downloading Sobot Rimulator! It is my sincere hope that this progr
 
 This software and all accompanying materials are Copyright 2013-2014 Nicholas Sloan Dowson McCrea. It is being released under the GNU General Public License, Version 3. Please see the accompanying LICENSE file for more information.
 
-For questions or comments, email me at nmgeneric@gmail.com.
+For questions or comments, email me at mccrea.engineering@gmail.com.
 
 
 
