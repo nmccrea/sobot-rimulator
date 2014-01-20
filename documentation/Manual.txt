@@ -194,7 +194,7 @@ This distribution of Sobot Rimulator comes with five controllers built into the 
   - AvoidObstaclesController  (avoid_obstacles_controller.py)
   - GTGAndAOController        (gtg_and_ao_controller.py)
   - FollowWallController      (follow_wall_controller.py)
-  
+
 Before the SupervisorStateMachine updates, each controller generates a heading vector. Each heading will likely be different, representing the direction the robot should go to perform the behavior that particular controller is designed to effect. These headings are then compared to each other by the SupervisorStateMachine as part of its test for state transitions.
 
 After the SupervisorStateMachine has updated the control state, the controller that it chose to activate is executed. The active controller generates movement parameters intended to effectively move the robot towards that controller's heading vector. These parameters are given using the "unicycle model" of movement (i.e. a translational velocity parameter (v) and an angular velocity parameter (omega)). The controller updates the Supervisor with these new parameters.
