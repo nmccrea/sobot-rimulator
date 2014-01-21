@@ -1,6 +1,6 @@
 ## Sobot Rimulator - A Robot Programming Tool
 
-![Screenshot](documentation/screenshot)
+![Screenshot](documentation/screenshot.png)
 
 ### Requirements
 *Sobot Rimulator* is cross-platform compatible. In order to run, the following two items must be installed on your computer:
