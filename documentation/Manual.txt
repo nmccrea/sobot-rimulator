@@ -145,9 +145,9 @@ Causes extra information to be drawn to the simulation view that would not be vi
 
 
 ********************************************************
-WARNING! This section contains programming talk!
+This section is for programmers. Everything in this section refers to Python code. The .py files associated with each Python class mentioned are given.
 
-This section serves only as a quick and dirty description of the control architecture as provided with this distribution of Sobot Rimulator. As the primary purpose of Sobot Rimulator is to allow you to play with your own designs, please do not feel any obligation to stick to or maintain the design described here. There are certainly ways it can be improved.
+This section serves only as a quick and dirty description of the programmed control architecture as provided with this distribution of Sobot Rimulator. As the primary purpose of Sobot Rimulator is to allow you to play with your own designs, please do not feel any obligation to stick to or maintain the design described here. There are certainly ways it can be improved.
 ********************************************************
 
 
