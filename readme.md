@@ -2,6 +2,10 @@
 
 ![Screenshot](documentation/screenshot.png)
 
+This sample is published as part of the corresponding blog article at https://www.toptal.com/robotics/programming-a-robot-an-introductory-tutorial
+
+Visit https://www.toptal.com/blog and subscribe to our newsletter to read great posts!
+
 ### Requirements
 *Sobot Rimulator* is cross-platform compatible. In order to run, the following two items must be installed on your computer:
 - Python 2.6.1 or higher
