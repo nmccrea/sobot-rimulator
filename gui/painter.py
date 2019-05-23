@@ -25,16 +25,13 @@ from math import *
 
 class Painter:
   
-  def __init__( self, drawing_area, pixels_per_meter ):
-    self.drawing_area = drawing_area
+  def __init__( self, pixels_per_meter ):
     self.pixels_per_meter = pixels_per_meter
     
     
-  def draw_frame( self, frame ):
-    context = self.drawing_area.window.cairo_create()
-    
-    width_pixels = self.drawing_area.allocation.width
-    height_pixels = self.drawing_area.allocation.height
+  def draw_frame( self, frame, widget, context):
+    width_pixels = widget.get_allocated_width()
+    height_pixels = widget.get_allocated_height()
     
     # transform the the view to metric coordinates
     context.translate( width_pixels/2.0, height_pixels/2.0 )        # move origin to center of window
