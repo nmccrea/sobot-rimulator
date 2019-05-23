@@ -21,7 +21,7 @@
 
 
 import time
-from physics import *
+from models.physics import *
 
 class World:
 

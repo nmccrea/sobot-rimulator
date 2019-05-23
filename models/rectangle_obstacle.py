@@ -21,8 +21,8 @@
 
 
 from math import *
-from polygon import *
-from pose import *
+from models.polygon import *
+from models.pose import *
 
 class RectangleObstacle:
 
