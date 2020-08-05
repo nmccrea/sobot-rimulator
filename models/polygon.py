@@ -1,19 +1,19 @@
 # Sobot Rimulator - A Robot Programming Tool
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
 
@@ -37,7 +37,7 @@ class Polygon( Geometry ):
   def get_transformation_to_pose( self, pose ):
     p_pos, p_theta = pose.vunpack()
     return Polygon( linalg.rotate_and_translate_vectors( self.vertexes, p_theta, p_pos ) )
-  
+
   # get a list of of this polygon's edges as vertex pairs
   def edges( self ):
     vertexes = self.vertexes

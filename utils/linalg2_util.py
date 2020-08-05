@@ -1,19 +1,19 @@
 # Sobot Rimulator - A Robot Programming Tool
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
 
@@ -80,7 +80,7 @@ def distance( a, b ):
 def rotate_vector( a, theta ):
   sin_theta = sin( theta )
   cos_theta = cos( theta )
-  
+
   a0 = a[0]*cos_theta - a[1]*sin_theta
   a1 = a[0]*sin_theta + a[1]*cos_theta
 
@@ -90,7 +90,7 @@ def rotate_vector( a, theta ):
 def rotate_vectors( vects, theta ):
   sin_theta = sin( theta )
   cos_theta = cos( theta )
-  
+
   rotvects = []
   for a in vects:
     a0 = a[0]*cos_theta - a[1]*sin_theta

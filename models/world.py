@@ -1,19 +1,19 @@
 # Sobot Rimulator - A Robot Programming Tool
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
 
@@ -32,7 +32,7 @@ class World:
     # initialize world time
     self.world_time = 0.0 # seconds
     self.dt = dt          # seconds
-    
+
     # initialize lists of world objects
     self.supervisors = []
     self.robots = []
@@ -41,7 +41,7 @@ class World:
   # step the simulation through one time interval
   def step( self ):
     dt = self.dt
-    
+
     # step all the robots
     for robot in self.robots:
       # step robot motion

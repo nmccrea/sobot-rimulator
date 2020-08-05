@@ -1,19 +1,19 @@
 # Sobot Rimulator - A Robot Programming Tool
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
 
@@ -52,10 +52,10 @@ class SupervisorView:
   def draw_supervisor_to_frame( self ):
     # update the estimated robot traverse path
     self.robot_estimated_traverse_path.append( self.supervisor.estimated_pose.vposition() )
-    
+
     # draw the goal to frame
     self._draw_goal_to_frame()
-    
+
     # draw the supervisor-generated data to frame if indicated
     if self.viewer.draw_invisibles:
       self._draw_robot_state_estimate_to_frame()
@@ -89,7 +89,7 @@ class SupervisorView:
                                           linewidth = 0.005,
                                           color = "red",
                                           alpha = 0.5 )
-  
+
   # draw the current controller's state to the frame
   def _draw_current_controller_to_frame( self ):
     current_state = self.supervisor_state_machine.current_state

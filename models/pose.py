@@ -1,19 +1,19 @@
 # Sobot Rimulator - A Robot Programming Tool
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
 
@@ -51,11 +51,11 @@ class Pose:
 
     # construct the elements of the transformed pose
     result_vect_d = linalg.rotate_vector( rel_vect, ref_theta )
-    result_vect = linalg.add( ref_vect, result_vect_d ) 
+    result_vect = linalg.add( ref_vect, result_vect_d )
     result_theta = ref_theta + rel_theta
 
     return Pose( result_vect, result_theta )
-   
+
   # get a new pose given by inverting this pose, e.g. return the pose of the "world" relative to this pose
   def inverse( self ):
     result_theta = -self.theta

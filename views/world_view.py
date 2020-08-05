@@ -1,19 +1,19 @@
 # Sobot Rimulator - A Robot Programming Tool
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
 
@@ -31,7 +31,7 @@ class WorldView:
   def __init__( self, world, viewer ):
     # bind the viewer
     self.viewer = viewer
-    
+
     # initialize views for world objects
     self.robot_views = []
     for robot in world.robots: self.add_robot( robot )
@@ -50,7 +50,7 @@ class WorldView:
   def draw_world_to_frame( self ):
     # draw the grid
     self._draw_grid_to_frame()
-    
+
     # draw all the robots
     for robot_view in self.robot_views:
       robot_view.draw_robot_to_frame()
@@ -65,14 +65,14 @@ class WorldView:
 
     # calculate minor gridline interval
     minor_gridline_interval = MAJOR_GRIDLINE_INTERVAL / MAJOR_GRIDLINE_SUBDIVISIONS
-    
+
     # determine world space to draw grid upon
     meters_per_pixel = 1.0 / self.viewer.pixels_per_meter
     width = meters_per_pixel * self.viewer.view_width_pixels
     height = meters_per_pixel * self.viewer.view_height_pixels
     x_halfwidth = width * 0.5
     y_halfwidth = height * 0.5
-    
+
     x_max = int( x_halfwidth / minor_gridline_interval )
     y_max = int( y_halfwidth / minor_gridline_interval )
 
