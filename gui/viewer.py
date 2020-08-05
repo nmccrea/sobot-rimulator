@@ -29,8 +29,8 @@ from gi.repository import GdkPixbuf
 from gui.frame import Frame
 from gui.painter import Painter
 
-DEFAULT_VIEW_PIX_W = 800    # pixels
-DEFAULT_VIEW_PIX_H = 800    # pixels
+DEFAULT_VIEW_PIX_W = 600    # pixels
+DEFAULT_VIEW_PIX_H = 600    # pixels
 DEFAULT_ZOOM = 100          # pixels per meter
 
 # user response codes for file chooser dialog buttons
