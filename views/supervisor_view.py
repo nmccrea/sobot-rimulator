@@ -57,7 +57,7 @@ class SupervisorView:
     self._draw_goal_to_frame()
 
     # draw the supervisor-generated data to frame if indicated
-    if self.viewer.draw_invisibles:
+    if self.viewer.show_invisibles:
       self._draw_robot_state_estimate_to_frame()
       self._draw_current_controller_to_frame()
 

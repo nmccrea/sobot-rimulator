@@ -29,11 +29,11 @@ class Painter:
     self.pixels_per_meter = pixels_per_meter
 
 
-  def draw_frame( self, frame, widget, context):
+  def draw_frame( self, frame, widget, context ):
     width_pixels = widget.get_allocated_width()
     height_pixels = widget.get_allocated_height()
 
-    # transform the the view to metric coordinates
+    # transform the view to metric coordinates
     context.translate( width_pixels/2.0, height_pixels/2.0 )        # move origin to center of window
     context.scale( self.pixels_per_meter, -self.pixels_per_meter )  # pull view to edges of window ( also flips y-axis )
 
