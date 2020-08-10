@@ -20,13 +20,14 @@
 
 
 
-import pygtk
-pygtk.require('2.0')
-import gtk
-import gobject
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk as gtk
+from gi.repository import GObject
+from gi.repository import GdkPixbuf
 
-from frame import *
-from painter import *
+from gui.frame import Frame
+from gui.painter import Painter
 
 DEFAULT_VIEW_PIX_W = 800    # pixels
 DEFAULT_VIEW_PIX_H = 800    # pixels
@@ -51,7 +52,7 @@ class Viewer:
     self.pixels_per_meter = DEFAULT_ZOOM
     
     # initialize the window
-    self.window = gtk.Window( gtk.WINDOW_TOPLEVEL )
+    self.window = gtk.Window()
     self.window.set_title( 'Sobot Rimulator' )
     self.window.set_resizable( False )
     self.window.connect( 'delete_event', self.on_delete )
@@ -59,99 +60,99 @@ class Viewer:
     # initialize the drawing_area
     self.drawing_area = gtk.DrawingArea()
     self.drawing_area.set_size_request( self.view_width_pixels, self.view_height_pixels )
-    self.drawing_area.connect( 'expose_event', self.on_expose )
+    self.drawing_area.connect( 'draw', self.on_expose )
     
     # initialize the painter
-    self.painter = Painter( self.drawing_area, self.pixels_per_meter )
+    self.painter = Painter( self.pixels_per_meter )
     
     # == initialize the buttons
     
     # build the play button
     self.button_play = gtk.Button( 'Play' )
     play_image = gtk.Image()
-    play_image.set_from_stock( gtk.STOCK_MEDIA_PLAY, gtk.ICON_SIZE_BUTTON )
+    play_image.set_from_stock( gtk.STOCK_MEDIA_PLAY, gtk.IconSize.BUTTON )
     self.button_play.set_image( play_image )
-    self.button_play.set_image_position( gtk.POS_LEFT )
+    self.button_play.set_image_position( gtk.PositionType.LEFT )
     self.button_play.connect( 'clicked', self.on_play )
     
     # build the stop button
     self.button_stop = gtk.Button( 'Stop' )
     stop_image = gtk.Image()
-    stop_image.set_from_stock( gtk.STOCK_MEDIA_STOP, gtk.ICON_SIZE_BUTTON )
+    stop_image.set_from_stock( gtk.STOCK_MEDIA_STOP, gtk.IconSize.BUTTON )
     self.button_stop.set_image( stop_image )
-    self.button_stop.set_image_position( gtk.POS_LEFT )
+    self.button_stop.set_image_position( gtk.PositionType.LEFT )
     self.button_stop.connect( 'clicked', self.on_stop )
     
     # build the step button
     self.button_step = gtk.Button( 'Step' )
     step_image = gtk.Image()
-    step_image.set_from_stock( gtk.STOCK_MEDIA_NEXT, gtk.ICON_SIZE_BUTTON )
+    step_image.set_from_stock( gtk.STOCK_MEDIA_NEXT, gtk.IconSize.BUTTON )
     self.button_step.set_image( step_image )
-    self.button_step.set_image_position( gtk.POS_LEFT )
+    self.button_step.set_image_position( gtk.PositionType.LEFT )
     self.button_step.connect( 'clicked', self.on_step )
     
     # build the reset button
     self.button_reset = gtk.Button( 'Reset' )
     reset_image = gtk.Image()
-    reset_image.set_from_stock( gtk.STOCK_MEDIA_REWIND, gtk.ICON_SIZE_BUTTON )
+    reset_image.set_from_stock( gtk.STOCK_MEDIA_REWIND, gtk.IconSize.BUTTON )
     self.button_reset.set_image( reset_image )
-    self.button_reset.set_image_position( gtk.POS_LEFT )
+    self.button_reset.set_image_position( gtk.PositionType.LEFT )
     self.button_reset.connect( 'clicked', self.on_reset )
     
     # build the save map button
     self.button_save_map = gtk.Button( 'Save Map' )
     save_map_image = gtk.Image()
-    save_map_image.set_from_stock( gtk.STOCK_SAVE, gtk.ICON_SIZE_BUTTON )
+    save_map_image.set_from_stock( gtk.STOCK_SAVE, gtk.IconSize.BUTTON )
     self.button_save_map.set_image( save_map_image )
-    self.button_save_map.set_image_position( gtk.POS_LEFT )
+    self.button_save_map.set_image_position( gtk.PositionType.LEFT )
     self.button_save_map.connect( 'clicked', self.on_save_map )
     
     # build the load map button
     self.button_load_map = gtk.Button( 'Load Map' )
     load_map_image = gtk.Image()
-    load_map_image.set_from_stock( gtk.STOCK_OPEN, gtk.ICON_SIZE_BUTTON )
+    load_map_image.set_from_stock( gtk.STOCK_OPEN, gtk.IconSize.BUTTON )
     self.button_load_map.set_image( load_map_image )
-    self.button_load_map.set_image_position( gtk.POS_LEFT )
+    self.button_load_map.set_image_position( gtk.PositionType.LEFT )
     self.button_load_map.connect( 'clicked', self.on_load_map )
     
     # build the random map buttons
     self.button_random_map = gtk.Button( 'Random Map' )
     random_map_image = gtk.Image()
-    random_map_image.set_from_stock( gtk.STOCK_REFRESH, gtk.ICON_SIZE_BUTTON )
+    random_map_image.set_from_stock( gtk.STOCK_REFRESH, gtk.IconSize.BUTTON )
     self.button_random_map.set_image( random_map_image )
-    self.button_random_map.set_image_position( gtk.POS_LEFT )
+    self.button_random_map.set_image_position( gtk.PositionType.LEFT )
     self.button_random_map.connect( 'clicked', self.on_random_map )
     
     # build the draw-invisibles toggle button
     self.draw_invisibles = False                  # controls whether invisible world elements are displayed
     self.button_draw_invisibles = gtk.Button()
     self._decorate_draw_invisibles_button_inactive()
-    self.button_draw_invisibles.set_image_position( gtk.POS_LEFT )
+    self.button_draw_invisibles.set_image_position( gtk.PositionType.LEFT )
     self.button_draw_invisibles.connect( 'clicked', self.on_draw_invisibles )
     
     # == lay out the window
     
     # pack the simulation control buttons
     sim_controls_box = gtk.HBox( spacing = 5 )
-    sim_controls_box.pack_start( self.button_play, False, False )
-    sim_controls_box.pack_start( self.button_stop, False, False )
-    sim_controls_box.pack_start( self.button_step, False, False )
-    sim_controls_box.pack_start( self.button_reset, False, False )
+    sim_controls_box.pack_start( self.button_play, False, False, 0 )
+    sim_controls_box.pack_start( self.button_stop, False, False, 0 )
+    sim_controls_box.pack_start( self.button_step, False, False, 0 )
+    sim_controls_box.pack_start( self.button_reset, False, False, 0 )
     
     # pack the map control buttons
     map_controls_box = gtk.HBox( spacing = 5 )
-    map_controls_box.pack_start( self.button_save_map, False, False )
-    map_controls_box.pack_start( self.button_load_map, False, False )
-    map_controls_box.pack_start( self.button_random_map, False, False )
+    map_controls_box.pack_start( self.button_save_map, False, False, 0 )
+    map_controls_box.pack_start( self.button_load_map, False, False, 0 )
+    map_controls_box.pack_start( self.button_random_map, False, False, 0 )
     
     # pack the invisibles button
     invisibles_button_box = gtk.HBox()
-    invisibles_button_box.pack_start( self.button_draw_invisibles, False, False )
+    invisibles_button_box.pack_start( self.button_draw_invisibles, False, False, 0 )
     
     # align the controls
-    sim_controls_alignment = gtk.Alignment( 0.5, 0.0, 0.0, 1.0 )
-    map_controls_alignment = gtk.Alignment( 0.5, 0.0, 0.0, 1.0 )
-    invisibles_button_alignment = gtk.Alignment( 0.5, 0.0, 0.0, 1.0 )
+    sim_controls_alignment = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0, yscale=0)
+    map_controls_alignment = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0, yscale=0)
+    invisibles_button_alignment = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0, yscale=0)
     sim_controls_alignment.add( sim_controls_box )
     map_controls_alignment.add( map_controls_box )
     invisibles_button_alignment.add( invisibles_button_box )
@@ -161,7 +162,7 @@ class Viewer:
     
     # lay out the simulation view and all of the controls
     layout_box = gtk.VBox()
-    layout_box.pack_start( self.drawing_area )
+    layout_box.pack_start( self.drawing_area, False, False, 0 )
     layout_box.pack_start( self.alert_box, False, False, 5 )
     layout_box.pack_start( sim_controls_alignment, False, False, 5 )
     layout_box.pack_start( map_controls_alignment, False, False, 5 )
@@ -230,7 +231,7 @@ class Viewer:
     # create the file chooser
     file_chooser = gtk.FileChooserDialog( title = 'Save Map',
                                           parent = self.window,
-                                          action = gtk.FILE_CHOOSER_ACTION_SAVE,
+                                          action = gtk.FileChooserAction.SAVE,
                                           buttons = ( gtk.STOCK_CANCEL, LS_DIALOG_RESPONSE_CANCEL,
                                                       gtk.STOCK_SAVE, LS_DIALOG_RESPONSE_ACCEPT ) )
     file_chooser.set_do_overwrite_confirmation( True )
@@ -251,7 +252,7 @@ class Viewer:
     # create the file chooser
     file_chooser = gtk.FileChooserDialog( title = 'Load Map',
                                           parent = self.window,
-                                          action = gtk.FILE_CHOOSER_ACTION_OPEN,
+                                          action = gtk.FileChooserAction.OPEN,
                                           buttons = ( gtk.STOCK_CANCEL, LS_DIALOG_RESPONSE_CANCEL,
                                                       gtk.STOCK_OPEN, LS_DIALOG_RESPONSE_ACCEPT ) )
     file_chooser.set_current_folder( 'maps' )
@@ -281,8 +282,8 @@ class Viewer:
     self.simulator.draw_world()
     
     
-  def on_expose( self, widget, event ):
-    self.painter.draw_frame( self.current_frame )
+  def on_expose( self, widget, context):
+    self.painter.draw_frame( self.current_frame, widget, context )
     
     
   def on_delete( self, widget, event ):
@@ -292,13 +293,13 @@ class Viewer:
     
   def _decorate_draw_invisibles_button_active( self ):
     draw_invisibles_image = gtk.Image()
-    draw_invisibles_image.set_from_stock( gtk.STOCK_REMOVE, gtk.ICON_SIZE_BUTTON )
+    draw_invisibles_image.set_from_stock( gtk.STOCK_REMOVE, gtk.IconSize.BUTTON )
     self.button_draw_invisibles.set_image( draw_invisibles_image )
     self.button_draw_invisibles.set_label( 'Hide Invisibles' )
     
     
   def _decorate_draw_invisibles_button_inactive( self ):
     draw_invisibles_image = gtk.Image()
-    draw_invisibles_image.set_from_stock( gtk.STOCK_ADD, gtk.ICON_SIZE_BUTTON )
+    draw_invisibles_image.set_from_stock( gtk.STOCK_ADD, gtk.IconSize.BUTTON )
     self.button_draw_invisibles.set_image( draw_invisibles_image )
     self.button_draw_invisibles.set_label( 'Show Invisibles' )

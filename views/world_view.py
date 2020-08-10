@@ -20,8 +20,8 @@
 
 
 
-from obstacle_view import *
-from robot_view import *
+from views.obstacle_view import *
+from views.robot_view import *
 
 MAJOR_GRIDLINE_INTERVAL = 1.0 # meters
 MAJOR_GRIDLINE_SUBDIVISIONS = 5  # minor gridlines for every major gridline

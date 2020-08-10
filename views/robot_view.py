@@ -21,8 +21,8 @@
 
 
 import utils.linalg2_util as linalg
-from proximity_sensor_view import *
-from supervisor_view import *
+from views.proximity_sensor_view import *
+from views.supervisor_view import *
 
 # Khepera III Dimensions
 K3_TOP_PLATE = [[ -0.031,  0.043 ],

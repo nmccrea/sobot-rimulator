@@ -111,21 +111,19 @@ class AvoidObstaclesController:
     return ao_heading_vector, obstacle_vectors
 
   def _print_vars( self, eP, eI, eD, v, omega ):
-    print "\n\n"
-    print "=============="
-    print "ERRORS:"
-    print "eP: " + str( eP )
-    print "eI: " + str( eI )
-    print "eD: " + str( eD )
-    print ""
-    print "CONTROL COMPONENTS:"
-    print "kP * eP = " + str( self.kP ) + " * " + str( eP )
-    print "= " + str( self.kP * eP )
-    print "kI * eI = " + str( self.kI ) + " * " + str( eI )
-    print "= " + str( self.kI * eI )
-    print "kD * eD = " + str( self.kD ) + " * " + str( eD )
-    print "= " + str( self.kD * eD )
-    print ""
-    print "OUTPUTS:"
-    print "omega: " + str( omega )
-    print "v    : " + str( v )
+    print("\n\n")
+    print("==============")
+    print("ERRORS:")
+    print("eP: " + str( eP ))
+    print("eI: " + str( eI ))
+    print("eD: " + str( eD ) + "\n")
+    print("CONTROL COMPONENTS:")
+    print("kP * eP = " + str( self.kP ) + " * " + str( eP ))
+    print("= " + str( self.kP * eP ))
+    print("kI * eI = " + str( self.kI ) + " * " + str( eI ))
+    print("= " + str( self.kI * eI ))
+    print("kD * eD = " + str( self.kD ) + " * " + str( eD ))
+    print("= " + str( self.kD * eD ) + "\n")
+    print("OUTPUTS:")
+    print("omega: " + str( omega ))
+    print("v    : " + str( v ))

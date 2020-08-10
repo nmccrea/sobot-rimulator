@@ -21,7 +21,7 @@
 
 
 from utils import linalg2_util as linalg
-from geometry import *
+from models.geometry import *
 
 class LineSegment( Geometry ):
 

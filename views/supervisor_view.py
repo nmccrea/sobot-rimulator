@@ -21,10 +21,10 @@
 
 
 import utils.linalg2_util as linalg
-from controllers.avoid_obstacles_controller_view import *
-from controllers.follow_wall_controller_view import *
-from controllers.go_to_goal_controller_view import *
-from controllers.gtg_and_ao_controller_view import *
+from views.controllers.avoid_obstacles_controller_view import *
+from views.controllers.follow_wall_controller_view import *
+from views.controllers.go_to_goal_controller_view import *
+from views.controllers.gtg_and_ao_controller_view import *
 from models.control_state import *
 
 class SupervisorView:
