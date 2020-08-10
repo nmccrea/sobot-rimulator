@@ -1,30 +1,31 @@
-## Sobot Rimulator - A Robot Programming Tool
+# Sobot Rimulator
+
+A robot programming tool inspired by [Sim.I.Am](http://jpdelacroix.com/software/simiam.html) by [JP de la Croix](http://jpdelacroix.com/)
 
 ![Screenshot](documentation/screenshot.png)
 
-
-### Documentation
+## Documentation
 
 Detailed documentation can be found in the [Manual](documentation/Manual.txt).
 
 I also wrote about this project for the Toptal Engineering Blog! Read more about the underlying principles of autonomous mobile robotics [here](https://www.toptal.com/robotics/programming-a-robot-an-introductory-tutorial).
 
 
-### Requirements
+## Requirements
 
-*Sobot Rimulator* is cross-platform compatible. In order to run, the following two items must be installed on your computer:
-- Python 2.6.1 or higher
-- PyGTK 2.7 or higher
+Sobot Rimulator requires Python 3. Its main dependencies are Gtk 3 and PyGObject, which are used for the UI.
 
-To install Python: The latest Python interpreter can be found at http://www.python.org/download/.
+If you are using Conda, you can install these from Conda Forge:
 
-To install PyGTK: The latest PyGTK distributions can found at http://www.pygtk.org/downloads.html.
+```
+conda create -n sobot-rimulator -c conda-forge python=3 gtk3 pygobject
+conda activate sobot-rimulator
+```
 
-Alternatively, both pieces of software should be available through package managers such as Apt-Get (for Linux/Unix) or Homebrew (Recommended for Mac)
+## To Run
 
+From the command line, navigate to the project's root directory. Then type:
 
-### To Run
-
-Open a command prompt (terminal) and navigate to the *Sobot Rimulator* directory. Then type:
-
-    python simulator.py
+```
+python simulator.py
+```
