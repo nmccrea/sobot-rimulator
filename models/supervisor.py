@@ -1,19 +1,19 @@
 # Sobot Rimulator - A Robot Programming Tool
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
 
@@ -48,7 +48,7 @@ class Supervisor:
                       sensor_range,                               # max detection range of the sensors
                       goal = [ 0.0, 0.0 ],                        # the goal to which this supervisor will guide the robot
                       initial_pose_args = [ 0.0, 0.0, 0.0 ] ):    # the pose the robot will have when control begins
-    
+
     # internal clock time in seconds
     self.time = 0.0
 
@@ -93,7 +93,7 @@ class Supervisor:
     # CONTROL OUTPUTS - UNICYCLE
     self.v_output = 0.0
     self.omega_output = 0.0
-  
+
   # simulate this supervisor running for one time increment
   def step( self, dt ):
     # increment the internal clock time
@@ -116,13 +116,13 @@ class Supervisor:
     # update estimated robot state from sensor readings
     self._update_proximity_sensor_distances()
     self._update_odometry()
-    
+
     # calculate new heading vectors for each controller
     self._update_controller_headings()
 
     # update the control state
     self.state_machine.update_state()
-  
+
   # calculate updated heading vectors for the active controllers
   def _update_controller_headings( self ):
     self.go_to_goal_controller.update_heading()
@@ -146,7 +146,7 @@ class Supervisor:
     # get the difference in ticks since the last iteration
     d_ticks_left = ticks_left - self.prev_ticks_left
     d_ticks_right = ticks_right - self.prev_ticks_right
-    
+
     # estimate the wheel movements
     d_left_wheel = 2*pi*R*( d_ticks_left / N )
     d_right_wheel = 2*pi*R*( d_ticks_right / N )
@@ -178,23 +178,23 @@ class Supervisor:
   def _uni_to_diff( self, v, omega ):
     # v = translational velocity (m/s)
     # omega = angular velocity (rad/s)
-    
+
     R = self.robot_wheel_radius
     L = self.robot_wheel_base_length
-    
+
     v_l = ( (2.0 * v) - (omega*L) ) / (2.0 * R)
     v_r = ( (2.0 * v) + (omega*L) ) / (2.0 * R)
-    
+
     return v_l, v_r
-    
+
   def _diff_to_uni( self, v_l, v_r ):
     # v_l = left-wheel angular velocity (rad/s)
     # v_r = right-wheel angular velocity (rad/s)
-    
+
     R = self.robot_wheel_radius
     L = self.robot_wheel_base_length
-    
+
     v = ( R / 2.0 ) * ( v_r + v_l )
     omega = ( R / L ) * ( v_r - v_l )
-    
+
     return v, omega

@@ -1,19 +1,19 @@
 # Sobot Rimulator - A Robot Programming Tool
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
 
@@ -42,7 +42,7 @@ class AvoidObstaclesController:
     self.kP = 10.0
     self.kI = 0.0
     self.kD = 0.0
-    
+
     # stored values - for computing next results
     self.prev_time = 0.0
     self.prev_eP = 0.0
@@ -69,7 +69,7 @@ class AvoidObstaclesController:
 
     # calculate angular velocity
     omega = self.kP * eP + self.kI * eI + self.kD * eD
-    
+
     # calculate translational velocity
     # velocity is v_max when omega is 0,
     # drops rapidly to zero as |omega| rises
@@ -90,7 +90,7 @@ class AvoidObstaclesController:
   def calculate_ao_heading_vector( self ):
     # initialize vector
     obstacle_vectors = [ [ 0.0, 0.0 ] ] * len( self.proximity_sensor_placements )
-    ao_heading_vector = [ 0.0, 0.0 ]             
+    ao_heading_vector = [ 0.0, 0.0 ]
 
     # get the distances indicated by the robot's sensor readings
     sensor_distances = self.supervisor.proximity_sensor_distances()
@@ -103,7 +103,7 @@ class AvoidObstaclesController:
       vector = [ sensor_distances[i], 0.0 ]
       vector = linalg.rotate_and_translate_vector( vector, sensor_theta, sensor_pos )
       obstacle_vectors[i] = vector   # store the obstacle vectors in the robot's reference frame
-       
+
       # accumluate the heading vector within the robot's reference frame
       ao_heading_vector = linalg.add( ao_heading_vector,
                                    linalg.scale( vector, self.sensor_gains[i] ) )

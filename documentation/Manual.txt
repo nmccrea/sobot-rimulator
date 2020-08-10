@@ -133,13 +133,13 @@ Causes extra information to be drawn to the simulation view that would not be vi
     -  A green heading bar indicates that the robot is currently in Go to Goal mode.
 
     -  A red heading bar indicates that the robot is currently in Avoid Obstacles mode. This will be accompanied by a black outline indicating the robot's detected surroundings.
-    
+
     -  A blue heading bar indicates that the robot is currently in blended Go to Goal and Avoid Obstacles mode. This will be accompanied by two lesser heading bars each corresponding to the pure heading of Go to Goal mode and Avoid Obstacles mode, as well as the black outline displayed by the Avoid Obstacles mode.
-    
+
     -  An orange heading bar indicates that the robot is currently in Follow Wall mode. This will be accompanied by two black lines - one indicating the followed surface calculated by the robot, and another indicating the stand-off distance to that obstacle surface.
-  
-  
-  
+
+
+
 5. PROGRAMMING THE ROBOT
 ========================
 
@@ -155,7 +155,7 @@ Each robot is controlled by a Supervisor object. Instead of talking directly to 
   - read_proximity_sensors
   - read_wheel_encoders
   - set_wheel_drive_rates
-  
+
 This design separates the code for programming the robot Supervisor from the rest of the program's source code, so that programming the simulated robot is similar to programming a real Khepera III robot with the same API.
 
 
@@ -165,12 +165,12 @@ Supervisor (supervisor.py)
 The Supervisor is the brains of the robot. It contains a RobotSupervisorInterface, a SupervisorStateMachine that manages control state transitions, and several different controllers that can generate control parameters by various criteria. It also contains odometry code for maintaining an estimate of the robot's current position and heading. The Supervisor control-loop sequence is as follows:
 
   1. Update State - update sensor readings, odometry, and controller headings; update the SupervisorStateMachine based on the new readings; set new active controller based on the new control state
-  
+
   2. Execute Controller - generate new control parameters using the active controller and the current sensor readings
-  
+
   3. Send Commands - apply the new control parameters to the robot by sending the appropriate robot commands
-  
-  
+
+
 SupervisorStateMachine (supervisor_state_machine.py)
 ----------------------------------------------------
 

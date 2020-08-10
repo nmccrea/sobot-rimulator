@@ -1,19 +1,19 @@
 # Sobot Rimulator - A Robot Programming Tool
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
 
@@ -135,7 +135,7 @@ class SupervisorStateMachine:
     for d in self._forward_sensor_distances():
       if d < D_CAUTION: return False
     return True
-   
+
   def condition_progress_made( self ):
     return self._distance_to_goal() < self.best_distance_to_goal - PROGRESS_EPSILON
 
@@ -164,16 +164,16 @@ class SupervisorStateMachine:
             ( ao_cross_gtg <= 0.0 and ao_cross_fwr <= 0.0 and fwr_cross_gtg <= 0.0 ) )
 
 
-  # === helper methods === 
+  # === helper methods ===
   def _forward_sensor_distances( self ):
     return self.supervisor.proximity_sensor_distances[1:7]
 
   def _distance_to_goal( self ):
-    return linalg.distance( self.supervisor.estimated_pose.vposition(), self.supervisor.goal ) 
+    return linalg.distance( self.supervisor.estimated_pose.vposition(), self.supervisor.goal )
 
   def _update_best_distance_to_goal( self ):
     self.best_distance_to_goal = min( self.best_distance_to_goal, self._distance_to_goal() )
-    
+
 
   # === FOR DEBUGGING ===
   def _print_debug_info( self ):

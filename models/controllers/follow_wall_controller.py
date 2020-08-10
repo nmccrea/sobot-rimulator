@@ -1,19 +1,19 @@
 # Sobot Rimulator - A Robot Programming Tool
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
 
@@ -46,7 +46,7 @@ class FollowWallController:
     self.kP = 10.0
     self.kI = 0.0
     self.kD = 0.0
-    
+
     # stored values - for computing next results
     self.prev_time = 0.0
     self.prev_eP = 0.0
@@ -102,7 +102,7 @@ class FollowWallController:
 
     # calculate angular velocity
     omega = self.kP * eP + self.kI * eI + self.kD * eD
-    
+
     # calculate translational velocity
     # velocity is v_max when omega is 0,
     # drops rapidly to zero as |omega| rises
@@ -156,20 +156,20 @@ class FollowWallController:
       # get the smallest sensor distances and their corresponding indices
       d1, d2 = sensor_distances[0:2]
       i1, i2 = indices[0:2]
-      
+
       # calculate the vectors to the obstacle in the robot's reference frame
       sensor1_pos, sensor1_theta = sensor_placements[i1].vunpack()
-      sensor2_pos, sensor2_theta = sensor_placements[i2].vunpack()                
+      sensor2_pos, sensor2_theta = sensor_placements[i2].vunpack()
       p1, p2 = [ d1, 0.0 ], [ d2, 0.0 ]
       p1 = linalg.rotate_and_translate_vector( p1, sensor1_theta, sensor1_pos )
       p2 = linalg.rotate_and_translate_vector( p2, sensor2_theta, sensor2_pos )
 
       # ensure p2 is forward of p1
       if i2 < i1: p1, p2 = p2, p1
-    
+
     # compute the key vectors and auxiliary data
     l_wall_surface = [ p2, p1 ]
-    l_parallel_component = linalg.sub( p2, p1 ) 
+    l_parallel_component = linalg.sub( p2, p1 )
     l_distance_vector = linalg.sub( p1, linalg.proj( p1, l_parallel_component ) )
     unit_perp = linalg.unit( l_distance_vector )
     distance_desired = linalg.scale( unit_perp, self.follow_distance )

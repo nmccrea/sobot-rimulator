@@ -1,19 +1,19 @@
 # Sobot Rimulator - A Robot Programming Tool
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
 
@@ -34,7 +34,7 @@ class GTGAndAOControllerView:
   # draw a representation of the blended controller's internal state to the frame
   def draw_gtg_and_ao_controller_to_frame( self ):
     robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
-    
+
     # draw the detected environment boundary (i.e. sensor readings)
     obstacle_vertexes = self.gtg_and_ao_controller.obstacle_vectors[:]
     obstacle_vertexes.append( obstacle_vertexes[0] )  # close the drawn polygon

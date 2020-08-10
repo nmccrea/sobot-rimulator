@@ -1,19 +1,19 @@
 # Sobot Rimulator - A Robot Programming Tool
 # Copyright (C) 2013-2014 Nicholas S. D. McCrea
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # Email mccrea.engineering@gmail.com for questions, comments, or to report bugs.
 
 
@@ -61,8 +61,8 @@ K3_SENSOR_POSES = [[ -0.038,  0.048,  128 ], # x, y, theta_degrees
                    [ -0.038, -0.048, -128 ],
                    [ -0.048,  0.000,  180 ]]
 
-class Robot: # Khepera III robot 
-  
+class Robot: # Khepera III robot
+
   def __init__( self ):
     # geometry
     self.geometry = Polygon( K3_BOTTOM_PLATE )
@@ -79,7 +79,7 @@ class Robot: # Khepera III robot
     self.left_wheel_encoder = WheelEncoder( K3_WHEEL_TICKS_PER_REV )
     self.right_wheel_encoder = WheelEncoder( K3_WHEEL_TICKS_PER_REV )
     self.wheel_encoders = [ self.left_wheel_encoder, self.right_wheel_encoder ]
-    
+
     # IR sensors
     self.ir_sensors = []
     for _pose in K3_SENSOR_POSES:
@@ -93,7 +93,7 @@ class Robot: # Khepera III robot
     # supervisor
     self.supervisor = Supervisor( RobotSupervisorInterface( self ),
                                   K3_WHEEL_RADIUS, K3_WHEEL_BASE_LENGTH, K3_WHEEL_TICKS_PER_REV, K3_SENSOR_POSES, K3_SENSOR_MAX_RANGE )
-    
+
     ## initialize state
     # set wheel drive rates (rad/s)
     self.left_wheel_drive_rate = 0.0
@@ -110,12 +110,12 @@ class Robot: # Khepera III robot
 
     # update global geometry
     self.global_geometry = self.geometry.get_transformation_to_pose( self.pose )
-    
+
     # update all of the sensors
     for ir_sensor in self.ir_sensors:
       ir_sensor.update_position()
-  
-  # set the drive rates (angular velocities) for this robot's wheels in rad/s 
+
+  # set the drive rates (angular velocities) for this robot's wheels in rad/s
   def set_wheel_drive_rates( self, v_l, v_r ):
     # simulate physical limit on drive motors
     v_l = min( K3_MAX_WHEEL_DRIVE_RATE, v_l )
