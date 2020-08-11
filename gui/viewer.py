@@ -24,12 +24,20 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk as gtk
 
+import tkinter as tk
+
 from gui.frame import Frame
 from gui.painter import Painter
 
-DEFAULT_VIEW_PIX_W = 600    # pixels
-DEFAULT_VIEW_PIX_H = 600    # pixels
-DEFAULT_ZOOM = 100          # pixels per meter
+
+root = tk.Tk()
+SCREEN_W = root.winfo_screenwidth()
+SCREEN_H = root.winfo_screenheight()
+root.destroy()
+
+DEFAULT_VIEW_PIX_W = 0.5*SCREEN_W    # pixels
+DEFAULT_VIEW_PIX_H = 0.7*SCREEN_H    # pixels
+DEFAULT_ZOOM = 100                   # pixels per meter
 
 # user response codes for file chooser dialog buttons
 LS_DIALOG_RESPONSE_CANCEL = 1
