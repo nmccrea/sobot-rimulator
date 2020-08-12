@@ -25,7 +25,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GLib
 
 import gui.frame
 import gui.viewer
@@ -54,7 +54,7 @@ class Simulator:
     self.period = 1.0 / REFRESH_RATE  # seconds
 
     # Gtk simulation event source - for simulation control
-    self.sim_event_source = GObject.idle_add( self.initialize_sim, True ) # we use this opportunity to initialize the sim
+    self.sim_event_source = GLib.idle_add( self.initialize_sim, True ) # we use this opportunity to initialize the sim
 
     # start Gtk
     Gtk.main()
@@ -85,13 +85,13 @@ class Simulator:
 
 
   def play_sim( self ):
-    GObject.source_remove( self.sim_event_source )  # this ensures multiple calls to play_sim do not speed up the simulator
+    GLib.source_remove( self.sim_event_source )  # this ensures multiple calls to play_sim do not speed up the simulator
     self._run_sim()
     self.viewer.control_panel_state_playing()
 
 
   def pause_sim( self ):
-    GObject.source_remove( self.sim_event_source )
+    GLib.source_remove( self.sim_event_source )
     self.viewer.control_panel_state_paused()
 
 
@@ -101,7 +101,7 @@ class Simulator:
 
 
   def end_sim( self, alert_text='' ):
-    GObject.source_remove( self.sim_event_source )
+    GLib.source_remove( self.sim_event_source )
     self.viewer.control_panel_state_finished( alert_text )
 
 
@@ -131,7 +131,7 @@ class Simulator:
 
 
   def _run_sim( self ):
-    self.sim_event_source = GObject.timeout_add( int( self.period * 1000 ), self._run_sim )
+    self.sim_event_source = GLib.timeout_add( int( self.period * 1000 ), self._run_sim )
     self._step_sim()
 
 
