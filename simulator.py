@@ -24,7 +24,7 @@
 
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk as gtk
+from gi.repository import Gtk
 from gi.repository import GObject
 
 import gui.frame
@@ -53,11 +53,11 @@ class Simulator:
     # timing control
     self.period = 1.0 / REFRESH_RATE  # seconds
 
-    # gtk simulation event source - for simulation control
+    # Gtk simulation event source - for simulation control
     self.sim_event_source = GObject.idle_add( self.initialize_sim, True ) # we use this opportunity to initialize the sim
 
-    # start gtk
-    gtk.main()
+    # start Gtk
+    Gtk.main()
 
 
   def initialize_sim( self, random=False ):
