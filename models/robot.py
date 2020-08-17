@@ -25,9 +25,10 @@ from models.differential_drive_dynamics import *
 from models.polygon import *
 from models.pose import *
 from models.proximity_sensor import *
-from models.robot_supervisor_interface import *
-from models.supervisor import *
 from models.wheel_encoder import *
+
+from robot_control.robot_supervisor_interface import *
+from robot_control.supervisor import *
 
 # Khepera III Properties
 K3_WHEEL_RADIUS = 0.021         # meters

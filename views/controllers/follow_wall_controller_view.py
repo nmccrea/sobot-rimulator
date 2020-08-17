@@ -21,7 +21,7 @@
 
 
 import utils.linalg2_util as linalg
-from models.control_state import *
+from robot_control.control_state import *
 
 VECTOR_LEN = 0.75 # length of heading vector
 

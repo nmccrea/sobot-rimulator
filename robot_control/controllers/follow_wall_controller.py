@@ -26,7 +26,7 @@ FWDIR_RIGHT = 1
 
 from math import *
 
-from models.control_state import *
+from robot_control.control_state import *
 from utils import linalg2_util as linalg
 from sim_exceptions.goal_reached_exception import *
 
