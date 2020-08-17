@@ -104,4 +104,4 @@ The third row of buttons provides a more detailed visualization of what the robo
 
 ## Robot Control System Overview
 
-For a brief overview of how the robot's "on-board" control system is implemented, go [here](documentation/control-architecture-overview).
+For a brief overview of how the robot's "on-board" control system is implemented, go [here](documentation/robot-control-system.md).
