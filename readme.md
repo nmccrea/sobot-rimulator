@@ -4,14 +4,13 @@ A robot programming tool.
 
 ![Screenshot](documentation/images/screenshot.png)
 
-Sobot Rimulator is inspired by [Sim.I.Am](http://jpdelacroix.com/software/simiam.html), a Matlab simulator written by [JP de la Croix](http://jpdelacroix.com/). The software simulates a [Khepera III](https://ftp.k-team.com/KheperaIII/UserManual/Kh3.Robot.UserManual.pdf) robot navigating to a goal in an environment of obstacles. The control system packaged with this software is based on the principles of [hybrid automata](https://en.wikipedia.org/wiki/Hybrid_automaton), as taught by [Magnus Egerstedt](https://magnus.ece.gatech.edu/) for the Coursera course [Control of Mobile Robots](https://www.coursera.org/learn/mobile-robot).
-
-An in-depth discussion of these principles is given in [this article](https://www.toptal.com/robotics/programming-a-robot-an-introductory-tutorial) on the Toptal Engineering Blog.
+Sobot Rimulator is inspired by [Sim.I.Am](http://jpdelacroix.com/software/simiam.html), by [JP de la Croix](http://jpdelacroix.com/). The software simulates a [Khepera III](https://ftp.k-team.com/KheperaIII/UserManual/Kh3.Robot.UserManual.pdf) robot navigating to a goal in an environment of obstacles. The control system packaged with this software is based on the principles of [hybrid automata](https://en.wikipedia.org/wiki/Hybrid_automaton), as taught by [Magnus Egerstedt](https://magnus.ece.gatech.edu/) for the Coursera course [Control of Mobile Robots](https://www.coursera.org/learn/mobile-robot). An in-depth discussion of these principles is given in [this article](https://www.toptal.com/robotics/programming-a-robot-an-introductory-tutorial) on the Toptal Engineering Blog.
 
 ## Table of Contents
 
 [Getting Started](#getting-started)
 [User Interface](#user-interface)
+[Robot Control System Overview](#robot-control-system-overview)
 
 ## Getting Started
 
@@ -102,3 +101,7 @@ The third row of buttons provides a more detailed visualization of what the robo
   - An orange heading bar indicates that the robot is currently in **Follow Wall** mode. This will be accompanied by two black lines - one indicating the followed surface calculated by the robot, and another indicating the stand-off distance to that obstacle surface.
 
     ![Follow Wall Mode](documentation/images/mode-follow-wall.png)
+
+## Robot Control System Overview
+
+For a brief overview of how the robot's "on-board" control system is implemented, go [here](documentation/control-architecture-overview).
