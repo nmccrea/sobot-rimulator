@@ -2,7 +2,7 @@
 
 A robot programming tool.
 
-![Screenshot](documentation/images/screenshot.png)
+![Screenshot](images/screenshot.png)
 
 Sobot Rimulator is inspired by [Sim.I.Am](http://jpdelacroix.com/software/simiam.html), by [JP de la Croix](http://jpdelacroix.com/). The software simulates a [Khepera III](https://ftp.k-team.com/KheperaIII/UserManual/Kh3.Robot.UserManual.pdf) robot navigating to a goal in an environment of obstacles. The control system packaged with this software is based on the principles of [hybrid automata](https://en.wikipedia.org/wiki/Hybrid_automaton), as taught by [Magnus Egerstedt](https://magnus.ece.gatech.edu/). An in-depth discussion of these principles is given in [this article](https://www.toptal.com/robotics/programming-a-robot-an-introductory-tutorial) on the Toptal Engineering Blog.
 
@@ -46,7 +46,7 @@ The simulator interface contains the following elements:
 - [Alert Text Panel](#alert-text-panel)
 - [Control Panel](#control-panel)
 
-![User Interface](documentation/images/user-interface.png)
+![User Interface](images/user-interface.png)
 
 ### Simulation Viewport
 
@@ -92,15 +92,15 @@ The third row of buttons provides a more detailed visualization of what the robo
 
   - A green heading bar indicates that the robot is currently in **Go to Goal** mode.
 
-    ![Go to Goal Mode](documentation/images/mode-go-to-goal.png)
+    ![Go to Goal Mode](images/mode-go-to-goal.png)
 
   - A red heading bar indicates that the robot is currently in **Avoid Obstacles** mode. This will be accompanied by a black outline indicating the robot's detected surroundings.
 
-    ![Avoid Obstacles Mode](documentation/images/mode-avoid-obstacles.png)
+    ![Avoid Obstacles Mode](images/mode-avoid-obstacles.png)
 
   - An orange heading bar indicates that the robot is currently in **Follow Wall** mode. This will be accompanied by two black lines - one indicating the followed surface calculated by the robot, and another indicating the stand-off distance to that obstacle surface.
 
-    ![Follow Wall Mode](documentation/images/mode-follow-wall.png)
+    ![Follow Wall Mode](images/mode-follow-wall.png)
 
 ## Robot Control System Overview
 
@@ -110,7 +110,7 @@ The simulated robot's "on-board" control code is found in the `robot_control/` f
 
 The below diagram gives a high-level conceptual overview of the relationship between different components at runtime. Arrows represent the direction that information flows. In general, downward arrows carry information about the robot's current state, while upward arrows carry information about the robot's desired next state.
 
-![On Board Control Scheme](documentation/images/control-architecture-overview.png)
+![On Board Control Scheme](images/control-architecture-overview.png)
 
 ### Robot-Supervisor Interface
 
