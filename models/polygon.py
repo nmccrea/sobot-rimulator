@@ -1,62 +1,65 @@
 from utils import linalg2_util as linalg
 from models.geometry import *
 
-class Polygon( Geometry ):
 
-  def __init__( self, vertexes ):
-    self.vertexes = vertexes  # a list of 2-dimensional vectors
+class Polygon(Geometry):
+    def __init__(self, vertexes):
+        self.vertexes = vertexes  # a list of 2-dimensional vectors
 
-    # define the centerpoint and radius of a circle containing this polygon
-    # value is a tuple of the form ( [ cx, cy ], r )
-    # NOTE: this may not be the "minimum bounding circle"
-    self.bounding_circle = self._bounding_circle()
+        # define the centerpoint and radius of a circle containing this polygon
+        # value is a tuple of the form ( [ cx, cy ], r )
+        # NOTE: this may not be the "minimum bounding circle"
+        self.bounding_circle = self._bounding_circle()
 
-  # return a copy of this polygon transformed to the given pose
-  def get_transformation_to_pose( self, pose ):
-    p_pos, p_theta = pose.vunpack()
-    return Polygon( linalg.rotate_and_translate_vectors( self.vertexes, p_theta, p_pos ) )
+    # return a copy of this polygon transformed to the given pose
+    def get_transformation_to_pose(self, pose):
+        p_pos, p_theta = pose.vunpack()
+        return Polygon(
+            linalg.rotate_and_translate_vectors(self.vertexes, p_theta, p_pos)
+        )
 
-  # get a list of of this polygon's edges as vertex pairs
-  def edges( self ):
-    vertexes = self.vertexes
+    # get a list of of this polygon's edges as vertex pairs
+    def edges(self):
+        vertexes = self.vertexes
 
-    edges = []
-    n = len( vertexes )
-    for i in range( n ):
-      edges.append( [ vertexes[i], vertexes[(i+1)%n] ] )
+        edges = []
+        n = len(vertexes)
+        for i in range(n):
+            edges.append([vertexes[i], vertexes[(i + 1) % n]])
 
-    return edges
+        return edges
 
-  # get the number of edges of this polygon
-  def numedges( self ):
-    return len( self.vertexes )
+    # get the number of edges of this polygon
+    def numedges(self):
+        return len(self.vertexes)
 
-  # get the centerpoint and radius for a circle that completely contains this polygon
-  def _bounding_circle( self ):
-    # NOTE: this method is meant to give a quick bounding circle
-    #   the circle calculated may not be the "minimum bounding circle"
+    # get the centerpoint and radius for a circle that completely contains this polygon
+    def _bounding_circle(self):
+        # NOTE: this method is meant to give a quick bounding circle
+        #   the circle calculated may not be the "minimum bounding circle"
 
-    c = self._centroidish()
-    r = 0.0
-    for v in self.vertexes:
-      d = linalg.distance( c, v )
-      if d > r: r = d
+        c = self._centroidish()
+        r = 0.0
+        for v in self.vertexes:
+            d = linalg.distance(c, v)
+            if d > r:
+                r = d
 
-    return c, r
+        return c, r
 
-  # approximate the centroid of this polygon
-  def _centroidish( self ):
-    # NOTE: this method is meant to give a quick and dirty approximation of center of the polygon
-    #   it returns the average of the vertexes
-    #   the actual centroid may not be equivalent
+    # approximate the centroid of this polygon
+    def _centroidish(self):
+        # NOTE: this method is meant to give a quick and dirty approximation of center of the polygon
+        #   it returns the average of the vertexes
+        #   the actual centroid may not be equivalent
 
-    n = len( self.vertexes )
-    x = 0.0
-    y = 0.0
-    for v in self.vertexes:
-      x += v[0]
-      y += v[1]
-    x /= n
-    y /= n
+        n = len(self.vertexes)
+        x = 0.0
+        y = 0.0
+        for v in self.vertexes:
+            x += v[0]
+            y += v[1]
+        x /= n
+        y /= n
 
-    return [ x, y ]
+        return [x, y]

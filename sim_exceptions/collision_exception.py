@@ -1,2 +1,2 @@
-class CollisionException( Exception ):
-  pass
+class CollisionException(Exception):
+    pass

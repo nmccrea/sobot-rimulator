@@ -1,2 +1,2 @@
-class GoalReachedException( Exception ):
-  pass
+class GoalReachedException(Exception):
+    pass
