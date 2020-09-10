@@ -3,8 +3,8 @@ from models.geometry import Geometry
 
 
 class Polygon(Geometry):
-    def __init__(self, vertexes):
-        self.vertexes = vertexes  # a list of 2-dimensional vectors
+    def __init__(self, vertices):
+        self.vertices = vertices  # a list of 2-dimensional vectors
 
         # define the centerpoint and radius of a circle containing this polygon
         # value is a tuple of the form ( [ cx, cy ], r )
@@ -15,23 +15,23 @@ class Polygon(Geometry):
     def get_transformation_to_pose(self, pose):
         p_pos, p_theta = pose.vunpack()
         return Polygon(
-            linalg.rotate_and_translate_vectors(self.vertexes, p_theta, p_pos)
+            linalg.rotate_and_translate_vectors(self.vertices, p_theta, p_pos)
         )
 
     # get a list of of this polygon's edges as vertex pairs
     def edges(self):
-        vertexes = self.vertexes
+        vertices = self.vertices
 
         edges = []
-        n = len(vertexes)
+        n = len(vertices)
         for i in range(n):
-            edges.append([vertexes[i], vertexes[(i + 1) % n]])
+            edges.append([vertices[i], vertices[(i + 1) % n]])
 
         return edges
 
     # get the number of edges of this polygon
     def numedges(self):
-        return len(self.vertexes)
+        return len(self.vertices)
 
     # get the centerpoint and radius for a circle that completely contains this polygon
     def _bounding_circle(self):
@@ -40,7 +40,7 @@ class Polygon(Geometry):
 
         c = self._centroidish()
         r = 0.0
-        for v in self.vertexes:
+        for v in self.vertices:
             d = linalg.distance(c, v)
             if d > r:
                 r = d
@@ -51,13 +51,13 @@ class Polygon(Geometry):
     def _centroidish(self):
         # NOTE: this method is meant to give a quick and dirty approximation of center
         # of the polygon
-        #   it returns the average of the vertexes
+        #   it returns the average of the vertices
         #   the actual centroid may not be equivalent
 
-        n = len(self.vertexes)
+        n = len(self.vertices)
         x = 0.0
         y = 0.0
-        for v in self.vertexes:
+        for v in self.vertices:
             x += v[0]
             y += v[1]
         x /= n

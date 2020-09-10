@@ -43,7 +43,7 @@ class RobotView:
                 ir_sensor_view.draw_proximity_sensor_to_frame()
 
         # draw the robot
-        robot_bottom = self.robot.global_geometry.vertexes
+        robot_bottom = self.robot.global_geometry.vertices
         self.viewer.current_frame.add_polygons([robot_bottom], color="blue", alpha=0.5)
         # add decoration
         robot_pos, robot_theta = self.robot.pose.vunpack()

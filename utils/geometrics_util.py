@@ -19,7 +19,7 @@ def convex_polygon_intersect_test(polygon1, polygon2):
         polygonA = polygon2
         polygonB = polygon1
 
-    # perform Seperating Axis Test
+    # perform Separating Axis Test
     intersect = True
     edge_index = 0
     edges = polygonA.edges() + polygonB.edges()
@@ -43,16 +43,16 @@ def convex_polygon_intersect_test(polygon1, polygon2):
     return intersect
 
 
-# get the min and max dot-products of a projection axis and the vertexes of a polygon -
+# get the min and max dot-products of a projection axis and the vertices of a polygon -
 # this is sufficient for overlap comparison
 def range_project_polygon(axis_vector, polygon):
-    vertexes = polygon.vertexes
+    vertices = polygon.vertices
 
-    c = linalg.dot(axis_vector, vertexes[0])
+    c = linalg.dot(axis_vector, vertices[0])
     minc = c
     maxc = c
-    for i in range(1, len(vertexes)):
-        c = linalg.dot(axis_vector, vertexes[i])
+    for i in range(1, len(vertices)):
+        c = linalg.dot(axis_vector, vertices[i])
 
         if c < minc:
             minc = c
@@ -93,9 +93,9 @@ def line_segment_intersection(line1, line2):
 # returns:
 #   intersection_exists - boolean - value indicating whether an intersection was found
 #   intersection - vector - the intersection point, or None if none was found
-#   d - float in [0, 1] - distance along the thest line at which the intersection occurs
+#   d - float in [0, 1] - distance along the test line at which the intersection occurs
 def directed_line_segment_polygon_intersection(line_segment, test_polygon):
-    test_line = line_segment.vertexes  # get the raw line segment
+    test_line = line_segment.vertices  # get the raw line segment
     dmin = float("inf")
     intersection = None
 

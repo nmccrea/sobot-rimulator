@@ -10,7 +10,7 @@ class ObstacleView:
         obstacle_pos, obstacle_theta = obstacle.pose.vunpack()
 
         # draw the obstacle to the frame
-        obstacle_poly = obstacle.global_geometry.vertexes
+        obstacle_poly = obstacle.global_geometry.vertices
         self.viewer.current_frame.add_polygons(
             [obstacle_poly], color="dark red", alpha=0.4
         )

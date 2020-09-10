@@ -10,11 +10,11 @@ class RectangleObstacle:
         # define the geometry
         halfwidth_x = width * 0.5
         halfwidth_y = height * 0.5
-        vertexes = [
+        vertices = [
             [halfwidth_x, halfwidth_y],
             [halfwidth_x, -halfwidth_y],
             [-halfwidth_x, -halfwidth_y],
             [-halfwidth_x, halfwidth_y],
         ]
-        self.geometry = Polygon(vertexes)
-        self.global_geometry = Polygon(vertexes).get_transformation_to_pose(self.pose)
+        self.geometry = Polygon(vertices)
+        self.global_geometry = Polygon(vertices).get_transformation_to_pose(self.pose)

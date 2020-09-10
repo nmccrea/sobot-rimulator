@@ -46,7 +46,7 @@ class ProximitySensorView:
     def _draw_detection_to_frame(self):
         target_delta = self.proximity_sensor.target_delta
         if target_delta is not None:
-            detector_endpoints = self.proximity_sensor.detector_line.vertexes
+            detector_endpoints = self.proximity_sensor.detector_line.vertices
             detector_vector = linalg.sub(detector_endpoints[1], detector_endpoints[0])
             target_vector = linalg.add(
                 detector_endpoints[0], linalg.scale(detector_vector, target_delta)
@@ -57,14 +57,14 @@ class ProximitySensorView:
             )
 
     def _draw_detector_line_to_frame(self):
-        vertexes = self.proximity_sensor.detector_line.vertexes
+        vertices = self.proximity_sensor.detector_line.vertices
 
         self.viewer.current_frame.add_lines(
-            [vertexes], linewidth=0.005, color="black", alpha=0.7
+            [vertices], linewidth=0.005, color="black", alpha=0.7
         )
 
     def _draw_detector_line_origins_to_frame(self):
-        origin = self.proximity_sensor.detector_line.vertexes[0]
+        origin = self.proximity_sensor.detector_line.vertices[0]
         self.viewer.current_frame.add_circle(
             pos=(origin[0], origin[1]), radius=0.02, color="black"
         )
