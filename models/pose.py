@@ -21,7 +21,8 @@ class Pose:
             self.theta = math_util.normalize_angle(theta)
         else:
             raise TypeError(
-                "Wrong number of arguments. Pose requires 2 or 3 arguments to initialize"
+                "Wrong number of arguments. Pose requires 2 or 3 arguments to "
+                "initialize"
             )
 
     # get a new pose given by this pose transformed to a given reference pose
@@ -39,7 +40,8 @@ class Pose:
 
         return Pose(result_vect, result_theta)
 
-    # get a new pose given by inverting this pose, e.g. return the pose of the "world" relative to this pose
+    # get a new pose given by inverting this pose, e.g. return the pose of the "world"
+    # relative to this pose
     def inverse(self):
         result_theta = -self.theta
         result_pos = linalg.rotate_vector([-self.x, -self.y], result_theta)

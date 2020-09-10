@@ -9,7 +9,8 @@ class AvoidObstaclesControllerView:
         self.supervisor = supervisor
         self.avoid_obstacles_controller = supervisor.avoid_obstacles_controller
 
-    # draw a representation of the avoid-obstacles controller's internal state to the frame
+    # draw a representation of the avoid-obstacles controller's internal state to the
+    # frame
     def draw_avoid_obstacles_controller_to_frame(self):
         robot_pos, robot_theta = self.supervisor.estimated_pose.vunpack()
 

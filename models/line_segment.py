@@ -1,5 +1,5 @@
 from utils import linalg2_util as linalg
-from models.geometry import *
+from models.geometry import Geometry
 
 
 class LineSegment(Geometry):

@@ -1,12 +1,10 @@
+from math import atan2
+from robot_control.control_state import ControlState
+from utils import linalg2_util as linalg
+
 # wall-following directions
 FWDIR_LEFT = 0
 FWDIR_RIGHT = 1
-
-from math import *
-
-from robot_control.control_state import *
-from utils import linalg2_util as linalg
-from sim_exceptions.goal_reached_exception import *
 
 
 class FollowWallController:
@@ -50,7 +48,8 @@ class FollowWallController:
         self.r_fw_heading_vector = [1.0, 0.0]
 
     def update_heading(self):
-        # generate and store new heading vector and critical points for following to the left
+        # generate and store new heading vector and critical points for following to
+        # the left
         [
             self.l_fw_heading_vector,
             self.l_parallel_component,
@@ -58,7 +57,8 @@ class FollowWallController:
             self.l_distance_vector,
             self.l_wall_surface,
         ] = self.calculate_fw_heading_vector(FWDIR_LEFT)
-        # generate and store new heading vector and critical points for following to the right
+        # generate and store new heading vector and critical points for following to
+        # the right
         [
             self.r_fw_heading_vector,
             self.r_parallel_component,
@@ -76,7 +76,8 @@ class FollowWallController:
             heading_vector = self.r_fw_heading_vector
         else:
             raise Exception(
-                "applying follow-wall controller when not in a sliding state currently not supported"
+                "applying follow-wall controller when not in a sliding state currently "
+                "not supported"
             )
 
         # calculate the time that has passed since the last control iteration
@@ -113,8 +114,10 @@ class FollowWallController:
     def calculate_fw_heading_vector(self, follow_direction):
 
         # get the necessary variables for the working set of sensors
-        #   the working set is the sensors on the side we are bearing on, indexed from rearmost to foremost on the robot
-        #   NOTE: uses preexisting knowledge of the how the sensors are stored and indexed
+        #   the working set is the sensors on the side we are bearing on, indexed from
+        #   rearmost to foremost on the robot
+        #   NOTE: uses preexisting knowledge of the how the sensors are stored and
+        #   indexed
         if follow_direction == FWDIR_LEFT:
             # if we are following to the left, we bear on the righthand sensors
             sensor_placements = self.proximity_sensor_placements[7:3:-1]
@@ -133,10 +136,13 @@ class FollowWallController:
             raise Exception("unknown wall-following direction")
 
         if True not in sensor_detections:
-            # if there is no wall to track detected, we default to predefined reference points
-            # NOTE: these points are designed to turn the robot towards the bearing side, which aids with cornering behavior
-            #       the resulting heading vector is also meant to point close to directly aft of the robot
-            #       this helps when determining switching conditions in the supervisor state machine
+            # if there is no wall to track detected, we default to predefined reference
+            # points
+            # NOTE: these points are designed to turn the robot towards the bearing
+            #       side, which aids with cornering behavior the resulting heading
+            #       vector is also meant to point close to directly aft of the robot
+            #       this helps when determining switching conditions in the supervisor
+            #       state machine
             p1 = [-0.2, 0.0]
             if follow_direction == FWDIR_LEFT:
                 p2 = [-0.2, -0.0001]

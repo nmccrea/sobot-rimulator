@@ -1,5 +1,6 @@
 import utils.linalg2_util as linalg
 
+
 # a fast test to determine if two geometries might be touching
 def check_nearness(geometry1, geometry2):
     c1, r1 = geometry1.bounding_circle
@@ -9,7 +10,8 @@ def check_nearness(geometry1, geometry2):
 
 # determine if two convex polygons intersect
 def convex_polygon_intersect_test(polygon1, polygon2):
-    # assign polygons according to which has fewest sides - we will test against the polygon with fewer sides first
+    # assign polygons according to which has fewest sides - we will test against the
+    # polygon with fewer sides first
     if polygon1.numedges() <= polygon2.numedges():
         polygonA = polygon1
         polygonB = polygon2
@@ -21,7 +23,7 @@ def convex_polygon_intersect_test(polygon1, polygon2):
     intersect = True
     edge_index = 0
     edges = polygonA.edges() + polygonB.edges()
-    while intersect == True and edge_index < len(
+    while intersect and edge_index < len(
         edges
     ):  # loop through the edges of polygonA searching for a separating axis
         # get an axis normal to the current edge
@@ -41,7 +43,8 @@ def convex_polygon_intersect_test(polygon1, polygon2):
     return intersect
 
 
-# get the min and max dot-products of a projection axis and the vertexes of a polygon - this is sufficient for overlap comparison
+# get the min and max dot-products of a projection axis and the vertexes of a polygon -
+# this is sufficient for overlap comparison
 def range_project_polygon(axis_vector, polygon):
     vertexes = polygon.vertexes
 
@@ -62,9 +65,9 @@ def range_project_polygon(axis_vector, polygon):
 # test two line segments for intersection
 # takes raw line segments, i.e. a pair of vectors
 # returns
-#   intersection_exists - boolean         - value indicating whether an intersection was found
-#   intersection        - vector          - the intersection point, or None if none was found
-#   d                   - float in [0,1]  - distance along line1 at which the intersection occurs
+#   intersection_exists - boolean - value indicating whether an intersection was found
+#   intersection - vector - the intersection point, or None if none was found
+#   d - float in [0,1] - distance along line1 at which the intersection occurs
 def line_segment_intersection(line1, line2):
     # see http://stackoverflow.com/questions/563198
     nointersect_symbol = (False, None, None)
@@ -88,9 +91,9 @@ def line_segment_intersection(line1, line2):
 
 # test a line segment and a polygon for intersection
 # returns:
-#   intersection_exists - boolean         - value indicating whether an intersection was found
-#   intersection        - vector          - the intersection point, or None if none was found
-#   d                   - float in [0, 1] - distance along the thest line at which the intersection occurs
+#   intersection_exists - boolean - value indicating whether an intersection was found
+#   intersection - vector - the intersection point, or None if none was found
+#   d - float in [0, 1] - distance along the thest line at which the intersection occurs
 def directed_line_segment_polygon_intersection(line_segment, test_polygon):
     test_line = line_segment.vertexes  # get the raw line segment
     dmin = float("inf")

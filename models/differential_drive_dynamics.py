@@ -1,5 +1,4 @@
-from math import *
-from models.pose import *
+from math import cos, sin, pi
 
 
 class DifferentialDriveDynamics:

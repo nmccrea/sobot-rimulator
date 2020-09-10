@@ -1,4 +1,5 @@
-from math import *
+from math import sqrt, sin, cos
+
 
 # get the sum of two vectors
 def add(a, b):

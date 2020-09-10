@@ -1,6 +1,4 @@
-from math import *
-from models.polygon import *
-from models.pose import *
+from models.polygon import Polygon
 
 
 class RectangleObstacle:

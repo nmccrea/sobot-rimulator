@@ -1,11 +1,8 @@
 import gi
-
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
-
 gi.require_version("Gdk", "3.0")
 from gi.repository import Gdk
-
 from gui.frame import Frame
 from gui.painter import Painter
 

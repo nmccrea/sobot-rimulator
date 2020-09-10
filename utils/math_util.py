@@ -1,4 +1,5 @@
-from math import *
+from math import sin, cos, atan2
+
 
 # map the given angle to the equivalent angle in [ -pi, pi ]
 def normalize_angle(theta):

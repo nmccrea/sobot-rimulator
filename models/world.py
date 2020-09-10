@@ -1,5 +1,4 @@
-import time
-from models.physics import *
+from models.physics import Physics
 
 
 class World:
@@ -28,8 +27,8 @@ class World:
         # apply physics interactions
         self.physics.apply_physics()
 
-        # NOTE: the supervisors must run last to ensure they are observing the "current" world
-        # step all of the supervisors
+        # NOTE: the supervisors must run last to ensure they are observing the "current"
+        # world step all of the supervisors
         for supervisor in self.supervisors:
             supervisor.step(dt)
 
@@ -43,7 +42,8 @@ class World:
     def add_obstacle(self, obstacle):
         self.obstacles.append(obstacle)
 
-    # return all objects in the world that might collide with other objects in the world during simulation
+    # return all objects in the world that might collide with other objects in the
+    # world during simulation
     def colliders(self):
         # moving objects only
         return (

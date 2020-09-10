@@ -1,4 +1,4 @@
-from math import *
+from math import cos, sin
 import utils.linalg2_util as linalg
 
 
@@ -27,7 +27,7 @@ class ProximitySensorView:
         )
 
         # shade the sensor cone according to positive detection
-        if self.proximity_sensor.target_delta != None:
+        if self.proximity_sensor.target_delta is not None:
             alpha = 0.9 - 0.8 * self.proximity_sensor.target_delta
         else:
             alpha = 0.1
@@ -45,7 +45,7 @@ class ProximitySensorView:
 
     def _draw_detection_to_frame(self):
         target_delta = self.proximity_sensor.target_delta
-        if target_delta != None:
+        if target_delta is not None:
             detector_endpoints = self.proximity_sensor.detector_line.vertexes
             detector_vector = linalg.sub(detector_endpoints[1], detector_endpoints[0])
             target_vector = linalg.add(

@@ -1,12 +1,11 @@
-from math import *
-from models.differential_drive_dynamics import *
-from models.polygon import *
-from models.pose import *
-from models.proximity_sensor import *
-from models.wheel_encoder import *
-
-from robot_control.robot_supervisor_interface import *
-from robot_control.supervisor import *
+from math import radians
+from models.differential_drive_dynamics import DifferentialDriveDynamics
+from models.polygon import Polygon
+from models.pose import Pose
+from models.proximity_sensor import ProximitySensor
+from models.wheel_encoder import WheelEncoder
+from robot_control.robot_supervisor_interface import RobotSupervisorInterface
+from robot_control.supervisor import Supervisor
 
 # Khepera III Properties
 K3_WHEEL_RADIUS = 0.021  # meters
@@ -90,7 +89,7 @@ class Robot:  # Khepera III robot
             K3_SENSOR_MAX_RANGE,
         )
 
-        ## initialize state
+        # initialize state
         # set wheel drive rates (rad/s)
         self.left_wheel_drive_rate = 0.0
         self.right_wheel_drive_rate = 0.0

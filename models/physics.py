@@ -1,6 +1,5 @@
 import utils.geometrics_util as geometrics
-
-from sim_exceptions.collision_exception import *
+from sim_exceptions.collision_exception import CollisionException
 
 
 class Physics:
@@ -64,7 +63,8 @@ class Physics:
                             if intersection_exists and d < dmin:
                                 dmin = d
 
-                # if there is an intersection, update the sensor with the new delta value
+                # if there is an intersection, update the sensor with the new delta
+                # value
                 if dmin != float("inf"):
                     sensor.detect(dmin)
                 else:

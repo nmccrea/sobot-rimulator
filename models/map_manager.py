@@ -1,9 +1,9 @@
-from random import *
+from math import pi, sin, cos
+from random import random, randrange
 import pickle
-
-from models.polygon import *
-from models.rectangle_obstacle import *
-
+from models.pose import Pose
+from models.polygon import Polygon
+from models.rectangle_obstacle import RectangleObstacle
 import utils.geometrics_util as geometrics
 
 # random environment parameters
@@ -90,7 +90,7 @@ class MapManager:
                 intersects |= geometrics.convex_polygon_intersect_test(
                     test_geometry, obstacle.global_geometry
                 )
-            if intersects == False:
+            if not intersects:
                 obstacles.append(obstacle)
 
         # update the current obstacles and goal

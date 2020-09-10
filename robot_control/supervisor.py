@@ -1,14 +1,12 @@
-from math import *
-from utils import linalg2_util as linalg
-from models.pose import *
-from robot_control.control_state import *
-from robot_control.supervisor_controller_interface import *
-from robot_control.supervisor_state_machine import *
-from robot_control.controllers.avoid_obstacles_controller import *
-from robot_control.controllers.follow_wall_controller import *
-from robot_control.controllers.go_to_angle_controller import *
-from robot_control.controllers.go_to_goal_controller import *
-from robot_control.controllers.gtg_and_ao_controller import *
+from math import pi, log, sin, cos, radians
+from models.pose import Pose
+from robot_control.supervisor_controller_interface import SupervisorControllerInterface
+from robot_control.supervisor_state_machine import SupervisorStateMachine
+from robot_control.controllers.avoid_obstacles_controller import AvoidObstaclesController
+from robot_control.controllers.follow_wall_controller import FollowWallController
+from robot_control.controllers.go_to_angle_controller import GoToAngleController
+from robot_control.controllers.go_to_goal_controller import GoToGoalController
+from robot_control.controllers.gtg_and_ao_controller import GTGAndAOController
 
 # control parameters
 K3_TRANS_VEL_LIMIT = 0.3148  # m/s
@@ -32,7 +30,8 @@ class Supervisor:
         self.time = 0.0
 
         # robot representation
-        # NOTE: the supervisor does NOT have access to the physical robot, only the robot's interface
+        # NOTE: the supervisor does NOT have access to the physical robot, only the
+        # robot's interface
         self.robot = robot_interface
 
         # proximity sensor information
@@ -83,8 +82,9 @@ class Supervisor:
         # increment the internal clock time
         self.time += dt
 
-        # NOTE: for simplicity, we assume that the onboard computer executes exactly one control loop for every simulation time increment
-        # although technically this is not likely to be realistic, it is a good simplificiation
+        # NOTE: For simplicity, we assume that the onboard computer executes exactly
+        # one control loop for every simulation time increment. Although technically
+        # this is not likely to be realistic, it is a good simplificiation
 
         # execute one full control loop
         self.execute()

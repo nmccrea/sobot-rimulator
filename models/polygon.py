@@ -1,5 +1,5 @@
 from utils import linalg2_util as linalg
-from models.geometry import *
+from models.geometry import Geometry
 
 
 class Polygon(Geometry):
@@ -49,7 +49,8 @@ class Polygon(Geometry):
 
     # approximate the centroid of this polygon
     def _centroidish(self):
-        # NOTE: this method is meant to give a quick and dirty approximation of center of the polygon
+        # NOTE: this method is meant to give a quick and dirty approximation of center
+        # of the polygon
         #   it returns the average of the vertexes
         #   the actual centroid may not be equivalent
 

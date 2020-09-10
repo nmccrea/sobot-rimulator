@@ -1,5 +1,3 @@
-from math import *
-
 # an interfacing allowing a controller to interact with its supervisor
 class SupervisorControllerInterface:
     def __init__(self, supervisor):

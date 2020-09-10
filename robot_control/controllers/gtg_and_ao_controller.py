@@ -1,8 +1,7 @@
-from math import *
-
+from math import pi, atan2
 from utils import linalg2_util as linalg
-from robot_control.controllers.avoid_obstacles_controller import *
-from robot_control.controllers.go_to_goal_controller import *
+from robot_control.controllers.avoid_obstacles_controller import AvoidObstaclesController
+from robot_control.controllers.go_to_goal_controller import GoToGoalController
 
 
 class GTGAndAOController:
@@ -21,7 +20,9 @@ class GTGAndAOController:
         ]
 
         # blending factor
-        self.alpha = 0.1  # go-to-goal heading is given this much weight, avoid-obstacles is given the remaining weight
+        # go-to-goal heading is given this much weight, avoid-obstacles is given the
+        # remaining weight
+        self.alpha = 0.1
 
         # control gains
         self.kP = 10.0

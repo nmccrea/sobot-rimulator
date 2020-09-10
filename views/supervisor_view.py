@@ -1,9 +1,8 @@
-import utils.linalg2_util as linalg
-from views.controllers.avoid_obstacles_controller_view import *
-from views.controllers.follow_wall_controller_view import *
-from views.controllers.go_to_goal_controller_view import *
-from views.controllers.gtg_and_ao_controller_view import *
-from robot_control.control_state import *
+from views.controllers.avoid_obstacles_controller_view import AvoidObstaclesControllerView
+from views.controllers.follow_wall_controller_view import FollowWallControllerView
+from views.controllers.go_to_goal_controller_view import GoToGoalControllerView
+from views.controllers.gtg_and_ao_controller_view import GTGAndAOControllerView
+from robot_control.control_state import ControlState
 
 
 class SupervisorView:

@@ -1,7 +1,5 @@
-from math import *
-
+from math import pi, atan2
 from utils import linalg2_util as linalg
-from utils import math_util
 
 
 class AvoidObstaclesController:

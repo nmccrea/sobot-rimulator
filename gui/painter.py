@@ -1,5 +1,5 @@
-from gui.color_palette import *
-from math import *
+from gui.color_palette import ColorPalette
+from math import pi
 
 
 class Painter:

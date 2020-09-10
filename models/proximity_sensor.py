@@ -1,8 +1,7 @@
-from math import *
-import utils.linalg2_util as linalg
-from models.line_segment import *
-from models.pose import *
-from models.sensor import *
+from math import e, ceil
+from models.line_segment import LineSegment
+from models.pose import Pose
+from models.sensor import Sensor
 
 MIN_READ_VALUE = 18
 MAX_READ_VALUE = 3960
@@ -40,7 +39,8 @@ class ProximitySensor(Sensor):
         self.max_range = max_range
         self.phi_view = phi_view
 
-        # physical distance detected to target as a proportion of max_range ( must be in range [0, 1] or None )
+        # physical distance detected to target as a proportion of max_range ( must be
+        # in range [0, 1] or None )
         self.target_delta = None
 
         # sensor output
@@ -48,10 +48,10 @@ class ProximitySensor(Sensor):
 
     # set this proximity sensor to detect an object at distance ( delta * max_range )
     def detect(self, delta):
-        if delta != None and (delta < 0.0 or delta > 1.0):
+        if delta is not None and (delta < 0.0 or delta > 1.0):
             raise Exception("delta out of bounds - must be in range [0.0, 1.0]")
 
-        if delta == None:
+        if delta is None:
             self.target_delta = None
             self.read_value = MIN_READ_VALUE
         else:
