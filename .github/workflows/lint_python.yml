@@ -1,0 +1,17 @@
+name: Lint Python
+on: [push, pull_request]
+jobs:
+  lint_python:
+    runs-on: ubuntu-latest
+    env:
+      MAX_LINE_LENGTH: 88
+    steps:
+      # Set up environment.
+      - uses: actions/checkout@master
+      - uses: actions/setup-python@master
+
+      # Install and run linters.
+      - run: pip install black codespell flake8
+      - run: codespell --quiet-level=2
+      - run: black . --check --diff --line-length $MAX_LINE_LENGTH
+      - run: flake8 . --count --show-source --statistics --max-line-length=$MAX_LINE_LENGTH

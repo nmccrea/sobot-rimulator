@@ -1,6 +1,9 @@
-# compiled python files
+# Local files you use to do your work can go here.
+.local
+
+# Compiled Python files.
 *.pyc
 
-# text editor backups
+# Text editor backups.
 *.py~
 *.swp
