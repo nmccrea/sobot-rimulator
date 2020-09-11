@@ -2,10 +2,7 @@ name: Lint Python
 on: [push, pull_request]
 jobs:
   lint_python:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ubuntu-latest
     env:
       MAX_LINE_LENGTH: 88
     steps:
