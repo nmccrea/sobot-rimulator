@@ -6,13 +6,15 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+    env:
+      MAX_LINE_LENGTH: 88
     steps:
+      # Set up environment.
       - uses: actions/checkout@master
       - uses: actions/setup-python@master
-      - run: pip install black codespell flake8 isort pytest
-      - run: black --check . || true
+
+      # Install and run linters.
+      - run: pip install black codespell flake8
+      - run: black . --check --line-length $MAX_LINE_LENGTH || true
       - run: codespell --quiet-level=2 || true
-      - run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-      - run: isort --profile black --recursive . || true
-      - run: pip install -r requirements.txt || true
-      - run: pytest . || true
+      - run: flake8 . --count --show-source --statistics --max-line-length=$MAX_LINE_LENGTH || true
