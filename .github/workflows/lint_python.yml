@@ -12,6 +12,6 @@ jobs:
 
       # Install and run linters.
       - run: pip install black codespell flake8
-      - run: black . --check --line-length $MAX_LINE_LENGTH || true
-      - run: codespell --quiet-level=2 || true
-      - run: flake8 . --count --show-source --statistics --max-line-length=$MAX_LINE_LENGTH || true
+      - run: codespell --quiet-level=2
+      - run: black . --check --line-length $MAX_LINE_LENGTH
+      - run: flake8 . --count --show-source --statistics --max-line-length=$MAX_LINE_LENGTH
