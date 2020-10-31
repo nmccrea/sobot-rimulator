@@ -18,7 +18,7 @@ Sobot Rimulator is inspired by [Sim.I.Am](http://jpdelacroix.com/software/simiam
 
 Sobot Rimulator requires Python 3. Its main dependencies are [Gtk 3](https://www.gtk.org/) and [PyGObject 3](https://pygobject.readthedocs.io/en/latest/index.html), which are used for the UI.
 
-If you are using `pip` you will need to add Gtk3 to your environment separately since it is not a Python library. If you are using `conda` you can create a a new environment with everything you need like this:
+If you are using `pip` you will need to add Gtk3 to your environment separately since it is not a Python library. If you are using `conda` you can create a new environment with everything you need like this:
 
 ```
 conda create -n sobot-rimulator -c conda-forge python=3 gtk3 pygobject
@@ -157,7 +157,7 @@ This software comes with five controllers that are available to the `Supervisor`
 - `GoToAngleController` (`go_to_angle_controller.py`)
 - `GTGAndAOController` (`gtg_and_ao_controller.py`)
 
-Note that `GoToAngleController` and `GTGAndAOController` are not currently being in this build, but you may enable them if you'd like to see how they behave. Additional controllers can be added fairly easily
+Note that `GoToAngleController` and `GTGAndAOController` are not currently being used in this build, but you may enable them if you'd like to see how they behave. Additional controllers can be added fairly easily.
 
 Before the `SupervisorStateMachine` updates, each controller generates a heading vector. Each heading will likely be different, representing the direction the robot should go to perform the behavior that particular controller is designed to implement. These headings are then compared to each other by the `SupervisorStateMachine` as part of its test for state transitions.
 
