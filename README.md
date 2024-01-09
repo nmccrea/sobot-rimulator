@@ -1,3 +1,5 @@
+**ARCHIVED: Please note that this repository is not currently maintained.**
+
 # Sobot Rimulator
 
 A robot programming tool.
